@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { TabType } from '@/types';
-import { QrCode, ScanText, RefreshCw } from 'lucide-react';
+import { QrCode, ScanText, RefreshCw, Terminal, Layers } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: TabType;
@@ -11,34 +11,33 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
   return (
-    <header className="bg-white border-b-[1.5px] border-stone-800 sticky top-0 z-50">
+    <header className="bg-white border-b border-black sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
-          {/* Logo / Brand */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-stone-900 text-white border-[1.5px] border-stone-900 flex items-center justify-center font-mono font-bold text-xs shadow-[1.5px_1.5px_0px_#292524]">
-              <QrCode className="w-4 h-4 text-amber-300" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-mono font-bold text-sm tracking-tight text-stone-900 uppercase">
-                  OMNI.SYS <span className="text-stone-400 font-normal">//</span> UTILITY
-                </span>
-                <span className="og-badge bg-emerald-100 text-emerald-900 border-emerald-700 hidden sm:inline-flex">
-                  CLIENT_READY
-                </span>
+          {/* Logo & System Brand - TAKO style */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center border border-black bg-white shadow-[1.5px_1.5px_0px_#111] overflow-hidden">
+              <div className="w-8 h-8 bg-[#ff5500] text-white flex items-center justify-center">
+                <QrCode className="w-4 h-4 stroke-[2.5]" />
               </div>
+              <span className="px-2.5 py-1 font-mono font-black text-xs tracking-tight text-black uppercase">
+                OMNI<span className="text-[#ff5500]">.SYS</span>
+              </span>
             </div>
+
+            <span className="tako-badge bg-white text-black hidden sm:inline-flex">
+              CLIENT_LOCAL
+            </span>
           </div>
 
-          {/* Calibrated Navigation Tabs */}
-          <nav className="flex items-center gap-2">
+          {/* TAKO Style Segmented Navigation */}
+          <nav className="flex items-center gap-1.5">
             <button
               onClick={() => setActiveTab('extractor')}
-              className={`og-btn text-xs py-1 px-3 ${
+              className={`tako-btn text-xs py-1.5 px-3.5 ${
                 activeTab === 'extractor'
-                  ? 'bg-amber-100 text-stone-900 border-stone-900 font-bold'
-                  : 'bg-white text-stone-700 hover:bg-stone-50'
+                  ? 'tako-btn-orange font-black'
+                  : 'bg-white text-black'
               }`}
             >
               <ScanText className="w-3.5 h-3.5" />
@@ -47,10 +46,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
 
             <button
               onClick={() => setActiveTab('qr-studio')}
-              className={`og-btn text-xs py-1 px-3 ${
+              className={`tako-btn text-xs py-1.5 px-3.5 ${
                 activeTab === 'qr-studio'
-                  ? 'bg-amber-100 text-stone-900 border-stone-900 font-bold'
-                  : 'bg-white text-stone-700 hover:bg-stone-50'
+                  ? 'tako-btn-orange font-black'
+                  : 'bg-white text-black'
               }`}
             >
               <QrCode className="w-3.5 h-3.5" />
@@ -59,16 +58,24 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
 
             <button
               onClick={() => setActiveTab('converter')}
-              className={`og-btn text-xs py-1 px-3 ${
+              className={`tako-btn text-xs py-1.5 px-3.5 ${
                 activeTab === 'converter'
-                  ? 'bg-amber-100 text-stone-900 border-stone-900 font-bold'
-                  : 'bg-white text-stone-700 hover:bg-stone-50'
+                  ? 'tako-btn-orange font-black'
+                  : 'bg-white text-black'
               }`}
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>[3] Converter</span>
             </button>
           </nav>
+
+          {/* Right Status Indicator */}
+          <div className="hidden md:flex items-center gap-2 font-mono text-[11px]">
+            <span className="w-2 h-2 rounded-full bg-[#ff5500] animate-pulse" />
+            <span className="font-bold text-black">ONLINE</span>
+            <span className="text-stone-400">|</span>
+            <span className="text-stone-500 font-medium">v2026.11</span>
+          </div>
         </div>
       </div>
     </header>

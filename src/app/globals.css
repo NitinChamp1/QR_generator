@@ -1,10 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f7f5;
-  --foreground: #1c1917;
+  --background: #f4f4ef;
+  --foreground: #111111;
   --panel-bg: #ffffff;
-  --border-color: #292524;
+  --border-color: #111111;
+  --accent-orange: #ff5500;
+  --accent-orange-hover: #e04b00;
 }
 
 body {
@@ -16,120 +18,153 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Refined OG Utility Components - Easy on the Eyes */
-.og-panel {
+/* TAKO / Industrial Swiss Utility Components */
+.tako-panel {
   background-color: #ffffff;
-  border: 1.5px solid #292524;
-  box-shadow: 3px 3px 0px 0px #292524;
-  border-radius: 4px;
+  border: 1px solid #111111;
+  box-shadow: 2px 2px 0px 0px #111111;
+  border-radius: 1px;
 }
 
-.og-panel-sm {
+.tako-panel-sm {
   background-color: #ffffff;
-  border: 1.5px solid #292524;
-  box-shadow: 2px 2px 0px 0px #292524;
-  border-radius: 3px;
+  border: 1px solid #111111;
+  box-shadow: 1px 1px 0px 0px #111111;
+  border-radius: 1px;
 }
 
-.og-titlebar {
-  background-color: #f0f0eb;
-  border-bottom: 1.5px solid #292524;
-  color: #1c1917;
-  padding: 7px 14px;
+.tako-titlebar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #111111;
+  color: #111111;
+  padding: 6px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-family: var(--font-mono), monospace;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
-.og-btn {
+.tako-titlebar-dark {
+  background-color: #111111;
+  color: #ffffff;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.tako-btn {
   background-color: #ffffff;
-  color: #1c1917;
-  border: 1.5px solid #292524;
-  box-shadow: 2px 2px 0px 0px #292524;
-  border-radius: 3px;
+  color: #111111;
+  border: 1px solid #111111;
+  box-shadow: 2px 2px 0px 0px #111111;
+  border-radius: 1px;
   padding: 6px 14px;
   font-size: 12px;
+  font-family: var(--font-mono), monospace;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  transition: all 0.08s ease-in-out;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: all 0.05s ease-in-out;
 }
 
-.og-btn:hover {
-  background-color: #f5f5f0;
+.tako-btn:hover {
+  background-color: #f4f4ef;
 }
 
-.og-btn:active {
-  transform: translate(1.5px, 1.5px);
-  box-shadow: 0.5px 0.5px 0px 0px #292524;
+.tako-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px 0px #111111;
 }
 
-.og-btn-primary {
-  background-color: #1c1917;
+.tako-btn-orange {
+  background-color: #ff5500;
   color: #ffffff;
-  border: 1.5px solid #1c1917;
-  box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.3);
+  border: 1px solid #111111;
+  box-shadow: 2px 2px 0px 0px #111111;
 }
 
-.og-btn-primary:hover {
-  background-color: #292524;
+.tako-btn-orange:hover {
+  background-color: #e04b00;
 }
 
-.og-btn-yellow {
-  background-color: #fef08a;
-  color: #1c1917;
-  border: 1.5px solid #292524;
-  box-shadow: 2px 2px 0px 0px #292524;
-}
-
-.og-btn-yellow:hover {
-  background-color: #fde047;
-}
-
-.og-btn-blue {
-  background-color: #2563eb;
+.tako-btn-black {
+  background-color: #111111;
   color: #ffffff;
-  border: 1.5px solid #1e3a8a;
-  box-shadow: 2px 2px 0px 0px #1e3a8a;
+  border: 1px solid #111111;
+  box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.4);
 }
 
-.og-btn-blue:hover {
-  background-color: #1d4ed8;
+.tako-btn-black:hover {
+  background-color: #222222;
 }
 
-.og-input {
+.tako-input {
   background-color: #ffffff;
-  border: 1.5px solid #44403c;
+  border: 1px solid #111111;
   padding: 7px 11px;
   font-size: 12px;
-  color: #1c1917;
-  border-radius: 3px;
+  color: #111111;
+  border-radius: 1px;
   outline: none;
   font-family: var(--font-mono), monospace;
 }
 
-.og-input:focus {
-  border-color: #1c1917;
-  background-color: #ffffff;
-  box-shadow: inset 1px 1px 0px 0px rgba(0, 0, 0, 0.08);
+.tako-input:focus {
+  border-color: #ff5500;
+  box-shadow: inset 1px 1px 0px 0px rgba(255, 85, 0, 0.2);
 }
 
-.og-badge {
+.tako-badge {
   display: inline-flex;
   align-items: center;
-  padding: 2px 7px;
+  padding: 1px 6px;
   font-family: var(--font-mono), monospace;
   font-size: 10px;
   font-weight: 700;
-  border: 1px solid #44403c;
-  border-radius: 2px;
+  border: 1px solid #111111;
+  border-radius: 1px;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tako-badge-orange {
+  background-color: #ff5500;
+  color: #ffffff;
+  border-color: #111111;
+}
+
+/* Diagonal technical stripe pattern */
+.tako-hatched {
+  background: repeating-linear-gradient(
+    45deg,
+    #111111,
+    #111111 2px,
+    transparent 2px,
+    transparent 6px
+  );
+}
+
+.tako-hatched-orange {
+  background: repeating-linear-gradient(
+    45deg,
+    #ff5500,
+    #ff5500 2px,
+    transparent 2px,
+    transparent 6px
+  );
 }
