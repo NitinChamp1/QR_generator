@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { TabType } from '@/types';
-import { QrCode, ScanText, RefreshCw, Terminal, Layers } from 'lucide-react';
+import { QrCode, ScanText, RefreshCw } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: TabType;
@@ -11,21 +11,21 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
   return (
-    <header className="bg-white border-b border-black sticky top-0 z-50">
+    <header className="bg-white border-b-2 border-black sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
-          {/* Logo & System Brand - TAKO style */}
+          {/* Logo & System Brand */}
           <div className="flex items-center gap-3">
-            <div className="flex items-center border border-black bg-white shadow-[1.5px_1.5px_0px_#111] overflow-hidden">
-              <div className="w-8 h-8 bg-[#ff5500] text-white flex items-center justify-center">
+            <div className="flex items-center border-2 border-black bg-white shadow-[2px_2px_0px_#111] overflow-hidden">
+              <div className="w-9 h-9 bg-[#ff5500] text-white flex items-center justify-center">
                 <QrCode className="w-4 h-4 stroke-[2.5]" />
               </div>
-              <span className="px-2.5 py-1 font-mono font-black text-xs tracking-tight text-black uppercase">
+              <span className="px-3 py-1 font-mono font-black text-xs tracking-tight text-black uppercase">
                 OMNI<span className="text-[#ff5500]">.SYS</span>
               </span>
             </div>
 
-            <span className="tako-badge bg-white text-black hidden sm:inline-flex">
+            <span className="tako-badge hidden sm:inline-flex">
               CLIENT_LOCAL
             </span>
           </div>
@@ -34,23 +34,15 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           <nav className="flex items-center gap-1.5">
             <button
               onClick={() => setActiveTab('extractor')}
-              className={`tako-btn text-xs py-1.5 px-3.5 ${
-                activeTab === 'extractor'
-                  ? 'tako-btn-orange font-black'
-                  : 'bg-white text-black'
-              }`}
+              className={`tako-btn ${activeTab === 'extractor' ? 'tako-btn-orange' : ''}`}
             >
               <ScanText className="w-3.5 h-3.5" />
-              <span>[1] Image ➡️ QR</span>
+              <span>[1] Image → QR</span>
             </button>
 
             <button
               onClick={() => setActiveTab('qr-studio')}
-              className={`tako-btn text-xs py-1.5 px-3.5 ${
-                activeTab === 'qr-studio'
-                  ? 'tako-btn-orange font-black'
-                  : 'bg-white text-black'
-              }`}
+              className={`tako-btn ${activeTab === 'qr-studio' ? 'tako-btn-orange' : ''}`}
             >
               <QrCode className="w-3.5 h-3.5" />
               <span>[2] QR Studio</span>
@@ -58,11 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
 
             <button
               onClick={() => setActiveTab('converter')}
-              className={`tako-btn text-xs py-1.5 px-3.5 ${
-                activeTab === 'converter'
-                  ? 'tako-btn-orange font-black'
-                  : 'bg-white text-black'
-              }`}
+              className={`tako-btn ${activeTab === 'converter' ? 'tako-btn-orange' : ''}`}
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>[3] Converter</span>
