@@ -11,14 +11,8 @@ import {
   Trash2,
   Copy,
   Check,
-  ArrowRight,
   RefreshCw,
   Eye,
-  Sliders,
-  Smartphone,
-  Globe,
-  DollarSign,
-  Calendar,
 } from 'lucide-react';
 import { ExtractedField, ExtractionResult } from '@/types';
 import { runClientOCR, OCRProgress } from '@/utils/ocr';
@@ -126,55 +120,54 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
     if (!ctx) return;
 
     if (type === 'card') {
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = '#fdfdfc';
       ctx.fillRect(0, 0, 700, 400);
 
-      // Card border
-      ctx.strokeStyle = '#000000';
-      ctx.lineWidth = 6;
-      ctx.strokeRect(10, 10, 680, 380);
+      ctx.strokeStyle = '#292524';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(12, 12, 676, 376);
 
-      ctx.fillStyle = '#000000';
-      ctx.font = 'bold 32px sans-serif';
+      ctx.fillStyle = '#1c1917';
+      ctx.font = 'bold 30px sans-serif';
       ctx.fillText('Alex Morgan', 50, 80);
 
-      ctx.fillStyle = '#333333';
-      ctx.font = 'bold 18px monospace';
+      ctx.fillStyle = '#57534e';
+      ctx.font = 'bold 16px monospace';
       ctx.fillText('CHIEF TECHNOLOGY OFFICER', 50, 115);
       ctx.fillText('NovaScale Technologies Inc.', 50, 145);
 
-      ctx.strokeStyle = '#000000';
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#d6d3d1';
+      ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(50, 170);
       ctx.lineTo(650, 170);
       ctx.stroke();
 
-      ctx.fillStyle = '#111111';
-      ctx.font = '18px monospace';
+      ctx.fillStyle = '#292524';
+      ctx.font = '17px monospace';
       ctx.fillText('TEL: +1 (555) 234-5678', 50, 215);
       ctx.fillText('EMAIL: alex.morgan@novascale.io', 50, 255);
       ctx.fillText('WEB: https://novascale.io', 50, 295);
       ctx.fillText('ADDR: 100 Innovation Way, San Francisco, CA', 50, 335);
     } else {
-      ctx.fillStyle = '#fafaf5';
+      ctx.fillStyle = '#fbfbfa';
       ctx.fillRect(0, 0, 700, 400);
 
-      ctx.fillStyle = '#000000';
-      ctx.font = 'bold 24px monospace';
-      ctx.fillText('--- CENTRAL CAFE & ROASTERY ---', 120, 50);
+      ctx.fillStyle = '#1c1917';
+      ctx.font = 'bold 22px monospace';
+      ctx.fillText('--- CENTRAL CAFE & ROASTERY ---', 140, 50);
 
-      ctx.font = '16px monospace';
+      ctx.font = '15px monospace';
       ctx.fillText('Receipt #: INV-84920', 60, 95);
       ctx.fillText('Date: Nov 02, 2026', 60, 125);
-      ctx.fillText('=====================================================', 60, 155);
+      ctx.fillText('-----------------------------------------------------', 60, 155);
       ctx.fillText('2x Cold Brew Latte                     $ 11.00', 60, 190);
       ctx.fillText('1x Sourdough Toast                     $ 14.50', 60, 220);
       ctx.fillText('1x Acai Bowl                           $ 12.00', 60, 250);
-      ctx.fillText('=====================================================', 60, 280);
-      ctx.font = 'bold 20px monospace';
+      ctx.fillText('-----------------------------------------------------', 60, 280);
+      ctx.font = 'bold 18px monospace';
       ctx.fillText('TOTAL AMOUNT:                          $ 37.50', 60, 320);
-      ctx.font = '14px monospace';
+      ctx.font = '13px monospace';
       ctx.fillText('TAX: $3.19 | PAYMENT: CARD ****4242 | AUTH: 99182', 60, 355);
     }
 
@@ -197,36 +190,37 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
 
   return (
     <div className="space-y-6">
-      {/* OG Title Banner */}
-      <div className="og-panel p-6 space-y-3">
+      {/* Title Banner */}
+      <div className="og-panel p-5 space-y-2">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
-              <span className="og-badge bg-yellow-300 text-black">TOOL #01</span>
-              <h1 className="text-xl sm:text-2xl font-black font-mono tracking-tight uppercase">
+              <span className="og-badge bg-amber-100 text-stone-900 border-stone-800">
+                MODULE #01
+              </span>
+              <h1 className="text-lg sm:text-xl font-bold font-mono tracking-tight uppercase text-stone-900">
                 IMAGE FIELD EXTRACTOR ➡️ QR ENGINE
               </h1>
             </div>
-            <p className="mt-1 text-xs font-mono text-zinc-600 max-w-3xl">
-              Extract raw text and key-value attributes (Names, Phones, Emails, Invoices, Totals)
-              from documents and encode them directly into standard QR specifications.
+            <p className="mt-1 text-xs font-mono text-stone-600 max-w-3xl">
+              Extract structured text &amp; key-value fields from documents and format them directly into standard QR codes.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono text-zinc-500 font-bold uppercase">Presets:</span>
+            <span className="text-[11px] font-mono text-stone-500 font-bold uppercase">Presets:</span>
             <button
               onClick={() => loadSample('card')}
-              className="og-btn text-xs py-1 px-3 bg-white hover:bg-yellow-100"
+              className="og-btn text-xs py-1 px-3 bg-white hover:bg-stone-50"
             >
-              <CreditCard className="w-3.5 h-3.5 text-black" />
+              <CreditCard className="w-3.5 h-3.5 text-stone-700" />
               Demo Business Card
             </button>
             <button
               onClick={() => loadSample('receipt')}
-              className="og-btn text-xs py-1 px-3 bg-white hover:bg-yellow-100"
+              className="og-btn text-xs py-1 px-3 bg-white hover:bg-stone-50"
             >
-              <Receipt className="w-3.5 h-3.5 text-black" />
+              <Receipt className="w-3.5 h-3.5 text-stone-700" />
               Demo Receipt
             </button>
           </div>
@@ -240,14 +234,14 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
           <div className="og-panel overflow-hidden">
             <div className="og-titlebar">
               <span>[INPUT_WINDOW] :: SOURCE_IMAGE</span>
-              <span className="text-zinc-400 font-mono text-[10px]">[_] [□] [✕]</span>
+              <span className="text-stone-400 font-mono text-[10px]">[_] [□] [✕]</span>
             </div>
 
             <div className="p-4 space-y-4">
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className={`border-2 border-dashed border-black rounded-xs p-6 text-center cursor-pointer transition-all ${
-                  imagePreview ? 'bg-zinc-50' : 'bg-white hover:bg-yellow-50/50'
+                className={`border-[1.5px] border-dashed border-stone-500 rounded-sm p-6 text-center cursor-pointer transition-all ${
+                  imagePreview ? 'bg-stone-50/50' : 'bg-white hover:bg-stone-50'
                 }`}
               >
                 <input
@@ -263,7 +257,7 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
 
                 {imagePreview ? (
                   <div className="space-y-3">
-                    <div className="border-2 border-black max-h-64 flex items-center justify-center bg-white p-1">
+                    <div className="border border-stone-300 max-h-64 flex items-center justify-center bg-white p-1">
                       <img
                         src={imagePreview}
                         alt="Preview"
@@ -271,13 +265,15 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
                       />
                     </div>
                     <div className="flex items-center justify-between font-mono text-xs">
-                      <span className="truncate max-w-[200px] font-bold">{selectedFile?.name}</span>
+                      <span className="truncate max-w-[200px] font-bold text-stone-800">
+                        {selectedFile?.name}
+                      </span>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           fileInputRef.current?.click();
                         }}
-                        className="font-bold underline hover:text-blue-600 flex items-center gap-1"
+                        className="font-bold underline hover:text-blue-700 flex items-center gap-1 text-stone-700"
                       >
                         <RefreshCw className="w-3 h-3" /> Change File
                       </button>
@@ -285,14 +281,14 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
                   </div>
                 ) : (
                   <div className="py-6 space-y-2">
-                    <div className="w-12 h-12 mx-auto border-2 border-black bg-yellow-300 flex items-center justify-center shadow-[2px_2px_0px_#000]">
-                      <Upload className="w-6 h-6 text-black" />
+                    <div className="w-11 h-11 mx-auto border-[1.5px] border-stone-800 bg-stone-100 flex items-center justify-center shadow-[1.5px_1.5px_0px_#292524]">
+                      <Upload className="w-5 h-5 text-stone-800" />
                     </div>
                     <div>
-                      <p className="text-xs font-mono font-bold uppercase mt-2">
+                      <p className="text-xs font-mono font-bold uppercase mt-2 text-stone-800">
                         DRAG &amp; DROP IMAGE OR CLICK TO BROWSE
                       </p>
-                      <p className="text-[10px] font-mono text-zinc-500">
+                      <p className="text-[10px] font-mono text-stone-500">
                         PNG, JPG, WEBP, BMP, GIF
                       </p>
                     </div>
@@ -302,17 +298,17 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
 
               {/* OCR Progress */}
               {isProcessing && ocrProgress && (
-                <div className="og-panel-sm p-3 bg-yellow-50 space-y-2">
-                  <div className="flex justify-between items-center text-xs font-mono font-bold">
+                <div className="og-panel-sm p-3 bg-stone-50 space-y-2">
+                  <div className="flex justify-between items-center text-xs font-mono font-bold text-stone-800">
                     <span className="flex items-center gap-1.5">
                       <RefreshCw className="w-3.5 h-3.5 animate-spin" />
                       {ocrProgress.status}
                     </span>
                     <span>{ocrProgress.progress}%</span>
                   </div>
-                  <div className="w-full bg-white border border-black h-3 overflow-hidden">
+                  <div className="w-full bg-stone-200 border border-stone-400 h-2.5 overflow-hidden">
                     <div
-                      className="bg-black h-full transition-all duration-200"
+                      className="bg-stone-800 h-full transition-all duration-200"
                       style={{ width: `${Math.max(10, ocrProgress.progress)}%` }}
                     />
                   </div>
@@ -321,10 +317,10 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
 
               {/* Raw OCR Text Toggle */}
               {result && (
-                <div className="og-panel-sm p-3 bg-zinc-50">
+                <div className="og-panel-sm p-3 bg-stone-50/70">
                   <button
                     onClick={() => setShowRawText(!showRawText)}
-                    className="w-full flex items-center justify-between text-xs font-mono font-bold text-black hover:underline"
+                    className="w-full flex items-center justify-between text-xs font-mono font-bold text-stone-800 hover:underline"
                   >
                     <span className="flex items-center gap-1.5">
                       <Eye className="w-3.5 h-3.5" />
@@ -335,7 +331,7 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
                     </span>
                   </button>
                   {showRawText && (
-                    <pre className="mt-3 p-3 bg-white border-2 border-black text-[11px] font-mono max-h-48 overflow-y-auto whitespace-pre-wrap">
+                    <pre className="mt-3 p-3 bg-white border border-stone-300 text-[11px] font-mono max-h-48 overflow-y-auto whitespace-pre-wrap text-stone-800">
                       {result.rawText || 'No text content recognized.'}
                     </pre>
                   )}
@@ -354,24 +350,24 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
                 <div className="og-titlebar">
                   <div className="flex items-center gap-2">
                     <span>DETECTED_FIELDS</span>
-                    <span className="bg-yellow-300 text-black px-1.5 py-0.2 rounded-none text-[10px]">
+                    <span className="bg-amber-100 border border-amber-300 text-stone-900 px-1.5 py-0.2 text-[10px]">
                       TYPE: {result.detectedType.toUpperCase()}
                     </span>
-                    <span className="bg-white text-black px-1.5 py-0.2 rounded-none text-[10px]">
+                    <span className="bg-white border border-stone-300 text-stone-800 px-1.5 py-0.2 text-[10px]">
                       COUNT: {result.fields.length}
                     </span>
                   </div>
 
                   <button
                     onClick={handleAddField}
-                    className="bg-white text-black border border-white hover:bg-yellow-300 px-2 py-0.5 text-[10px] font-mono font-bold transition-colors"
+                    className="bg-white text-stone-900 border border-stone-400 hover:bg-stone-100 px-2 py-0.5 text-[10px] font-mono font-bold transition-colors"
                   >
                     + ADD NEW FIELD
                   </button>
                 </div>
 
                 {/* Table Header */}
-                <div className="grid grid-cols-12 bg-zinc-100 border-b-2 border-black px-3 py-2 text-[11px] font-mono font-bold text-black">
+                <div className="grid grid-cols-12 bg-stone-100/80 border-b border-stone-300 px-3 py-2 text-[11px] font-mono font-bold text-stone-700">
                   <span className="col-span-1 text-center">USE</span>
                   <span className="col-span-4">FIELD NAME</span>
                   <span className="col-span-6">VALUE</span>
@@ -379,12 +375,12 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
                 </div>
 
                 {/* Table Rows */}
-                <div className="divide-y-2 divide-zinc-200 max-h-80 overflow-y-auto bg-white">
+                <div className="divide-y divide-stone-200 max-h-80 overflow-y-auto bg-white">
                   {result.fields.map((field) => (
                     <div
                       key={field.id}
                       className={`grid grid-cols-12 items-center px-3 py-2 gap-2 text-xs font-mono transition-colors ${
-                        field.enabled ? 'bg-white' : 'bg-zinc-100 opacity-50'
+                        field.enabled ? 'bg-white' : 'bg-stone-50/70 opacity-60'
                       }`}
                     >
                       {/* Checkbox */}
@@ -393,7 +389,7 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
                           type="checkbox"
                           checked={field.enabled}
                           onChange={() => handleToggleField(field.id)}
-                          className="w-4 h-4 rounded-none border-2 border-black text-black focus:ring-0 cursor-pointer"
+                          className="w-3.5 h-3.5 rounded-none border-stone-600 text-stone-900 focus:ring-0 cursor-pointer"
                         />
                       </div>
 
@@ -423,7 +419,7 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
                       <div className="col-span-1 text-right">
                         <button
                           onClick={() => handleDeleteField(field.id)}
-                          className="p-1 text-black hover:bg-red-500 hover:text-white border border-transparent hover:border-black transition-colors"
+                          className="p-1 text-stone-500 hover:bg-red-50 hover:text-red-700 transition-colors"
                           title="Remove field"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -438,13 +434,13 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
               <div className="og-panel overflow-hidden">
                 <div className="og-titlebar">
                   <span>[OUTPUT_BRIDGE] :: PAYLOAD_TO_QR</span>
-                  <span className="text-[10px] text-zinc-400">SPEC: ISO/IEC 18004</span>
+                  <span className="text-[10px] text-stone-500">SPEC: ISO/IEC 18004</span>
                 </div>
 
                 <div className="p-5 space-y-4 bg-white">
                   {/* Format Selector */}
                   <div className="flex flex-wrap items-center justify-between gap-3">
-                    <span className="text-xs font-mono font-bold uppercase">
+                    <span className="text-xs font-mono font-bold uppercase text-stone-800">
                       Select QR Payload Format:
                     </span>
 
@@ -459,7 +455,9 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
                           key={fmt.id}
                           onClick={() => setQrFormat(fmt.id as any)}
                           className={`og-btn text-xs py-1 px-2.5 ${
-                            qrFormat === fmt.id ? 'bg-yellow-300 text-black' : 'bg-white'
+                            qrFormat === fmt.id
+                              ? 'bg-amber-100 text-stone-900 border-stone-800 font-bold'
+                              : 'bg-white text-stone-700'
                           }`}
                         >
                           {fmt.label}
@@ -469,10 +467,10 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
                   </div>
 
                   {/* QR Preview & Output Box */}
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center pt-2 border-t-2 border-black">
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center pt-2 border-t border-stone-200">
                     {/* QR Preview Frame */}
                     <div className="sm:col-span-4 flex flex-col items-center">
-                      <div className="border-2 border-black p-3 bg-white shadow-[3px_3px_0px_#000]">
+                      <div className="border-[1.5px] border-stone-800 p-2.5 bg-white shadow-[2px_2px_0px_#292524]">
                         {currentPayload ? (
                           <QRCodeSVG
                             value={currentPayload}
@@ -481,12 +479,12 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
                             includeMargin={false}
                           />
                         ) : (
-                          <div className="w-[120px] h-[120px] flex items-center justify-center text-[10px] font-mono text-zinc-400 border border-dashed border-black">
+                          <div className="w-[120px] h-[120px] flex items-center justify-center text-[10px] font-mono text-stone-400 border border-dashed border-stone-300">
                             NO DATA
                           </div>
                         )}
                       </div>
-                      <span className="mt-2 text-[10px] font-mono font-bold text-zinc-500 uppercase">
+                      <span className="mt-2 text-[10px] font-mono font-bold text-stone-500 uppercase">
                         [ LIVE_PREVIEW ]
                       </span>
                     </div>
@@ -494,7 +492,7 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
                     {/* Payload text + Transfer Button */}
                     <div className="sm:col-span-8 space-y-3">
                       <div className="relative">
-                        <pre className="p-3 bg-zinc-50 border-2 border-black text-[11px] font-mono text-black max-h-32 overflow-y-auto whitespace-pre-wrap">
+                        <pre className="p-3 bg-stone-50 border border-stone-300 text-[11px] font-mono text-stone-800 max-h-32 overflow-y-auto whitespace-pre-wrap">
                           {currentPayload || '// No fields active. Check boxes above.'}
                         </pre>
                         <button
@@ -505,7 +503,7 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
                           {copied ? (
                             <Check className="w-3 h-3 text-emerald-600" />
                           ) : (
-                            <Copy className="w-3 h-3 text-black" />
+                            <Copy className="w-3 h-3 text-stone-700" />
                           )}
                         </button>
                       </div>
@@ -523,15 +521,15 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
             </div>
           ) : (
             /* Empty State */
-            <div className="og-panel p-12 text-center space-y-3 bg-white">
-              <div className="w-14 h-14 mx-auto border-2 border-black bg-zinc-100 flex items-center justify-center shadow-[2px_2px_0px_#000]">
-                <FileText className="w-7 h-7 text-black" />
+            <div className="og-panel p-10 text-center space-y-3 bg-white">
+              <div className="w-12 h-12 mx-auto border-[1.5px] border-stone-800 bg-stone-100 flex items-center justify-center shadow-[1.5px_1.5px_0px_#292524]">
+                <FileText className="w-6 h-6 text-stone-700" />
               </div>
               <div>
-                <h3 className="text-sm font-mono font-black uppercase text-black">
+                <h3 className="text-sm font-mono font-bold uppercase text-stone-900">
                   WAITING_FOR_INPUT
                 </h3>
-                <p className="mt-1 text-xs font-mono text-zinc-500 max-w-sm mx-auto">
+                <p className="mt-1 text-xs font-mono text-stone-500 max-w-sm mx-auto">
                   Upload an image on the left or select a sample preset above to parse structured
                   data.
                 </p>

@@ -20,12 +20,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col text-black selection:bg-yellow-300 selection:text-black">
+    <div className="min-h-screen flex flex-col text-stone-900 selection:bg-amber-200 selection:text-stone-900">
       {/* Top Navbar */}
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-7">
         {activeTab === 'extractor' && (
           <ImageFieldExtractor onSendToQRStudio={handleSendToQRStudio} />
         )}
@@ -37,28 +37,28 @@ export default function Home() {
         {activeTab === 'converter' && <FormatConverter />}
       </main>
 
-      {/* Retro Utility Footer */}
-      <footer className="mt-auto border-t-2 border-black bg-white py-6">
+      {/* Retro Utility Footer - Calibrated */}
+      <footer className="mt-auto border-t border-stone-300 bg-white py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 font-mono text-xs text-stone-600">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="flex items-center gap-1.5 font-bold">
+              <span className="flex items-center gap-1.5 font-bold text-stone-700">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
                 [ PRIVACY: 100% IN-BROWSER ]
               </span>
-              <span className="text-zinc-300">|</span>
-              <span className="flex items-center gap-1.5 font-bold">
+              <span className="text-stone-300">|</span>
+              <span className="flex items-center gap-1.5 font-bold text-stone-700">
                 <Cpu className="w-4 h-4 text-blue-600" />
                 [ LATENCY: ZERO_SERVER ]
               </span>
-              <span className="text-zinc-300">|</span>
-              <span className="flex items-center gap-1.5 font-bold">
+              <span className="text-stone-300">|</span>
+              <span className="flex items-center gap-1.5 font-bold text-stone-700">
                 <Terminal className="w-4 h-4 text-amber-600" />
                 [ SPEC: ISO/IEC 18004 ]
               </span>
             </div>
 
-            <div className="text-[11px] text-zinc-600 font-bold">
+            <div className="text-[11px] text-stone-500 font-bold">
               OMNI.SYS // WORKBENCH UTILITY
             </div>
           </div>

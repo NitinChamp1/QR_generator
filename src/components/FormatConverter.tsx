@@ -10,7 +10,6 @@ import {
   Upload,
   Download,
   Trash2,
-  CheckCircle2,
   ArrowRight,
   Layers,
   FileDown,
@@ -287,14 +286,16 @@ export const FormatConverter: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="og-panel p-6 space-y-2">
+      <div className="og-panel p-5 space-y-2">
         <div className="flex items-center gap-2">
-          <span className="og-badge bg-yellow-300 text-black">TOOL #03</span>
-          <h1 className="text-xl sm:text-2xl font-black font-mono tracking-tight uppercase">
+          <span className="og-badge bg-amber-100 text-stone-900 border-stone-800">
+            MODULE #03
+          </span>
+          <h1 className="text-lg sm:text-xl font-bold font-mono tracking-tight uppercase text-stone-900">
             UNIVERSAL FORMAT CONVERTER // CLIENT_CORE
           </h1>
         </div>
-        <p className="text-xs font-mono text-zinc-600 max-w-3xl">
+        <p className="text-xs font-mono text-stone-600 max-w-3xl">
           Transform image formats (JPG, PNG, WEBP, BMP, ICO), compile PDF documents into editable Word (.docx) files,
           render PDF pages into image galleries, or merge multiple photos into a single PDF. All processed client-side.
         </p>
@@ -304,8 +305,10 @@ export const FormatConverter: React.FC = () => {
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => setMode('image-to-image')}
-          className={`og-btn text-xs font-mono py-2 px-4 ${
-            mode === 'image-to-image' ? 'bg-yellow-300 text-black' : 'bg-white'
+          className={`og-btn text-xs font-mono py-1.5 px-3.5 ${
+            mode === 'image-to-image'
+              ? 'bg-amber-100 text-stone-900 border-stone-800 font-bold'
+              : 'bg-white text-stone-700'
           }`}
         >
           <FileImage className="w-4 h-4" />
@@ -314,8 +317,10 @@ export const FormatConverter: React.FC = () => {
 
         <button
           onClick={() => setMode('pdf-to-docx')}
-          className={`og-btn text-xs font-mono py-2 px-4 ${
-            mode === 'pdf-to-docx' ? 'bg-yellow-300 text-black' : 'bg-white'
+          className={`og-btn text-xs font-mono py-1.5 px-3.5 ${
+            mode === 'pdf-to-docx'
+              ? 'bg-amber-100 text-stone-900 border-stone-800 font-bold'
+              : 'bg-white text-stone-700'
           }`}
         >
           <FileType className="w-4 h-4" />
@@ -324,8 +329,10 @@ export const FormatConverter: React.FC = () => {
 
         <button
           onClick={() => setMode('pdf-to-images')}
-          className={`og-btn text-xs font-mono py-2 px-4 ${
-            mode === 'pdf-to-images' ? 'bg-yellow-300 text-black' : 'bg-white'
+          className={`og-btn text-xs font-mono py-1.5 px-3.5 ${
+            mode === 'pdf-to-images'
+              ? 'bg-amber-100 text-stone-900 border-stone-800 font-bold'
+              : 'bg-white text-stone-700'
           }`}
         >
           <Layers className="w-4 h-4" />
@@ -334,8 +341,10 @@ export const FormatConverter: React.FC = () => {
 
         <button
           onClick={() => setMode('images-to-pdf')}
-          className={`og-btn text-xs font-mono py-2 px-4 ${
-            mode === 'images-to-pdf' ? 'bg-yellow-300 text-black' : 'bg-white'
+          className={`og-btn text-xs font-mono py-1.5 px-3.5 ${
+            mode === 'images-to-pdf'
+              ? 'bg-amber-100 text-stone-900 border-stone-800 font-bold'
+              : 'bg-white text-stone-700'
           }`}
         >
           <FileDown className="w-4 h-4" />
@@ -349,10 +358,10 @@ export const FormatConverter: React.FC = () => {
       {mode === 'image-to-image' && (
         <div className="space-y-6">
           {/* Controls Bar */}
-          <div className="og-panel p-4 flex flex-wrap items-center justify-between gap-4 font-mono">
+          <div className="og-panel p-4 flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold uppercase">TARGET_FORMAT:</span>
+                <span className="font-bold uppercase text-stone-800">TARGET_FORMAT:</span>
                 <select
                   value={targetImageFormat}
                   onChange={(e) => setTargetImageFormat(e.target.value as ImageFormat)}
@@ -368,7 +377,7 @@ export const FormatConverter: React.FC = () => {
 
               {(targetImageFormat === 'image/jpeg' || targetImageFormat === 'image/webp') && (
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold uppercase">
+                  <span className="font-bold uppercase text-stone-800">
                     QUALITY ({Math.round(imageQuality * 100)}%):
                   </span>
                   <input
@@ -378,7 +387,7 @@ export const FormatConverter: React.FC = () => {
                     step="0.05"
                     value={imageQuality}
                     onChange={(e) => setImageQuality(parseFloat(e.target.value))}
-                    className="accent-black w-24"
+                    className="accent-stone-800 w-24"
                   />
                 </div>
               )}
@@ -430,16 +439,16 @@ export const FormatConverter: React.FC = () => {
           {imageFiles.length === 0 ? (
             <div
               onClick={() => imageInputRef.current?.click()}
-              className="og-panel p-12 text-center cursor-pointer hover:bg-yellow-50/50 space-y-3"
+              className="og-panel p-10 text-center cursor-pointer hover:bg-stone-50 space-y-2"
             >
-              <div className="w-14 h-14 mx-auto border-2 border-black bg-yellow-300 flex items-center justify-center shadow-[2px_2px_0px_#000]">
-                <FileImage className="w-7 h-7 text-black" />
+              <div className="w-12 h-12 mx-auto border-[1.5px] border-stone-800 bg-stone-100 flex items-center justify-center shadow-[1.5px_1.5px_0px_#292524]">
+                <FileImage className="w-6 h-6 text-stone-700" />
               </div>
               <div>
-                <p className="text-sm font-mono font-bold uppercase">
+                <p className="text-xs font-mono font-bold uppercase text-stone-900">
                   DROP IMAGES HERE OR CLICK TO BROWSE
                 </p>
-                <p className="text-xs font-mono text-zinc-500 mt-1">
+                <p className="text-[10px] font-mono text-stone-500 mt-1">
                   JPG, PNG, WEBP, BMP, GIF, SVG, ICO // BATCH PARALLEL CONVERSIONS
                 </p>
               </div>
@@ -448,17 +457,17 @@ export const FormatConverter: React.FC = () => {
             <div className="og-panel overflow-hidden">
               <div className="og-titlebar">
                 <span>[CONVERSION_QUEUE]</span>
-                <span className="text-[10px] text-zinc-400">TOTAL: {imageFiles.length} FILES</span>
+                <span className="text-[10px] text-stone-500">TOTAL: {imageFiles.length} FILES</span>
               </div>
 
-              <div className="divide-y-2 divide-black bg-white">
+              <div className="divide-y divide-stone-200 bg-white">
                 {imageFiles.map((file) => (
                   <div
                     key={file.id}
                     className="p-3 flex flex-wrap items-center justify-between gap-4 font-mono text-xs"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 border-2 border-black bg-zinc-100 overflow-hidden flex-shrink-0">
+                      <div className="w-9 h-9 border border-stone-300 bg-stone-50 overflow-hidden flex-shrink-0">
                         <img
                           src={file.previewUrl}
                           alt="preview"
@@ -466,13 +475,13 @@ export const FormatConverter: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <p className="font-bold text-black truncate max-w-xs">{file.originalName}</p>
-                        <p className="text-[10px] text-zinc-500 flex items-center gap-1.5 mt-0.5">
+                        <p className="font-bold text-stone-900 truncate max-w-xs">{file.originalName}</p>
+                        <p className="text-[10px] text-stone-500 flex items-center gap-1.5 mt-0.5">
                           <span>{formatFileSize(file.originalSize)}</span>
                           {file.convertedSize && (
                             <>
-                              <ArrowRight className="w-3 h-3 text-black" />
-                              <span className="font-bold text-black bg-yellow-200 px-1">
+                              <ArrowRight className="w-3 h-3 text-stone-400" />
+                              <span className="font-bold text-stone-800 bg-amber-50 border border-amber-200 px-1">
                                 {formatFileSize(file.convertedSize)}
                               </span>
                             </>
@@ -494,20 +503,20 @@ export const FormatConverter: React.FC = () => {
                       )}
 
                       {file.status === 'processing' && (
-                        <span className="og-badge bg-yellow-300 text-[10px]">
+                        <span className="og-badge bg-amber-50 text-[10px]">
                           CONVERTING...
                         </span>
                       )}
 
                       {file.status === 'pending' && (
-                        <span className="og-badge bg-zinc-100 text-[10px]">READY</span>
+                        <span className="og-badge bg-stone-100 text-[10px]">READY</span>
                       )}
 
                       <button
                         onClick={() =>
                           setImageFiles((prev) => prev.filter((item) => item.id !== file.id))
                         }
-                        className="p-1 hover:bg-red-500 hover:text-white border border-transparent hover:border-black transition-colors"
+                        className="p-1 hover:bg-red-50 hover:text-red-700 transition-colors text-stone-400"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -540,21 +549,21 @@ export const FormatConverter: React.FC = () => {
             <div className="og-panel overflow-hidden">
               <div className="og-titlebar">
                 <span>[PDF_INPUT_SOURCE]</span>
-                <span className="text-[10px] text-zinc-400">PDF.JS ENGINE</span>
+                <span className="text-[10px] text-stone-500">PDF.JS ENGINE</span>
               </div>
 
-              <div className="p-6 space-y-4 bg-white text-center">
+              <div className="p-5 space-y-4 bg-white text-center">
                 <div
                   onClick={() => pdfDocxInputRef.current?.click()}
-                  className="border-2 border-dashed border-black p-6 cursor-pointer hover:bg-yellow-50/50 transition-all space-y-2"
+                  className="border-[1.5px] border-dashed border-stone-400 p-6 cursor-pointer hover:bg-stone-50 transition-all space-y-2"
                 >
-                  <div className="w-12 h-12 mx-auto border-2 border-black bg-yellow-300 flex items-center justify-center shadow-[2px_2px_0px_#000]">
-                    <FileType className="w-6 h-6 text-black" />
+                  <div className="w-11 h-11 mx-auto border-[1.5px] border-stone-800 bg-stone-100 flex items-center justify-center shadow-[1.5px_1.5px_0px_#292524]">
+                    <FileType className="w-5 h-5 text-stone-800" />
                   </div>
-                  <p className="text-xs font-mono font-bold uppercase mt-2">
+                  <p className="text-xs font-mono font-bold uppercase mt-2 text-stone-900">
                     {pdfForDocx ? pdfForDocx.name : 'CLICK TO SELECT PDF FILE'}
                   </p>
-                  <p className="text-[10px] font-mono text-zinc-500">
+                  <p className="text-[10px] font-mono text-stone-500">
                     {pdfForDocx
                       ? formatFileSize(pdfForDocx.size)
                       : 'Extracts paragraphs and headings into a formatted .docx document'}
@@ -565,7 +574,7 @@ export const FormatConverter: React.FC = () => {
                   <button
                     onClick={handleConvertPdfToDocx}
                     disabled={isConvertingPdfToDocx}
-                    className="og-btn og-btn-yellow w-full text-xs py-2.5 font-mono font-bold uppercase disabled:opacity-50"
+                    className="og-btn og-btn-yellow w-full text-xs py-2 font-mono font-bold uppercase disabled:opacity-50"
                   >
                     <RefreshCw
                       className={`w-3.5 h-3.5 ${isConvertingPdfToDocx ? 'animate-spin' : ''}`}
@@ -584,12 +593,12 @@ export const FormatConverter: React.FC = () => {
               <div className="og-panel overflow-hidden">
                 <div className="og-titlebar">
                   <span>[CONVERSION_RESULT] :: SUCCESS</span>
-                  <span className="text-[10px] text-zinc-400">DOCX READY</span>
+                  <span className="text-[10px] text-stone-500">DOCX READY</span>
                 </div>
 
-                <div className="p-5 bg-white space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b-2 border-black">
-                    <span className="font-mono text-xs font-bold text-black">
+                <div className="p-5 bg-white space-y-3">
+                  <div className="flex items-center justify-between pb-3 border-b border-stone-200">
+                    <span className="font-mono text-xs font-bold text-stone-900">
                       OUTPUT: {docxResult.fileName}
                     </span>
                     <a
@@ -603,17 +612,17 @@ export const FormatConverter: React.FC = () => {
                   </div>
 
                   <div>
-                    <span className="text-[10px] font-mono font-bold uppercase block mb-1 text-zinc-500">
+                    <span className="text-[10px] font-mono font-bold uppercase block mb-1 text-stone-500">
                       EXTRACTED_CONTENT_PREVIEW:
                     </span>
-                    <pre className="p-3 bg-zinc-50 border-2 border-black text-xs font-mono max-h-72 overflow-y-auto whitespace-pre-wrap">
+                    <pre className="p-3 bg-stone-50 border border-stone-200 text-xs font-mono max-h-72 overflow-y-auto whitespace-pre-wrap text-stone-800">
                       {docxResult.extractedText || '// No text extracted from document.'}
                     </pre>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="og-panel p-12 text-center bg-white font-mono text-xs text-zinc-500">
+              <div className="og-panel p-10 text-center bg-white font-mono text-xs text-stone-500">
                 Select a PDF on the left and click &quot;CONVERT TO WORD&quot; to compile into a .docx document.
               </div>
             )}
@@ -647,7 +656,7 @@ export const FormatConverter: React.FC = () => {
                 {pdfForImages ? 'CHANGE PDF' : 'SELECT PDF FILE'}
               </button>
               {pdfForImages && (
-                <span className="font-bold text-black">
+                <span className="font-bold text-stone-900">
                   {pdfForImages.name} ({formatFileSize(pdfForImages.size)})
                 </span>
               )}
@@ -655,7 +664,7 @@ export const FormatConverter: React.FC = () => {
 
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1.5">
-                <span className="font-bold">FORMAT:</span>
+                <span className="font-bold text-stone-800">FORMAT:</span>
                 <select
                   value={pdfImagesFormat}
                   onChange={(e) => setPdfImagesFormat(e.target.value as any)}
@@ -697,7 +706,7 @@ export const FormatConverter: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {pdfImagesResult.map((page) => (
                 <div key={page.pageNumber} className="og-panel overflow-hidden p-2 space-y-2">
-                  <div className="aspect-[3/4] bg-zinc-100 border border-black flex items-center justify-center overflow-hidden">
+                  <div className="aspect-[3/4] bg-stone-50 border border-stone-200 flex items-center justify-center overflow-hidden">
                     <img
                       src={page.url}
                       alt={`Page ${page.pageNumber}`}
@@ -705,13 +714,13 @@ export const FormatConverter: React.FC = () => {
                     />
                   </div>
                   <div className="flex items-center justify-between font-mono text-xs">
-                    <span className="font-bold">PAGE #{page.pageNumber}</span>
+                    <span className="font-bold text-stone-800">PAGE #{page.pageNumber}</span>
                     <a
                       href={page.url}
                       download={`page_${page.pageNumber}.${
                         pdfImagesFormat === 'image/jpeg' ? 'jpg' : 'png'
                       }`}
-                      className="og-btn text-[10px] py-0.5 px-2 bg-yellow-200"
+                      className="og-btn text-[10px] py-0.5 px-2 bg-amber-50 border-amber-300"
                     >
                       <Download className="w-3 h-3" />
                       SAVE
@@ -777,16 +786,16 @@ export const FormatConverter: React.FC = () => {
           {imagesForPdf.length === 0 ? (
             <div
               onClick={() => imagesToPdfInputRef.current?.click()}
-              className="og-panel p-12 text-center cursor-pointer hover:bg-yellow-50/50 space-y-3"
+              className="og-panel p-10 text-center cursor-pointer hover:bg-stone-50 space-y-2"
             >
-              <div className="w-14 h-14 mx-auto border-2 border-black bg-yellow-300 flex items-center justify-center shadow-[2px_2px_0px_#000]">
-                <FileDown className="w-7 h-7 text-black" />
+              <div className="w-12 h-12 mx-auto border-[1.5px] border-stone-800 bg-stone-100 flex items-center justify-center shadow-[1.5px_1.5px_0px_#292524]">
+                <FileDown className="w-6 h-6 text-stone-800" />
               </div>
               <div>
-                <p className="text-sm font-mono font-bold uppercase">
+                <p className="text-xs font-mono font-bold uppercase text-stone-900">
                   ADD IMAGES TO COMPILE INTO A PAGINATED PDF
                 </p>
-                <p className="text-xs font-mono text-zinc-500 mt-1">
+                <p className="text-[10px] font-mono text-stone-500 mt-1">
                   Upload multiple photos or receipts. Reorder pages and compile into a single document.
                 </p>
               </div>
@@ -795,7 +804,7 @@ export const FormatConverter: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {imagesForPdf.map((item, index) => (
                 <div key={item.id} className="og-panel p-2 space-y-2 font-mono text-xs">
-                  <div className="aspect-[4/3] bg-zinc-100 border border-black overflow-hidden">
+                  <div className="aspect-[4/3] bg-stone-50 border border-stone-200 overflow-hidden">
                     <img
                       src={item.preview}
                       alt="preview"
@@ -803,12 +812,12 @@ export const FormatConverter: React.FC = () => {
                     />
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="font-bold">PAGE #{index + 1}</span>
+                    <span className="font-bold text-stone-800">PAGE #{index + 1}</span>
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => handleMoveImage(index, 'up')}
                         disabled={index === 0}
-                        className="p-1 border border-black hover:bg-zinc-200 disabled:opacity-20"
+                        className="p-1 border border-stone-400 hover:bg-stone-100 disabled:opacity-20 text-stone-700"
                         title="Move Up"
                       >
                         <MoveUp className="w-3 h-3" />
@@ -816,14 +825,14 @@ export const FormatConverter: React.FC = () => {
                       <button
                         onClick={() => handleMoveImage(index, 'down')}
                         disabled={index === imagesForPdf.length - 1}
-                        className="p-1 border border-black hover:bg-zinc-200 disabled:opacity-20"
+                        className="p-1 border border-stone-400 hover:bg-stone-100 disabled:opacity-20 text-stone-700"
                         title="Move Down"
                       >
                         <MoveDown className="w-3 h-3" />
                       </button>
                       <button
                         onClick={() => handleRemoveImage(item.id)}
-                        className="p-1 border border-black hover:bg-red-500 hover:text-white"
+                        className="p-1 border border-stone-400 hover:bg-red-50 hover:text-red-700 text-stone-500"
                         title="Remove"
                       >
                         <Trash2 className="w-3 h-3" />

@@ -15,7 +15,6 @@ import {
   MessageSquare,
   Code,
   Image as ImageIcon,
-  Palette,
   RotateCcw,
 } from 'lucide-react';
 import { QRDataType, VCardData, WifiData } from '@/types';
@@ -66,7 +65,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
   );
 
   // Customization states
-  const [fgColor, setFgColor] = useState<string>('#000000');
+  const [fgColor, setFgColor] = useState<string>('#1c1917');
   const [bgColor, setBgColor] = useState<string>('#ffffff');
   const [qrSize, setQrSize] = useState<number>(260);
   const [ecLevel, setEcLevel] = useState<'L' | 'M' | 'Q' | 'H'>('H');
@@ -77,7 +76,6 @@ export const QRStudio: React.FC<QRStudioProps> = ({
   const [copied, setCopied] = useState<boolean>(false);
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  // Handle incoming initial payload from extractor
   useEffect(() => {
     if (initialPayload) {
       if (initialType === 'vcard') {
@@ -96,7 +94,6 @@ export const QRStudio: React.FC<QRStudioProps> = ({
     }
   }, [initialPayload, initialType]);
 
-  // Compute final QR string
   const getQRString = (): string => {
     switch (dataType) {
       case 'url':
@@ -126,7 +123,6 @@ export const QRStudio: React.FC<QRStudioProps> = ({
 
   const qrString = getQRString();
 
-  // Downloads
   const downloadPNG = () => {
     const canvas = canvasRef.current?.querySelector('canvas');
     if (!canvas) return;
@@ -185,25 +181,27 @@ export const QRStudio: React.FC<QRStudioProps> = ({
   };
 
   const colorPresets = [
-    { label: 'Onyx', hex: '#000000' },
-    { label: 'Blue', hex: '#2563eb' },
-    { label: 'Green', hex: '#16a34a' },
-    { label: 'Red', hex: '#dc2626' },
-    { label: 'Purple', hex: '#7c3aed' },
-    { label: 'Amber', hex: '#d97706' },
+    { label: 'Obsidian', hex: '#1c1917' },
+    { label: 'Navy', hex: '#1e3a8a' },
+    { label: 'Forest', hex: '#14532d' },
+    { label: 'Burgundy', hex: '#7f1d1d' },
+    { label: 'Slate', hex: '#334155' },
+    { label: 'Bronze', hex: '#78350f' },
   ];
 
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="og-panel p-6 space-y-2">
+      <div className="og-panel p-5 space-y-2">
         <div className="flex items-center gap-2">
-          <span className="og-badge bg-yellow-300 text-black">TOOL #02</span>
-          <h1 className="text-xl sm:text-2xl font-black font-mono tracking-tight uppercase">
+          <span className="og-badge bg-amber-100 text-stone-900 border-stone-800">
+            MODULE #02
+          </span>
+          <h1 className="text-lg sm:text-xl font-bold font-mono tracking-tight uppercase text-stone-900">
             QR CODE STUDIO // MATRIX_BUILDER
           </h1>
         </div>
-        <p className="text-xs font-mono text-zinc-600 max-w-3xl">
+        <p className="text-xs font-mono text-stone-600 max-w-3xl">
           Construct vector &amp; bitmap QR codes according to ISO specifications. Embed custom logos,
           fine-tune foreground/background palettes, and export ready-for-print assets.
         </p>
@@ -216,10 +214,10 @@ export const QRStudio: React.FC<QRStudioProps> = ({
           <div className="og-panel overflow-hidden">
             <div className="og-titlebar">
               <span>[ENCODING_MODE]</span>
-              <span className="text-[10px] text-zinc-400">SELECT DATA TYPE</span>
+              <span className="text-[10px] text-stone-500">SELECT DATA TYPE</span>
             </div>
 
-            <div className="p-3 bg-zinc-50 border-b-2 border-black flex flex-wrap gap-2">
+            <div className="p-3 bg-stone-50/70 border-b border-stone-200 flex flex-wrap gap-2">
               {[
                 { id: 'url', label: 'URL Link', icon: LinkIcon },
                 { id: 'vcard', label: 'vCard Contact', icon: Contact },
@@ -236,7 +234,9 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                     key={tab.id}
                     onClick={() => setDataType(tab.id as QRDataType)}
                     className={`og-btn text-xs py-1 px-3 ${
-                      isActive ? 'bg-yellow-300 text-black' : 'bg-white'
+                      isActive
+                        ? 'bg-amber-100 text-stone-900 border-stone-800 font-bold'
+                        : 'bg-white text-stone-700'
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5" />
@@ -250,7 +250,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
             <div className="p-5 bg-white space-y-4">
               {dataType === 'url' && (
                 <div className="space-y-1">
-                  <label className="text-xs font-mono font-bold uppercase text-black">
+                  <label className="text-xs font-mono font-bold uppercase text-stone-800">
                     TARGET_URL:
                   </label>
                   <input
@@ -265,7 +265,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
 
               {dataType === 'text' && (
                 <div className="space-y-1">
-                  <label className="text-xs font-mono font-bold uppercase text-black">
+                  <label className="text-xs font-mono font-bold uppercase text-stone-800">
                     RAW_TEXT_CONTENT:
                   </label>
                   <textarea
@@ -282,7 +282,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                 <div className="space-y-3 font-mono">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-[11px] font-bold block mb-1">FIRST_NAME:</label>
+                      <label className="text-[11px] font-bold block mb-1 text-stone-700">FIRST_NAME:</label>
                       <input
                         type="text"
                         value={vcardInput.firstName}
@@ -293,7 +293,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                       />
                     </div>
                     <div>
-                      <label className="text-[11px] font-bold block mb-1">LAST_NAME:</label>
+                      <label className="text-[11px] font-bold block mb-1 text-stone-700">LAST_NAME:</label>
                       <input
                         type="text"
                         value={vcardInput.lastName}
@@ -307,7 +307,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-[11px] font-bold block mb-1">TEL_NUMBER:</label>
+                      <label className="text-[11px] font-bold block mb-1 text-stone-700">TEL_NUMBER:</label>
                       <input
                         type="tel"
                         value={vcardInput.phone}
@@ -316,7 +316,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                       />
                     </div>
                     <div>
-                      <label className="text-[11px] font-bold block mb-1">EMAIL_ADDRESS:</label>
+                      <label className="text-[11px] font-bold block mb-1 text-stone-700">EMAIL_ADDRESS:</label>
                       <input
                         type="email"
                         value={vcardInput.email}
@@ -328,7 +328,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-[11px] font-bold block mb-1">COMPANY_ORG:</label>
+                      <label className="text-[11px] font-bold block mb-1 text-stone-700">COMPANY_ORG:</label>
                       <input
                         type="text"
                         value={vcardInput.organization}
@@ -339,7 +339,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                       />
                     </div>
                     <div>
-                      <label className="text-[11px] font-bold block mb-1">JOB_TITLE:</label>
+                      <label className="text-[11px] font-bold block mb-1 text-stone-700">JOB_TITLE:</label>
                       <input
                         type="text"
                         value={vcardInput.title}
@@ -350,7 +350,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-bold block mb-1">WEBSITE_URL:</label>
+                    <label className="text-[11px] font-bold block mb-1 text-stone-700">WEBSITE_URL:</label>
                     <input
                       type="url"
                       value={vcardInput.website}
@@ -360,7 +360,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-bold block mb-1">POSTAL_ADDRESS:</label>
+                    <label className="text-[11px] font-bold block mb-1 text-stone-700">POSTAL_ADDRESS:</label>
                     <input
                       type="text"
                       value={vcardInput.address}
@@ -374,7 +374,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
               {dataType === 'wifi' && (
                 <div className="space-y-3 font-mono">
                   <div>
-                    <label className="text-xs font-bold block mb-1">SSID_NETWORK_NAME:</label>
+                    <label className="text-xs font-bold block mb-1 text-stone-800">SSID_NETWORK_NAME:</label>
                     <input
                       type="text"
                       value={wifiInput.ssid}
@@ -384,7 +384,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold block mb-1">SECURITY_KEY_PASSWORD:</label>
+                    <label className="text-xs font-bold block mb-1 text-stone-800">SECURITY_KEY_PASSWORD:</label>
                     <input
                       type="text"
                       value={wifiInput.password}
@@ -396,7 +396,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
 
                   <div className="flex flex-wrap items-center gap-4 pt-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold">TYPE:</span>
+                      <span className="text-xs font-bold text-stone-800">TYPE:</span>
                       <select
                         value={wifiInput.encryption}
                         onChange={(e) =>
@@ -410,12 +410,12 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                       </select>
                     </div>
 
-                    <label className="flex items-center gap-2 text-xs font-bold cursor-pointer">
+                    <label className="flex items-center gap-2 text-xs font-bold cursor-pointer text-stone-800">
                       <input
                         type="checkbox"
                         checked={wifiInput.hidden}
                         onChange={(e) => setWifiInput({ ...wifiInput, hidden: e.target.checked })}
-                        className="w-4 h-4 rounded-none border-2 border-black"
+                        className="w-3.5 h-3.5 rounded-none border-stone-600"
                       />
                       HIDDEN_SSID
                     </label>
@@ -426,7 +426,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
               {dataType === 'email' && (
                 <div className="space-y-2 font-mono">
                   <div>
-                    <label className="text-xs font-bold block mb-1">RECIPIENT_EMAIL:</label>
+                    <label className="text-xs font-bold block mb-1 text-stone-700">RECIPIENT_EMAIL:</label>
                     <input
                       type="email"
                       value={emailInput.to}
@@ -435,7 +435,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold block mb-1">SUBJECT_LINE:</label>
+                    <label className="text-xs font-bold block mb-1 text-stone-700">SUBJECT_LINE:</label>
                     <input
                       type="text"
                       value={emailInput.subject}
@@ -444,7 +444,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold block mb-1">BODY_TEXT:</label>
+                    <label className="text-xs font-bold block mb-1 text-stone-700">BODY_TEXT:</label>
                     <textarea
                       rows={3}
                       value={emailInput.body}
@@ -458,7 +458,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
               {dataType === 'sms' && (
                 <div className="space-y-2 font-mono">
                   <div>
-                    <label className="text-xs font-bold block mb-1">PHONE_NUMBER:</label>
+                    <label className="text-xs font-bold block mb-1 text-stone-700">PHONE_NUMBER:</label>
                     <input
                       type="tel"
                       value={smsInput.phone}
@@ -467,7 +467,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-bold block mb-1">SMS_MESSAGE:</label>
+                    <label className="text-xs font-bold block mb-1 text-stone-700">SMS_MESSAGE:</label>
                     <textarea
                       rows={3}
                       value={smsInput.message}
@@ -480,7 +480,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
 
               {dataType === 'json' && (
                 <div className="space-y-1 font-mono">
-                  <label className="text-xs font-bold block mb-1">JSON_RAW_PAYLOAD:</label>
+                  <label className="text-xs font-bold block mb-1 text-stone-700">JSON_RAW_PAYLOAD:</label>
                   <textarea
                     rows={5}
                     value={jsonInput}
@@ -496,27 +496,27 @@ export const QRStudio: React.FC<QRStudioProps> = ({
           <div className="og-panel overflow-hidden">
             <div className="og-titlebar">
               <span>[VISUAL_ATTRIBUTES]</span>
-              <span className="text-[10px] text-zinc-400">COLORS &amp; EMBEDDED LOGO</span>
+              <span className="text-[10px] text-stone-500">PALETTE &amp; LOGO</span>
             </div>
 
             <div className="p-5 bg-white space-y-4 font-mono">
               {/* Pattern Color */}
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-xs font-bold uppercase">PATTERN_COLOR:</span>
+                <span className="text-xs font-bold uppercase text-stone-800">PATTERN_COLOR:</span>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
                     value={fgColor}
                     onChange={(e) => setFgColor(e.target.value)}
-                    className="w-7 h-7 border-2 border-black rounded-none cursor-pointer"
+                    className="w-6 h-6 border border-stone-600 rounded-none cursor-pointer"
                   />
                   <div className="flex gap-1.5">
                     {colorPresets.map((p) => (
                       <button
                         key={p.hex}
                         onClick={() => setFgColor(p.hex)}
-                        className={`w-6 h-6 border-2 border-black ${
-                          fgColor === p.hex ? 'ring-2 ring-black' : ''
+                        className={`w-5 h-5 border border-stone-800 ${
+                          fgColor === p.hex ? 'ring-2 ring-stone-900' : ''
                         }`}
                         style={{ backgroundColor: p.hex }}
                         title={p.label}
@@ -527,30 +527,30 @@ export const QRStudio: React.FC<QRStudioProps> = ({
               </div>
 
               {/* Background Color */}
-              <div className="flex items-center justify-between gap-2 pt-2 border-t-2 border-black">
-                <span className="text-xs font-bold uppercase">BACKGROUND_COLOR:</span>
+              <div className="flex items-center justify-between gap-2 pt-2 border-t border-stone-200">
+                <span className="text-xs font-bold uppercase text-stone-800">BACKGROUND_COLOR:</span>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
                     value={bgColor}
                     onChange={(e) => setBgColor(e.target.value)}
-                    className="w-7 h-7 border-2 border-black rounded-none cursor-pointer"
+                    className="w-6 h-6 border border-stone-600 rounded-none cursor-pointer"
                   />
-                  <span className="text-xs font-mono font-bold uppercase">{bgColor}</span>
+                  <span className="text-xs font-mono font-bold uppercase text-stone-700">{bgColor}</span>
                 </div>
               </div>
 
               {/* Center Logo Upload */}
-              <div className="pt-2 border-t-2 border-black space-y-2">
+              <div className="pt-2 border-t border-stone-200 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase flex items-center gap-1.5">
-                    <ImageIcon className="w-3.5 h-3.5" />
+                  <span className="text-xs font-bold uppercase flex items-center gap-1.5 text-stone-800">
+                    <ImageIcon className="w-3.5 h-3.5 text-stone-600" />
                     CENTER_BRAND_LOGO:
                   </span>
                   {logoUrl && (
                     <button
                       onClick={() => setLogoUrl(null)}
-                      className="text-xs font-bold text-red-600 hover:underline flex items-center gap-1"
+                      className="text-xs font-bold text-red-700 hover:underline flex items-center gap-1"
                     >
                       <RotateCcw className="w-3 h-3" /> REMOVE
                     </button>
@@ -577,14 +577,14 @@ export const QRStudio: React.FC<QRStudioProps> = ({
 
                   {logoUrl && (
                     <div className="flex items-center gap-2">
-                      <span className="text-xs">SIZE:</span>
+                      <span className="text-xs text-stone-600">SIZE:</span>
                       <input
                         type="range"
                         min="24"
                         max="72"
                         value={logoSize}
                         onChange={(e) => setLogoSize(Number(e.target.value))}
-                        className="accent-black w-24"
+                        className="accent-stone-800 w-24"
                       />
                     </div>
                   )}
@@ -592,9 +592,9 @@ export const QRStudio: React.FC<QRStudioProps> = ({
               </div>
 
               {/* Error Correction & Margins */}
-              <div className="pt-2 border-t-2 border-black grid grid-cols-2 gap-4">
+              <div className="pt-2 border-t border-stone-200 grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold block mb-1">ERROR_CORRECTION:</label>
+                  <label className="text-xs font-bold block mb-1 text-stone-800">ERROR_CORRECTION:</label>
                   <select
                     value={ecLevel}
                     onChange={(e) => setEcLevel(e.target.value as any)}
@@ -608,12 +608,12 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                 </div>
 
                 <div className="flex items-end pb-2">
-                  <label className="flex items-center gap-2 text-xs font-bold cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs font-bold cursor-pointer text-stone-800">
                     <input
                       type="checkbox"
                       checked={includeMargin}
                       onChange={(e) => setIncludeMargin(e.target.checked)}
-                      className="w-4 h-4 rounded-none border-2 border-black"
+                      className="w-3.5 h-3.5 rounded-none border-stone-600"
                     />
                     SAFE_MARGIN
                   </label>
@@ -625,17 +625,17 @@ export const QRStudio: React.FC<QRStudioProps> = ({
 
         {/* Right: Output & Export (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="og-panel overflow-hidden sticky top-24">
+          <div className="og-panel overflow-hidden sticky top-20">
             <div className="og-titlebar">
               <span>[RENDER_TARGET] :: OUTPUT_DISPLAY</span>
-              <span className="text-[10px] text-zinc-400">EC: {ecLevel}</span>
+              <span className="text-[10px] text-stone-500">EC: {ecLevel}</span>
             </div>
 
             <div className="p-6 bg-white space-y-5 text-center">
               {/* QR Canvas Display Bezel */}
               <div
                 ref={canvasRef}
-                className="p-5 border-2 border-black mx-auto flex items-center justify-center shadow-[4px_4px_0px_#000]"
+                className="p-4 border-[1.5px] border-stone-800 mx-auto flex items-center justify-center shadow-[2px_2px_0px_#292524]"
                 style={{ backgroundColor: bgColor }}
               >
                 <QRCodeCanvas
@@ -682,8 +682,8 @@ export const QRStudio: React.FC<QRStudioProps> = ({
               </div>
 
               {/* Action Buttons */}
-              <div className="space-y-2.5 font-mono">
-                <div className="grid grid-cols-2 gap-2.5">
+              <div className="space-y-2 font-mono">
+                <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={downloadPNG}
                     className="og-btn og-btn-primary text-xs py-2 uppercase"
@@ -701,12 +701,12 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                   </button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-2 gap-2">
                   <button onClick={handleCopyImage} className="og-btn text-xs py-2 uppercase">
                     {copied ? (
                       <Check className="w-3.5 h-3.5 text-emerald-600" />
                     ) : (
-                      <Copy className="w-3.5 h-3.5" />
+                      <Copy className="w-3.5 h-3.5 text-stone-700" />
                     )}
                     {copied ? 'COPIED!' : 'COPY IMAGE'}
                   </button>
@@ -719,11 +719,11 @@ export const QRStudio: React.FC<QRStudioProps> = ({
               </div>
 
               {/* Raw Payload Readout */}
-              <div className="text-left bg-zinc-50 border-2 border-black p-3">
-                <span className="text-[10px] font-mono font-bold uppercase block mb-1 text-zinc-500">
+              <div className="text-left bg-stone-50 border border-stone-200 p-2.5">
+                <span className="text-[10px] font-mono font-bold uppercase block mb-0.5 text-stone-500">
                   ENCODED_PAYLOAD_STRING:
                 </span>
-                <p className="text-xs font-mono truncate text-black font-bold">{qrString}</p>
+                <p className="text-xs font-mono truncate text-stone-800 font-bold">{qrString}</p>
               </div>
             </div>
           </div>
