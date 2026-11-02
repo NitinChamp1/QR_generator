@@ -1,36 +1,161 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OMNI.SYS // QR Studio & Universal Format Converter
 
-## Getting Started
+<div align="center">
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-16.4.4-111111?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-ff5500?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-v4-111111?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Privacy](https://img.shields.io/badge/Privacy-100%25%20Client--Side-ff5500?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-111111?style=for-the-badge)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+<br />
+
+**A privacy-first, industrial Swiss-utility web workstation for extracting structured data from documents into QR codes, generating custom branded matrices, and converting files across universal formats — entirely in the browser.**
+
+[Live Demo](https://vercel.com) • [Report Issue](https://github.com/NitinChamp1/QR_generator/issues)
+
+</div>
+
+---
+
+## ⚡ Key Highlights
+
+- **🔒 100% In-Browser Execution**: Zero uploads to external servers. All OCR, PDF parsing, Word document generation, and image conversions run entirely in client-side WebAssembly, Canvas, and JavaScript.
+- **⚡ Zero Latency & Infinite Scale**: Works completely client-side without API rate limits or backend infrastructure costs.
+- **📐 TAKO Swiss Utility Aesthetic**: Retro-mechanical aesthetic featuring bold `#ff5500` international orange highlights, crisp 2px solid charcoal borders, tactile drop shadows, and monospace telemetry.
+
+---
+
+## 🛠️ Modules & Capabilities
+
+### [1] Document & Image Field Extractor → QR Bridge
+* **Client-Side OCR**: Powered by Tesseract.js running in a local browser worker.
+* **Smart Attribute Heuristics**: Automatically detects and tags structured data:
+  * Full Names, Job Titles, and Company Organizations
+  * Phone numbers (`TEL`), Email addresses (`EMAIL`), and URLs (`WEB`)
+  * Physical postal addresses (`ADDR`)
+  * Invoice totals, receipt numbers, and transaction dates
+* **Interactive Field Editor**: Toggle, edit, add, or delete individual keys and values in real time.
+* **1-Click QR Bridge**: Encodes extracted data directly into standard vCard (`.vcf`), JSON, URL, or plain text formats and bridges into the matrix generator.
+
+---
+
+### [2] Advanced QR Studio
+* **7 Supported Data Encodings**:
+  * 🌐 **URL Links**: Direct website redirection
+  * 👤 **vCard Contacts**: Full contact cards with name, phone, email, organization, website, and address
+  * 📶 **Wi-Fi Credentials**: Auto-join Wi-Fi configurations (WPA/WPA2/WPA3, WEP, Open)
+  * 📝 **Plain Text**: Unformatted notes and identifiers
+  * ✉️ **Email**: Pre-filled recipient, subject line, and body text
+  * 💬 **SMS**: Targeted phone number and predefined message
+  * 💻 **JSON Data**: Raw structured payloads for technical integrations
+* **Visual Customizer**:
+  * Precision pattern and background color pickers with preset utility swatches
+  * Center brand logo embedding with dynamic sizing and automatic background excavation
+  * Error correction levels: **L** (7%), **M** (15%), **Q** (25%), **H** (30% recovery for logo embedding)
+  * Safe margin switch (ISO/IEC 18004 compliance)
+* **Multi-Format Export**:
+  * 🎨 **Vector SVG**: Infinitely scalable vector graphics for print and signage
+  * 🖼️ **High-DPI PNG**: 1024×1024 crisp bitmap exports
+  * 📋 **Direct Clipboard Copy**: Copy QR bitmap straight to clipboard
+  * 🖨️ **Print Target**: Native browser print mode
+
+---
+
+### [3] Universal Format Converter
+* **Image Converter**:
+  * Batch convert between `PNG`, `JPEG`, `WEBP`, `BMP`, and `ICO` (Favicons)
+  * Dynamic quality compression slider for lossy formats
+  * Single file downloads or bulk ZIP export
+* **PDF to Word (.docx)**:
+  * Extracts paragraph structures, headings, and lines from multi-page PDFs using PDF.js
+  * Generates clean `.docx` Word documents client-side using `docx.js`
+* **PDF to Images**:
+  * Renders every page of a PDF document at 2.0× high-density resolution to PNG or JPEG
+  * Download pages individually or download all pages bundled in a `.zip` archive
+* **Images to PDF**:
+  * Combine multiple photos, scans, or receipts into a single formatted PDF
+  * Reorder pages with tactile `Up` / `Down` controls
+  * Instant download using `pdf-lib`
+
+---
+
+## 🏗️ Architecture & Tech Stack
+
+```
+QR_generator/
+├── src/
+│   ├── app/
+│   │   ├── globals.css         # Pure CSS TAKO industrial design system
+│   │   ├── layout.tsx          # Root layout & typography
+│   │   └── page.tsx            # Workbench shell & tab coordinator
+│   ├── components/
+│   │   ├── Navbar.tsx          # Mechanical segmented navigation
+│   │   ├── ImageFieldExtractor.tsx # OCR & attribute classifier
+│   │   ├── QRStudio.tsx        # High-DPI QR generation engine
+│   │   └── FormatConverter.tsx # 4-in-1 format conversion workbench
+│   ├── types/
+│   │   └── index.ts            # Core TypeScript interfaces & unions
+│   └── utils/
+│       ├── ocr.ts              # Tesseract.js pipeline & regex parsers
+│       ├── qrPayloads.ts       # vCard, Wi-Fi, and JSON formatters
+│       ├── imageConverter.ts   # Canvas image rasterizer & MIME mapper
+│       └── pdfConverter.ts     # PDF.js + docx + pdf-lib compilation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Layer | Technology |
+|---|---|
+| **Framework** | Next.js 16 (Turbopack, App Router) |
+| **Language** | TypeScript |
+| **Styling** | Tailwind CSS v4 + Pure Swiss Industrial CSS |
+| **Icons** | Lucide React |
+| **OCR Engine** | Tesseract.js (Client-side WebWorker) |
+| **QR Engine** | qrcode.react (Canvas + SVG) |
+| **Document Processing** | pdfjs-dist, pdf-lib, docx, jszip, file-saver |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Getting Started
 
-## Learn More
+### Prerequisites
+- Node.js 18.18+ or 20+
+- npm, yarn, or pnpm
 
-To learn more about Next.js, take a look at the following resources:
+### Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/NitinChamp1/QR_generator.git
+   cd QR_generator
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+3. Launch local development server:
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🌐 Deployment
+
+This project is built for zero-config deployment on **Vercel**:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FNitinChamp1%2FQR_generator)
+
+1. Import the repository on [vercel.com/new](https://vercel.com/new).
+2. Framework preset: **Next.js**.
+3. No environment variables required (all processing is 100% in-browser).
+4. Click **Deploy**.
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
