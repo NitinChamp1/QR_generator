@@ -7,7 +7,6 @@ import {
   Copy,
   Check,
   Printer,
-  Sparkles,
   Link as LinkIcon,
   FileText,
   Contact,
@@ -17,7 +16,6 @@ import {
   Code,
   Image as ImageIcon,
   Palette,
-  Sliders,
   RotateCcw,
 } from 'lucide-react';
 import { QRDataType, VCardData, WifiData } from '@/types';
@@ -46,7 +44,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
     email: 'alex.morgan@novascale.io',
     website: 'https://novascale.io',
     address: 'San Francisco, CA',
-    notes: 'Generated via OmniConvert QR',
+    notes: 'Generated via Omni.Sys QR',
   });
   const [wifiInput, setWifiInput] = useState<WifiData>({
     ssid: 'Home_HighSpeed_5G',
@@ -63,12 +61,14 @@ export const QRStudio: React.FC<QRStudioProps> = ({
     phone: '+1 555-0199',
     message: 'Hello! Sent via QR code.',
   });
-  const [jsonInput, setJsonInput] = useState<string>('{\n  "status": "success",\n  "app": "OmniConvert"\n}');
+  const [jsonInput, setJsonInput] = useState<string>(
+    '{\n  "status": "success",\n  "app": "Omni.Sys"\n}'
+  );
 
   // Customization states
   const [fgColor, setFgColor] = useState<string>('#000000');
   const [bgColor, setBgColor] = useState<string>('#ffffff');
-  const [qrSize, setQrSize] = useState<number>(280);
+  const [qrSize, setQrSize] = useState<number>(260);
   const [ecLevel, setEcLevel] = useState<'L' | 'M' | 'Q' | 'H'>('H');
   const [includeMargin, setIncludeMargin] = useState<boolean>(true);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
@@ -106,7 +106,6 @@ export const QRStudio: React.FC<QRStudioProps> = ({
       case 'text':
         return textInput || 'Sample Text';
       case 'vcard':
-        // If coming directly from raw string, preserve it; otherwise format from structured state
         return initialPayload && initialType === 'vcard' && textInput === initialPayload
           ? initialPayload
           : formatVCard(vcardInput);
@@ -132,9 +131,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
     const canvas = canvasRef.current?.querySelector('canvas');
     if (!canvas) return;
 
-    // Create a high-res canvas (1024x1024) for crisp export
     const exportCanvas = document.createElement('canvas');
-    const scale = 1024 / canvas.width;
     exportCanvas.width = 1024;
     exportCanvas.height = 1024;
     const ctx = exportCanvas.getContext('2d');
@@ -189,577 +186,545 @@ export const QRStudio: React.FC<QRStudioProps> = ({
 
   const colorPresets = [
     { label: 'Onyx', hex: '#000000' },
-    { label: 'Indigo', hex: '#4f46e5' },
-    { label: 'Emerald', hex: '#059669' },
-    { label: 'Violet', hex: '#7c3aed' },
-    { label: 'Crimson', hex: '#dc2626' },
-    { label: 'Ocean', hex: '#0284c7' },
+    { label: 'Blue', hex: '#2563eb' },
+    { label: 'Green', hex: '#16a34a' },
+    { label: 'Red', hex: '#dc2626' },
+    { label: 'Purple', hex: '#7c3aed' },
     { label: 'Amber', hex: '#d97706' },
-    { label: 'Rose', hex: '#e11d48' },
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-violet-500/10 via-indigo-500/10 to-blue-500/10 border border-violet-500/20 rounded-2xl p-6">
-        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-900 dark:text-white flex items-center gap-3">
-          <Sparkles className="w-8 h-8 text-violet-600 dark:text-violet-400" />
-          Advanced QR Code Studio
-        </h1>
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300 max-w-3xl leading-relaxed">
-          Create high-definition, customizable QR codes for Websites, Contacts (vCard), Wi-Fi logins,
-          Emails, and SMS. Customize colors, add your central brand logo, and download in vector SVG or high-res PNG!
+      <div className="og-panel p-6 space-y-2">
+        <div className="flex items-center gap-2">
+          <span className="og-badge bg-yellow-300 text-black">TOOL #02</span>
+          <h1 className="text-xl sm:text-2xl font-black font-mono tracking-tight uppercase">
+            QR CODE STUDIO // MATRIX_BUILDER
+          </h1>
+        </div>
+        <p className="text-xs font-mono text-zinc-600 max-w-3xl">
+          Construct vector &amp; bitmap QR codes according to ISO specifications. Embed custom logos,
+          fine-tune foreground/background palettes, and export ready-for-print assets.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left: Data & Types (7 cols) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left: Input & Customizer (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
-          {/* Data Type Tabs */}
-          <div className="flex flex-wrap gap-1.5 p-1.5 bg-zinc-100 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800">
-            {[
-              { id: 'url', label: 'Website / Link', icon: LinkIcon },
-              { id: 'vcard', label: 'Contact (vCard)', icon: Contact },
-              { id: 'wifi', label: 'Wi-Fi Network', icon: Wifi },
-              { id: 'text', label: 'Plain Text', icon: FileText },
-              { id: 'email', label: 'Email Message', icon: Mail },
-              { id: 'sms', label: 'SMS / Text', icon: MessageSquare },
-              { id: 'json', label: 'JSON Data', icon: Code },
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = dataType === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setDataType(tab.id as QRDataType)}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-                    isActive
-                      ? 'bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-sm'
-                      : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
-                  }`}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
+          {/* Data Type Tab Selector */}
+          <div className="og-panel overflow-hidden">
+            <div className="og-titlebar">
+              <span>[ENCODING_MODE]</span>
+              <span className="text-[10px] text-zinc-400">SELECT DATA TYPE</span>
+            </div>
 
-          {/* Form Inputs based on Mode */}
-          <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 space-y-4 shadow-xs">
-            {dataType === 'url' && (
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300">
-                  Target Website URL
-                </label>
-                <div className="relative">
-                  <LinkIcon className="absolute left-3.5 top-3 w-4 h-4 text-zinc-400" />
+            <div className="p-3 bg-zinc-50 border-b-2 border-black flex flex-wrap gap-2">
+              {[
+                { id: 'url', label: 'URL Link', icon: LinkIcon },
+                { id: 'vcard', label: 'vCard Contact', icon: Contact },
+                { id: 'wifi', label: 'Wi-Fi Network', icon: Wifi },
+                { id: 'text', label: 'Plain Text', icon: FileText },
+                { id: 'email', label: 'Email', icon: Mail },
+                { id: 'sms', label: 'SMS', icon: MessageSquare },
+                { id: 'json', label: 'JSON Data', icon: Code },
+              ].map((tab) => {
+                const Icon = tab.icon;
+                const isActive = dataType === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setDataType(tab.id as QRDataType)}
+                    className={`og-btn text-xs py-1 px-3 ${
+                      isActive ? 'bg-yellow-300 text-black' : 'bg-white'
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Form Inputs */}
+            <div className="p-5 bg-white space-y-4">
+              {dataType === 'url' && (
+                <div className="space-y-1">
+                  <label className="text-xs font-mono font-bold uppercase text-black">
+                    TARGET_URL:
+                  </label>
                   <input
                     type="url"
                     value={urlInput}
                     onChange={(e) => setUrlInput(e.target.value)}
-                    placeholder="https://yourwebsite.com"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 text-sm text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="https://example.com"
+                    className="og-input w-full"
                   />
                 </div>
-              </div>
-            )}
+              )}
 
-            {dataType === 'text' && (
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300">
-                  Text / Note Content
-                </label>
-                <textarea
-                  value={textInput}
-                  onChange={(e) => setTextInput(e.target.value)}
-                  rows={5}
-                  placeholder="Type any message, receipt info, note, or serial number..."
-                  className="w-full p-3 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 text-sm text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-            )}
+              {dataType === 'text' && (
+                <div className="space-y-1">
+                  <label className="text-xs font-mono font-bold uppercase text-black">
+                    RAW_TEXT_CONTENT:
+                  </label>
+                  <textarea
+                    value={textInput}
+                    onChange={(e) => setTextInput(e.target.value)}
+                    rows={4}
+                    placeholder="Type raw text, order reference, or message..."
+                    className="og-input w-full"
+                  />
+                </div>
+              )}
 
-            {dataType === 'vcard' && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {dataType === 'vcard' && (
+                <div className="space-y-3 font-mono">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[11px] font-bold block mb-1">FIRST_NAME:</label>
+                      <input
+                        type="text"
+                        value={vcardInput.firstName}
+                        onChange={(e) =>
+                          setVcardInput({ ...vcardInput, firstName: e.target.value })
+                        }
+                        className="og-input w-full py-1.5"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[11px] font-bold block mb-1">LAST_NAME:</label>
+                      <input
+                        type="text"
+                        value={vcardInput.lastName}
+                        onChange={(e) =>
+                          setVcardInput({ ...vcardInput, lastName: e.target.value })
+                        }
+                        className="og-input w-full py-1.5"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[11px] font-bold block mb-1">TEL_NUMBER:</label>
+                      <input
+                        type="tel"
+                        value={vcardInput.phone}
+                        onChange={(e) => setVcardInput({ ...vcardInput, phone: e.target.value })}
+                        className="og-input w-full py-1.5"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[11px] font-bold block mb-1">EMAIL_ADDRESS:</label>
+                      <input
+                        type="email"
+                        value={vcardInput.email}
+                        onChange={(e) => setVcardInput({ ...vcardInput, email: e.target.value })}
+                        className="og-input w-full py-1.5"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[11px] font-bold block mb-1">COMPANY_ORG:</label>
+                      <input
+                        type="text"
+                        value={vcardInput.organization}
+                        onChange={(e) =>
+                          setVcardInput({ ...vcardInput, organization: e.target.value })
+                        }
+                        className="og-input w-full py-1.5"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[11px] font-bold block mb-1">JOB_TITLE:</label>
+                      <input
+                        type="text"
+                        value={vcardInput.title}
+                        onChange={(e) => setVcardInput({ ...vcardInput, title: e.target.value })}
+                        className="og-input w-full py-1.5"
+                      />
+                    </div>
+                  </div>
+
                   <div>
-                    <label className="text-[11px] font-bold text-zinc-600 dark:text-zinc-400">
-                      First Name
-                    </label>
+                    <label className="text-[11px] font-bold block mb-1">WEBSITE_URL:</label>
                     <input
-                      type="text"
-                      value={vcardInput.firstName}
-                      onChange={(e) => setVcardInput({ ...vcardInput, firstName: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      type="url"
+                      value={vcardInput.website}
+                      onChange={(e) => setVcardInput({ ...vcardInput, website: e.target.value })}
+                      className="og-input w-full py-1.5"
                     />
                   </div>
+
                   <div>
-                    <label className="text-[11px] font-bold text-zinc-600 dark:text-zinc-400">
-                      Last Name
-                    </label>
+                    <label className="text-[11px] font-bold block mb-1">POSTAL_ADDRESS:</label>
                     <input
                       type="text"
-                      value={vcardInput.lastName}
-                      onChange={(e) => setVcardInput({ ...vcardInput, lastName: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      value={vcardInput.address}
+                      onChange={(e) => setVcardInput({ ...vcardInput, address: e.target.value })}
+                      className="og-input w-full py-1.5"
                     />
                   </div>
                 </div>
+              )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {dataType === 'wifi' && (
+                <div className="space-y-3 font-mono">
                   <div>
-                    <label className="text-[11px] font-bold text-zinc-600 dark:text-zinc-400">
-                      Mobile / Phone
-                    </label>
+                    <label className="text-xs font-bold block mb-1">SSID_NETWORK_NAME:</label>
                     <input
-                      type="tel"
-                      value={vcardInput.phone}
-                      onChange={(e) => setVcardInput({ ...vcardInput, phone: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      type="text"
+                      value={wifiInput.ssid}
+                      onChange={(e) => setWifiInput({ ...wifiInput, ssid: e.target.value })}
+                      className="og-input w-full"
                     />
                   </div>
+
                   <div>
-                    <label className="text-[11px] font-bold text-zinc-600 dark:text-zinc-400">
-                      Email Address
+                    <label className="text-xs font-bold block mb-1">SECURITY_KEY_PASSWORD:</label>
+                    <input
+                      type="text"
+                      value={wifiInput.password}
+                      onChange={(e) => setWifiInput({ ...wifiInput, password: e.target.value })}
+                      className="og-input w-full"
+                      placeholder="Leave empty if open network"
+                    />
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-4 pt-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold">TYPE:</span>
+                      <select
+                        value={wifiInput.encryption}
+                        onChange={(e) =>
+                          setWifiInput({ ...wifiInput, encryption: e.target.value as any })
+                        }
+                        className="og-input py-1 text-xs font-bold"
+                      >
+                        <option value="WPA">WPA/WPA2/WPA3</option>
+                        <option value="WEP">WEP</option>
+                        <option value="nopass">OPEN (NO PASSWORD)</option>
+                      </select>
+                    </div>
+
+                    <label className="flex items-center gap-2 text-xs font-bold cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={wifiInput.hidden}
+                        onChange={(e) => setWifiInput({ ...wifiInput, hidden: e.target.checked })}
+                        className="w-4 h-4 rounded-none border-2 border-black"
+                      />
+                      HIDDEN_SSID
                     </label>
+                  </div>
+                </div>
+              )}
+
+              {dataType === 'email' && (
+                <div className="space-y-2 font-mono">
+                  <div>
+                    <label className="text-xs font-bold block mb-1">RECIPIENT_EMAIL:</label>
                     <input
                       type="email"
-                      value={vcardInput.email}
-                      onChange={(e) => setVcardInput({ ...vcardInput, email: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      value={emailInput.to}
+                      onChange={(e) => setEmailInput({ ...emailInput, to: e.target.value })}
+                      className="og-input w-full py-1.5"
                     />
                   </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[11px] font-bold text-zinc-600 dark:text-zinc-400">
-                      Company / Organization
-                    </label>
+                    <label className="text-xs font-bold block mb-1">SUBJECT_LINE:</label>
                     <input
                       type="text"
-                      value={vcardInput.organization}
-                      onChange={(e) => setVcardInput({ ...vcardInput, organization: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      value={emailInput.subject}
+                      onChange={(e) => setEmailInput({ ...emailInput, subject: e.target.value })}
+                      className="og-input w-full py-1.5"
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold text-zinc-600 dark:text-zinc-400">
-                      Job Title
-                    </label>
-                    <input
-                      type="text"
-                      value={vcardInput.title}
-                      onChange={(e) => setVcardInput({ ...vcardInput, title: e.target.value })}
-                      className="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    <label className="text-xs font-bold block mb-1">BODY_TEXT:</label>
+                    <textarea
+                      rows={3}
+                      value={emailInput.body}
+                      onChange={(e) => setEmailInput({ ...emailInput, body: e.target.value })}
+                      className="og-input w-full"
                     />
                   </div>
                 </div>
+              )}
 
-                <div>
-                  <label className="text-[11px] font-bold text-zinc-600 dark:text-zinc-400">
-                    Website
-                  </label>
-                  <input
-                    type="url"
-                    value={vcardInput.website}
-                    onChange={(e) => setVcardInput({ ...vcardInput, website: e.target.value })}
-                    className="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[11px] font-bold text-zinc-600 dark:text-zinc-400">
-                    Office / Street Address
-                  </label>
-                  <input
-                    type="text"
-                    value={vcardInput.address}
-                    onChange={(e) => setVcardInput({ ...vcardInput, address: e.target.value })}
-                    className="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-              </div>
-            )}
-
-            {dataType === 'wifi' && (
-              <div className="space-y-4">
-                <div>
-                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300">
-                    Network Name (SSID)
-                  </label>
-                  <input
-                    type="text"
-                    value={wifiInput.ssid}
-                    onChange={(e) => setWifiInput({ ...wifiInput, ssid: e.target.value })}
-                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300">
-                    Wi-Fi Password
-                  </label>
-                  <input
-                    type="text"
-                    value={wifiInput.password}
-                    onChange={(e) => setWifiInput({ ...wifiInput, password: e.target.value })}
-                    className="w-full mt-1 px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    placeholder="Leave empty if open network"
-                  />
-                </div>
-
-                <div className="flex flex-wrap items-center gap-4 pt-1">
+              {dataType === 'sms' && (
+                <div className="space-y-2 font-mono">
                   <div>
-                    <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 mr-2">
-                      Security:
-                    </label>
-                    <select
-                      value={wifiInput.encryption}
-                      onChange={(e) =>
-                        setWifiInput({
-                          ...wifiInput,
-                          encryption: e.target.value as 'WPA' | 'WEP' | 'nopass',
-                        })
-                      }
-                      className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-semibold"
-                    >
-                      <option value="WPA">WPA / WPA2 / WPA3</option>
-                      <option value="WEP">WEP</option>
-                      <option value="nopass">None (Open)</option>
-                    </select>
-                  </div>
-
-                  <label className="flex items-center gap-2 text-xs font-medium text-zinc-700 dark:text-zinc-300 cursor-pointer">
+                    <label className="text-xs font-bold block mb-1">PHONE_NUMBER:</label>
                     <input
-                      type="checkbox"
-                      checked={wifiInput.hidden}
-                      onChange={(e) => setWifiInput({ ...wifiInput, hidden: e.target.checked })}
-                      className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500"
+                      type="tel"
+                      value={smsInput.phone}
+                      onChange={(e) => setSmsInput({ ...smsInput, phone: e.target.value })}
+                      className="og-input w-full py-1.5"
                     />
-                    Hidden Network
-                  </label>
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold block mb-1">SMS_MESSAGE:</label>
+                    <textarea
+                      rows={3}
+                      value={smsInput.message}
+                      onChange={(e) => setSmsInput({ ...smsInput, message: e.target.value })}
+                      className="og-input w-full"
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {dataType === 'email' && (
-              <div className="space-y-3">
-                <div>
-                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300">Recipient Email</label>
-                  <input
-                    type="email"
-                    value={emailInput.to}
-                    onChange={(e) => setEmailInput({ ...emailInput, to: e.target.value })}
-                    className="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300">Subject Line</label>
-                  <input
-                    type="text"
-                    value={emailInput.subject}
-                    onChange={(e) => setEmailInput({ ...emailInput, subject: e.target.value })}
-                    className="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300">Message Body</label>
+              {dataType === 'json' && (
+                <div className="space-y-1 font-mono">
+                  <label className="text-xs font-bold block mb-1">JSON_RAW_PAYLOAD:</label>
                   <textarea
-                    rows={3}
-                    value={emailInput.body}
-                    onChange={(e) => setEmailInput({ ...emailInput, body: e.target.value })}
-                    className="w-full mt-1 p-3 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+                    rows={5}
+                    value={jsonInput}
+                    onChange={(e) => setJsonInput(e.target.value)}
+                    className="og-input w-full font-mono text-xs"
                   />
                 </div>
-              </div>
-            )}
-
-            {dataType === 'sms' && (
-              <div className="space-y-3">
-                <div>
-                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300">Phone Number</label>
-                  <input
-                    type="tel"
-                    value={smsInput.phone}
-                    onChange={(e) => setSmsInput({ ...smsInput, phone: e.target.value })}
-                    className="w-full mt-1 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300">Message Text</label>
-                  <textarea
-                    rows={3}
-                    value={smsInput.message}
-                    onChange={(e) => setSmsInput({ ...smsInput, message: e.target.value })}
-                    className="w-full mt-1 p-3 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-              </div>
-            )}
-
-            {dataType === 'json' && (
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300">Raw JSON Payload</label>
-                <textarea
-                  rows={5}
-                  value={jsonInput}
-                  onChange={(e) => setJsonInput(e.target.value)}
-                  className="w-full p-3 font-mono rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
-          {/* Styling & Color Customizer */}
-          <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 space-y-5 shadow-xs">
-            <h3 className="text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-              <Palette className="w-4 h-4 text-indigo-500" />
-              Design & Visual Customization
-            </h3>
+          {/* Design Controls Window */}
+          <div className="og-panel overflow-hidden">
+            <div className="og-titlebar">
+              <span>[VISUAL_ATTRIBUTES]</span>
+              <span className="text-[10px] text-zinc-400">COLORS &amp; EMBEDDED LOGO</span>
+            </div>
 
-            {/* Colors */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                  Pattern / Foreground Color
-                </span>
+            <div className="p-5 bg-white space-y-4 font-mono">
+              {/* Pattern Color */}
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="text-xs font-bold uppercase">PATTERN_COLOR:</span>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
                     value={fgColor}
                     onChange={(e) => setFgColor(e.target.value)}
-                    className="w-8 h-8 rounded-lg border-0 cursor-pointer"
+                    className="w-7 h-7 border-2 border-black rounded-none cursor-pointer"
                   />
-                  <span className="text-xs font-mono text-zinc-500 uppercase">{fgColor}</span>
+                  <div className="flex gap-1.5">
+                    {colorPresets.map((p) => (
+                      <button
+                        key={p.hex}
+                        onClick={() => setFgColor(p.hex)}
+                        className={`w-6 h-6 border-2 border-black ${
+                          fgColor === p.hex ? 'ring-2 ring-black' : ''
+                        }`}
+                        style={{ backgroundColor: p.hex }}
+                        title={p.label}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Swatches */}
-              <div className="flex flex-wrap gap-2">
-                {colorPresets.map((preset) => (
-                  <button
-                    key={preset.hex}
-                    onClick={() => setFgColor(preset.hex)}
-                    className={`w-7 h-7 rounded-lg border-2 transition-transform hover:scale-110 ${
-                      fgColor === preset.hex ? 'border-indigo-500 scale-105' : 'border-transparent'
-                    }`}
-                    style={{ backgroundColor: preset.hex }}
-                    title={preset.label}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Background Color */}
-            <div className="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800">
-              <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                Background Color
-              </span>
-              <div className="flex items-center gap-2">
-                <input
-                  type="color"
-                  value={bgColor}
-                  onChange={(e) => setBgColor(e.target.value)}
-                  className="w-8 h-8 rounded-lg border-0 cursor-pointer"
-                />
-                <span className="text-xs font-mono text-zinc-500 uppercase">{bgColor}</span>
-              </div>
-            </div>
-
-            {/* Logo Center Overlay */}
-            <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-                  <ImageIcon className="w-3.5 h-3.5 text-zinc-500" />
-                  Center Logo / Icon
-                </span>
-                {logoUrl && (
-                  <button
-                    onClick={() => setLogoUrl(null)}
-                    className="text-[11px] text-red-500 hover:underline flex items-center gap-1 font-medium"
-                  >
-                    <RotateCcw className="w-3 h-3" /> Remove Logo
-                  </button>
-                )}
-              </div>
-
-              <div className="flex items-center gap-4">
-                <label className="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 text-xs font-semibold text-zinc-700 dark:text-zinc-300 transition-all">
-                  <ImageIcon className="w-4 h-4 text-indigo-500" />
-                  Upload Brand Logo
+              {/* Background Color */}
+              <div className="flex items-center justify-between gap-2 pt-2 border-t-2 border-black">
+                <span className="text-xs font-bold uppercase">BACKGROUND_COLOR:</span>
+                <div className="flex items-center gap-2">
                   <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        setLogoUrl(URL.createObjectURL(file));
-                        setEcLevel('H'); // Highest error correction for logos
-                      }
-                    }}
+                    type="color"
+                    value={bgColor}
+                    onChange={(e) => setBgColor(e.target.value)}
+                    className="w-7 h-7 border-2 border-black rounded-none cursor-pointer"
                   />
-                </label>
+                  <span className="text-xs font-mono font-bold uppercase">{bgColor}</span>
+                </div>
+              </div>
 
-                {logoUrl && (
-                  <div className="flex items-center gap-2 flex-grow">
-                    <span className="text-[11px] text-zinc-500">Logo Size:</span>
+              {/* Center Logo Upload */}
+              <div className="pt-2 border-t-2 border-black space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase flex items-center gap-1.5">
+                    <ImageIcon className="w-3.5 h-3.5" />
+                    CENTER_BRAND_LOGO:
+                  </span>
+                  {logoUrl && (
+                    <button
+                      onClick={() => setLogoUrl(null)}
+                      className="text-xs font-bold text-red-600 hover:underline flex items-center gap-1"
+                    >
+                      <RotateCcw className="w-3 h-3" /> REMOVE
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <label className="og-btn text-xs py-1 px-3 bg-white">
+                    <ImageIcon className="w-3.5 h-3.5" />
+                    CHOOSE_IMAGE_FILE
                     <input
-                      type="range"
-                      min="24"
-                      max="72"
-                      value={logoSize}
-                      onChange={(e) => setLogoSize(Number(e.target.value))}
-                      className="w-28 accent-indigo-600"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setLogoUrl(URL.createObjectURL(file));
+                          setEcLevel('H');
+                        }
+                      }}
                     />
-                  </div>
-                )}
-              </div>
-            </div>
+                  </label>
 
-            {/* Advanced Settings */}
-            <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 block mb-1">
-                  Error Correction Level
-                </label>
-                <select
-                  value={ecLevel}
-                  onChange={(e) => setEcLevel(e.target.value as any)}
-                  className="w-full px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs font-medium"
-                >
-                  <option value="L">L - 7% Recovery</option>
-                  <option value="M">M - 15% Standard</option>
-                  <option value="Q">Q - 25% High</option>
-                  <option value="H">H - 30% Max (For Logos)</option>
-                </select>
+                  {logoUrl && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs">SIZE:</span>
+                      <input
+                        type="range"
+                        min="24"
+                        max="72"
+                        value={logoSize}
+                        onChange={(e) => setLogoSize(Number(e.target.value))}
+                        className="accent-black w-24"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className="flex items-end pb-1">
-                <label className="flex items-center gap-2 text-xs font-medium text-zinc-700 dark:text-zinc-300 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={includeMargin}
-                    onChange={(e) => setIncludeMargin(e.target.checked)}
-                    className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500"
-                  />
-                  Include Safe Margin
-                </label>
+              {/* Error Correction & Margins */}
+              <div className="pt-2 border-t-2 border-black grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold block mb-1">ERROR_CORRECTION:</label>
+                  <select
+                    value={ecLevel}
+                    onChange={(e) => setEcLevel(e.target.value as any)}
+                    className="og-input w-full py-1 text-xs font-bold"
+                  >
+                    <option value="L">L - 7% RECOVERY</option>
+                    <option value="M">M - 15% STANDARD</option>
+                    <option value="Q">Q - 25% HIGH</option>
+                    <option value="H">H - 30% MAX (LOGOS)</option>
+                  </select>
+                </div>
+
+                <div className="flex items-end pb-2">
+                  <label className="flex items-center gap-2 text-xs font-bold cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={includeMargin}
+                      onChange={(e) => setIncludeMargin(e.target.checked)}
+                      className="w-4 h-4 rounded-none border-2 border-black"
+                    />
+                    SAFE_MARGIN
+                  </label>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right: Live Preview & Downloads (5 cols) */}
+        {/* Right: Output & Export (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="sticky top-24 bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-6 shadow-xl shadow-zinc-200/50 dark:shadow-none space-y-6 text-center">
-            <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-                Live Dynamic Output
-              </span>
-              <span className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-full">
-                EC Level: {ecLevel}
-              </span>
+          <div className="og-panel overflow-hidden sticky top-24">
+            <div className="og-titlebar">
+              <span>[RENDER_TARGET] :: OUTPUT_DISPLAY</span>
+              <span className="text-[10px] text-zinc-400">EC: {ecLevel}</span>
             </div>
 
-            {/* QR Visual Container */}
-            <div
-              ref={canvasRef}
-              className="p-6 rounded-2xl mx-auto flex items-center justify-center transition-all shadow-inner"
-              style={{ backgroundColor: bgColor }}
-            >
-              <QRCodeCanvas
-                value={qrString}
-                size={qrSize}
-                fgColor={fgColor}
-                bgColor={bgColor}
-                level={ecLevel}
-                includeMargin={includeMargin}
-                imageSettings={
-                  logoUrl
-                    ? {
-                        src: logoUrl,
-                        height: logoSize,
-                        width: logoSize,
-                        excavate: true,
-                      }
-                    : undefined
-                }
-              />
-            </div>
-
-            {/* Hidden SVG for vector download */}
-            <div className="hidden">
-              <QRCodeSVG
-                id="qr-svg-render"
-                value={qrString}
-                size={qrSize}
-                fgColor={fgColor}
-                bgColor={bgColor}
-                level={ecLevel}
-                includeMargin={includeMargin}
-                imageSettings={
-                  logoUrl
-                    ? {
-                        src: logoUrl,
-                        height: logoSize,
-                        width: logoSize,
-                        excavate: true,
-                      }
-                    : undefined
-                }
-              />
-            </div>
-
-            {/* Quick Actions & Downloads */}
-            <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  onClick={downloadPNG}
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-600/20 transition-all hover:scale-[1.02]"
-                >
-                  <Download className="w-4 h-4" />
-                  Download PNG
-                </button>
-
-                <button
-                  onClick={downloadSVG}
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-black dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white text-xs font-bold transition-all hover:scale-[1.02]"
-                >
-                  <Download className="w-4 h-4" />
-                  Download SVG
-                </button>
+            <div className="p-6 bg-white space-y-5 text-center">
+              {/* QR Canvas Display Bezel */}
+              <div
+                ref={canvasRef}
+                className="p-5 border-2 border-black mx-auto flex items-center justify-center shadow-[4px_4px_0px_#000]"
+                style={{ backgroundColor: bgColor }}
+              >
+                <QRCodeCanvas
+                  value={qrString}
+                  size={qrSize}
+                  fgColor={fgColor}
+                  bgColor={bgColor}
+                  level={ecLevel}
+                  includeMargin={includeMargin}
+                  imageSettings={
+                    logoUrl
+                      ? {
+                          src: logoUrl,
+                          height: logoSize,
+                          width: logoSize,
+                          excavate: true,
+                        }
+                      : undefined
+                  }
+                />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  onClick={handleCopyImage}
-                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/80 hover:bg-zinc-100 text-xs font-semibold text-zinc-700 dark:text-zinc-200 transition-all"
-                >
-                  {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                  {copied ? 'Copied Image!' : 'Copy to Clipboard'}
-                </button>
-
-                <button
-                  onClick={handlePrint}
-                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/80 hover:bg-zinc-100 text-xs font-semibold text-zinc-700 dark:text-zinc-200 transition-all"
-                >
-                  <Printer className="w-3.5 h-3.5" />
-                  Print QR
-                </button>
+              {/* Hidden SVG for Vector Export */}
+              <div className="hidden">
+                <QRCodeSVG
+                  id="qr-svg-render"
+                  value={qrString}
+                  size={qrSize}
+                  fgColor={fgColor}
+                  bgColor={bgColor}
+                  level={ecLevel}
+                  includeMargin={includeMargin}
+                  imageSettings={
+                    logoUrl
+                      ? {
+                          src: logoUrl,
+                          height: logoSize,
+                          width: logoSize,
+                          excavate: true,
+                        }
+                      : undefined
+                  }
+                />
               </div>
-            </div>
 
-            {/* Payload preview snippet */}
-            <div className="text-left bg-zinc-50 dark:bg-zinc-950/60 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">
-                Encoded Payload
-              </span>
-              <p className="text-xs font-mono text-zinc-600 dark:text-zinc-400 truncate max-w-full">
-                {qrString}
-              </p>
+              {/* Action Buttons */}
+              <div className="space-y-2.5 font-mono">
+                <div className="grid grid-cols-2 gap-2.5">
+                  <button
+                    onClick={downloadPNG}
+                    className="og-btn og-btn-primary text-xs py-2 uppercase"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    EXPORT PNG
+                  </button>
+
+                  <button
+                    onClick={downloadSVG}
+                    className="og-btn og-btn-yellow text-xs py-2 uppercase"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    EXPORT SVG
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2.5">
+                  <button onClick={handleCopyImage} className="og-btn text-xs py-2 uppercase">
+                    {copied ? (
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                    ) : (
+                      <Copy className="w-3.5 h-3.5" />
+                    )}
+                    {copied ? 'COPIED!' : 'COPY IMAGE'}
+                  </button>
+
+                  <button onClick={handlePrint} className="og-btn text-xs py-2 uppercase">
+                    <Printer className="w-3.5 h-3.5" />
+                    PRINT QR
+                  </button>
+                </div>
+              </div>
+
+              {/* Raw Payload Readout */}
+              <div className="text-left bg-zinc-50 border-2 border-black p-3">
+                <span className="text-[10px] font-mono font-bold uppercase block mb-1 text-zinc-500">
+                  ENCODED_PAYLOAD_STRING:
+                </span>
+                <p className="text-xs font-mono truncate text-black font-bold">{qrString}</p>
+              </div>
             </div>
           </div>
         </div>

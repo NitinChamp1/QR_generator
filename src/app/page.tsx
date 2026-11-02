@@ -6,7 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { ImageFieldExtractor } from '@/components/ImageFieldExtractor';
 import { QRStudio } from '@/components/QRStudio';
 import { FormatConverter } from '@/components/FormatConverter';
-import { ShieldCheck, Zap, Sparkles, Heart } from 'lucide-react';
+import { ShieldCheck, Cpu, Terminal } from 'lucide-react';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabType>('extractor');
@@ -20,7 +20,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen flex flex-col text-black selection:bg-yellow-300 selection:text-black">
       {/* Top Navbar */}
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -37,25 +37,30 @@ export default function Home() {
         {activeTab === 'converter' && <FormatConverter />}
       </main>
 
-      {/* Footer */}
-      <footer className="mt-auto border-t border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-xs py-8">
+      {/* Retro Utility Footer */}
+      <footer className="mt-auto border-t-2 border-black bg-white py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500 dark:text-zinc-400">
-            <div className="flex items-center gap-4">
-              <span className="flex items-center gap-1.5 font-medium text-emerald-600 dark:text-emerald-400">
-                <ShieldCheck className="w-4 h-4" /> 100% Client-Side Private
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="flex items-center gap-1.5 font-bold">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                [ PRIVACY: 100% IN-BROWSER ]
               </span>
-              <span className="flex items-center gap-1.5 font-medium text-indigo-600 dark:text-indigo-400">
-                <Zap className="w-4 h-4" /> Zero Server Latency
+              <span className="text-zinc-300">|</span>
+              <span className="flex items-center gap-1.5 font-bold">
+                <Cpu className="w-4 h-4 text-blue-600" />
+                [ LATENCY: ZERO_SERVER ]
               </span>
-              <span className="flex items-center gap-1.5 font-medium text-violet-600 dark:text-violet-400">
-                <Sparkles className="w-4 h-4" /> Vercel Optimized
+              <span className="text-zinc-300">|</span>
+              <span className="flex items-center gap-1.5 font-bold">
+                <Terminal className="w-4 h-4 text-amber-600" />
+                [ SPEC: ISO/IEC 18004 ]
               </span>
             </div>
 
-            <p className="flex items-center gap-1">
-              Built with Next.js, Tailwind CSS &amp; TypeScript. Ready for Vercel.
-            </p>
+            <div className="text-[11px] text-zinc-600 font-bold">
+              OMNI.SYS // WORKBENCH UTILITY
+            </div>
           </div>
         </div>
       </footer>

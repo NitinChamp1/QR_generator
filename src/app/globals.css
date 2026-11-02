@@ -1,26 +1,151 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #f5f5f0;
+  --foreground: #111111;
+  --panel-bg: #ffffff;
+  --border-color: #000000;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
+  background-image: radial-gradient(#d1d1cb 1.2px, transparent 1.2px);
+  background-size: 18px 18px;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* OG Retro Utility Components */
+.og-panel {
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000;
+  border-radius: 4px;
+}
+
+.og-panel-sm {
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px 0px #000000;
+  border-radius: 3px;
+}
+
+.og-titlebar {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.og-titlebar-light {
+  background-color: #e5e5e0;
+  border-bottom: 2px solid #000000;
+  color: #111111;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.og-btn {
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px 0px #000000;
+  border-radius: 3px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.05s ease-in-out;
+}
+
+.og-btn:hover {
+  background-color: #f4f4f0;
+}
+
+.og-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px 0px #000000;
+}
+
+.og-btn-primary {
+  background-color: #000000;
+  color: #ffffff;
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 0.4);
+}
+
+.og-btn-primary:hover {
+  background-color: #222222;
+}
+
+.og-btn-yellow {
+  background-color: #fde047;
+  color: #000000;
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px 0px #000000;
+}
+
+.og-btn-yellow:hover {
+  background-color: #facc15;
+}
+
+.og-btn-blue {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px 0px #000000;
+}
+
+.og-btn-blue:hover {
+  background-color: #1d4ed8;
+}
+
+.og-input {
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #000000;
+  border-radius: 3px;
+  outline: none;
+  font-family: var(--font-mono), monospace;
+}
+
+.og-input:focus {
+  border-color: #000000;
+  background-color: #fffffa;
+  box-shadow: inset 2px 2px 0px 0px rgba(0, 0, 0, 0.1);
+}
+
+.og-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1.5px solid #000000;
+  border-radius: 2px;
+  box-shadow: 1.5px 1.5px 0px 0px #000000;
+  text-transform: uppercase;
 }
