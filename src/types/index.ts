@@ -64,4 +64,21 @@ export interface ConvertedFile {
   previewUrl?: string;
 }
 
-export type ConverterMode = 'image-to-image' | 'pdf-to-docx' | 'pdf-to-images' | 'images-to-pdf';
+export type ToolCategory = 'convert' | 'organize' | 'security';
+
+export type ConverterMode =
+  // Convert
+  | 'image-to-image'
+  | 'pdf-to-docx'
+  | 'pdf-to-images'
+  | 'images-to-pdf'
+  | 'pdf-to-markdown'
+  // Organize & Edit
+  | 'merge-pdf'
+  | 'split-pdf'
+  | 'rotate-pdf'
+  | 'organize-pdf'
+  // Security & Stamps
+  | 'watermark-pdf'
+  | 'page-numbers-pdf'
+  | 'sign-pdf';

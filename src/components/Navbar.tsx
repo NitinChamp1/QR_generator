@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
               className={`tako-btn ${activeTab === 'converter' ? 'tako-btn-orange' : ''}`}
             >
               <RefreshCw className="w-3.5 h-3.5" />
-              <span>[3] Converter</span>
+              <span>[3] PDF &amp; File Suite</span>
             </button>
           </nav>
 
