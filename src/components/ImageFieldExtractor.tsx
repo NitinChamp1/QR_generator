@@ -7,6 +7,7 @@ import {
   FileText,
   CreditCard,
   Receipt,
+  Ticket,
   Plus,
   Trash2,
   Copy,
@@ -94,7 +95,7 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
     setResult({ ...result, fields: [...result.fields, newField] });
   };
 
-  const loadSample = async (type: 'card' | 'receipt') => {
+  const loadSample = async (type: 'card' | 'receipt' | 'badge') => {
     const canvas = document.createElement('canvas');
     canvas.width = 700;
     canvas.height = 400;
@@ -127,7 +128,7 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
       ctx.fillText('EMAIL: alex.morgan@novascale.io', 50, 230);
       ctx.fillText('WEB: https://novascale.io', 50, 270);
       ctx.fillText('ADDR: 100 Innovation Way, San Francisco, CA', 50, 310);
-    } else {
+    } else if (type === 'receipt') {
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, 700, 400);
       ctx.strokeStyle = '#111111';
@@ -139,10 +140,11 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
       ctx.fillStyle = '#111111';
       ctx.font = '15px monospace';
       ctx.fillText('Receipt #: INV-84920', 60, 95);
-      ctx.fillText('Date: Nov 02, 2026', 60, 125);
+      ctx.fillText('Date: Nov 07, 2026', 60, 125);
       ctx.fillText('-----------------------------------------------------', 60, 155);
       ctx.fillText('2x Cold Brew Latte                     $ 11.00', 60, 190);
-      ctx.fillText('1x Sourdough Toast                     $ 14.50', 60, 250);
+      ctx.fillText('1x Sourdough Toast                     $ 14.50', 60, 220);
+      ctx.fillText('1x Acai Bowl                           $ 12.00', 60, 250);
       ctx.fillText('-----------------------------------------------------', 60, 280);
       ctx.fillStyle = '#ff5500';
       ctx.font = 'bold 18px monospace';
@@ -150,6 +152,38 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
       ctx.fillStyle = '#555555';
       ctx.font = '13px monospace';
       ctx.fillText('TAX: $3.19 | PAYMENT: CARD ****4242 | AUTH: 99182', 60, 355);
+    } else {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 700, 400);
+      ctx.strokeStyle = '#111111';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(15, 15, 670, 370);
+      ctx.fillStyle = '#111111';
+      ctx.fillRect(15, 15, 670, 50);
+      ctx.fillStyle = '#ff5500';
+      ctx.font = 'bold 20px monospace';
+      ctx.fillText('AI MATRIX SUMMIT 2026 // ALL-ACCESS PASS', 40, 48);
+      ctx.fillStyle = '#111111';
+      ctx.font = 'bold 28px sans-serif';
+      ctx.fillText('Nitin Yadav', 50, 115);
+      ctx.fillStyle = '#ff5500';
+      ctx.font = 'bold 15px monospace';
+      ctx.fillText('ROLE: LEAD ARCHITECT & SPEAKER', 50, 145);
+      ctx.strokeStyle = '#111111';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(50, 165);
+      ctx.lineTo(650, 165);
+      ctx.stroke();
+      ctx.fillStyle = '#111111';
+      ctx.font = '16px monospace';
+      ctx.fillText('EMAIL: nitin@champtechnologies.io', 50, 205);
+      ctx.fillText('PHONE: +1 (415) 890-1122', 50, 240);
+      ctx.fillText('EVENT PASS ID: VIP-99412-PASS', 50, 275);
+      ctx.fillText('VENUE: Moscone Center, San Francisco, CA', 50, 310);
+      ctx.fillStyle = '#ff5500';
+      ctx.font = 'bold 15px monospace';
+      ctx.fillText('PORTAL: https://aimatrixsummit.io/checkin', 50, 350);
     }
 
     canvas.toBlob((blob) => {
@@ -185,7 +219,7 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
               EXTRACT · STRUCTURE · ENCODE — PARSE CONTACTS, INVOICES &amp; ATTRIBUTES STRAIGHT TO QR.
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button onClick={() => loadSample('card')} className="tako-btn">
               <CreditCard className="w-3.5 h-3.5 text-[#ff5500]" />
               Demo Card
@@ -193,6 +227,10 @@ export const ImageFieldExtractor: React.FC<ImageFieldExtractorProps> = ({ onSend
             <button onClick={() => loadSample('receipt')} className="tako-btn">
               <Receipt className="w-3.5 h-3.5 text-[#ff5500]" />
               Demo Receipt
+            </button>
+            <button onClick={() => loadSample('badge')} className="tako-btn">
+              <Ticket className="w-3.5 h-3.5 text-[#ff5500]" />
+              Demo Event Pass
             </button>
           </div>
         </div>

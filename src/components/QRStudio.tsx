@@ -174,6 +174,55 @@ export const QRStudio: React.FC<QRStudioProps> = ({
     { label: 'Slate', hex: '#475569' },
   ];
 
+  const loadDemoPreset = (preset: 'vcard' | 'wifi' | 'json' | 'sms' | 'url') => {
+    if (preset === 'vcard') {
+      setDataType('vcard');
+      setVcardInput({
+        firstName: 'Nitin',
+        lastName: 'Yadav',
+        organization: 'Champ Technologies Inc.',
+        title: 'Principal Systems Architect',
+        phone: '+1 (415) 890-1122',
+        email: 'nitin@champtechnologies.io',
+        website: 'https://github.com/NitinChamp1',
+        address: 'San Francisco, CA 94107',
+        notes: 'Omni.Sys Verified Contact Card',
+      });
+    } else if (preset === 'wifi') {
+      setDataType('wifi');
+      setWifiInput({
+        ssid: 'OmniSys_HighSpeed_5G',
+        password: 'QuantumPasscode2026',
+        encryption: 'WPA',
+        hidden: false,
+      });
+    } else if (preset === 'json') {
+      setDataType('json');
+      setJsonInput(
+        JSON.stringify(
+          {
+            event: 'ACCESS_GRANTED',
+            terminal: 'GATE-04',
+            token: 'TKN-8849-AUTH',
+            timestamp: '2026-11-07T02:58:00Z',
+            authorizedBy: 'OMNI.SYS',
+          },
+          null,
+          2
+        )
+      );
+    } else if (preset === 'sms') {
+      setDataType('sms');
+      setSmsInput({
+        phone: '+1 555-0199',
+        message: 'DISPATCH CONFIRMED: Order #89201 has cleared inspection.',
+      });
+    } else if (preset === 'url') {
+      setDataType('url');
+      setUrlInput('https://github.com/NitinChamp1/QR_generator');
+    }
+  };
+
   const dataTabs = [
     { id: 'url', label: 'URL Link', icon: LinkIcon },
     { id: 'vcard', label: 'vCard Contact', icon: Contact },
@@ -187,16 +236,53 @@ export const QRStudio: React.FC<QRStudioProps> = ({
   return (
     <div className="space-y-6">
       {/* Hero Banner */}
-      <div className="tako-panel p-5 space-y-2">
-        <span className="font-mono text-[11px] font-bold text-[#ff5500] uppercase tracking-wider block">
-          [ PIPELINE // 02 · MATRIX_STUDIO ]
-        </span>
-        <h1 className="text-3xl sm:text-4xl font-black font-sans tracking-tight uppercase text-black">
-          QR<span className="text-[#ff5500]">STUDIO</span>
-        </h1>
-        <p className="text-[11px] font-mono text-stone-500 max-w-2xl">
-          CUSTOMIZE · BRAND · EXPORT — HIGH-DPI VECTOR AND BITMAP QR GENERATION.
-        </p>
+      <div className="tako-panel p-5 space-y-3">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <span className="font-mono text-[11px] font-bold text-[#ff5500] uppercase tracking-wider block">
+              [ PIPELINE // 02 · MATRIX_STUDIO ]
+            </span>
+            <h1 className="text-3xl sm:text-4xl font-black font-sans tracking-tight uppercase text-black">
+              QR<span className="text-[#ff5500]">STUDIO</span>
+            </h1>
+            <p className="text-[11px] font-mono text-stone-500 max-w-2xl">
+              CUSTOMIZE · BRAND · EXPORT — HIGH-DPI VECTOR AND BITMAP QR GENERATION.
+            </p>
+          </div>
+
+          {/* Quick Demo Presets */}
+          <div className="flex flex-wrap items-center gap-1.5 font-mono">
+            <span className="text-[10px] font-bold text-stone-500 uppercase mr-1">DEMO PRESETS:</span>
+            <button
+              onClick={() => loadDemoPreset('vcard')}
+              className="tako-btn text-[10px] py-1 px-2.5 bg-white"
+            >
+              <Contact className="w-3 h-3 text-[#ff5500]" />
+              Executive vCard
+            </button>
+            <button
+              onClick={() => loadDemoPreset('wifi')}
+              className="tako-btn text-[10px] py-1 px-2.5 bg-white"
+            >
+              <Wifi className="w-3 h-3 text-[#ff5500]" />
+              Office 5G Wi-Fi
+            </button>
+            <button
+              onClick={() => loadDemoPreset('json')}
+              className="tako-btn text-[10px] py-1 px-2.5 bg-white"
+            >
+              <Code className="w-3 h-3 text-[#ff5500]" />
+              Webhook JSON
+            </button>
+            <button
+              onClick={() => loadDemoPreset('sms')}
+              className="tako-btn text-[10px] py-1 px-2.5 bg-white"
+            >
+              <MessageSquare className="w-3 h-3 text-[#ff5500]" />
+              Dispatch SMS
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

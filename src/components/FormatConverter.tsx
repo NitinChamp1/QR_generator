@@ -71,6 +71,96 @@ export const FormatConverter: React.FC = () => {
   const imagesToPdfInputRef = useRef<HTMLInputElement>(null);
 
   // ==========================================
+  // DEMO DATA GENERATORS & LOADERS
+  // ==========================================
+  const loadDemoPdf = async (target: 'docx' | 'images') => {
+    try {
+      const res = await fetch('/samples/demo-agreement.pdf');
+      const blob = await res.blob();
+      const file = new File([blob], 'demo-agreement.pdf', { type: 'application/pdf' });
+      if (target === 'docx') {
+        handlePdfForDocxSelect(file);
+      } else {
+        handlePdfForImagesSelect(file);
+      }
+    } catch (err) {
+      console.error('Failed to load demo PDF:', err);
+    }
+  };
+
+  const createSampleCanvasImage = (title: string, subtitle: string, total: string): Promise<File> => {
+    return new Promise((resolve) => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 600;
+      canvas.height = 400;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 600, 400);
+      ctx.strokeStyle = '#111111';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(15, 15, 570, 370);
+      ctx.fillStyle = '#ff5500';
+      ctx.fillRect(15, 15, 570, 45);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 18px monospace';
+      ctx.fillText(title, 35, 45);
+      ctx.fillStyle = '#111111';
+      ctx.font = 'bold 22px sans-serif';
+      ctx.fillText(subtitle, 35, 105);
+      ctx.fillStyle = '#666666';
+      ctx.font = '14px monospace';
+      ctx.fillText('DATE: 2026-11-07 | TERMINAL: X-9', 35, 140);
+      ctx.strokeStyle = '#111111';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(35, 160);
+      ctx.lineTo(565, 160);
+      ctx.stroke();
+      ctx.fillStyle = '#111111';
+      ctx.font = '15px monospace';
+      ctx.fillText('Item 1: Enterprise Compute Node       $ 85.00', 35, 200);
+      ctx.fillText('Item 2: Vector Search Database        $ 45.00', 35, 235);
+      ctx.fillText('Item 3: SSL Hardware Security Pass    $ 20.00', 35, 270);
+      ctx.strokeStyle = '#111111';
+      ctx.beginPath();
+      ctx.moveTo(35, 295);
+      ctx.lineTo(565, 295);
+      ctx.stroke();
+      ctx.fillStyle = '#ff5500';
+      ctx.font = 'bold 20px monospace';
+      ctx.fillText(`TOTAL BILLED: ${total}`, 35, 340);
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(new File([blob], `${title.toLowerCase().replace(/[^a-z0-9]/g, '_')}.png`, { type: 'image/png' }));
+        }
+      }, 'image/png');
+    });
+  };
+
+  const loadDemoImages = async () => {
+    const file1 = await createSampleCanvasImage('INVOICE_SAMPLE_01', 'NovaScale Cloud Cluster', '$ 150.00');
+    const file2 = await createSampleCanvasImage('RECEIPT_SAMPLE_02', 'Freight Air Waybill #402', '$ 75.00');
+    const file3 = await createSampleCanvasImage('STATEMENT_SAMPLE_03', 'Security Compliance Audit', '$ 220.00');
+    const dt = new DataTransfer();
+    dt.items.add(file1);
+    dt.items.add(file2);
+    dt.items.add(file3);
+    handleImageFilesSelect(dt.files);
+  };
+
+  const loadDemoPagesForPdf = async () => {
+    const file1 = await createSampleCanvasImage('PAGE_01_CONTRACT', 'Scope of Services', 'PAGE 1/3');
+    const file2 = await createSampleCanvasImage('PAGE_02_AUDIT', 'Security Specifications', 'PAGE 2/3');
+    const file3 = await createSampleCanvasImage('PAGE_03_SIGNATURE', 'Acceptance & Execution', 'PAGE 3/3');
+    const dt = new DataTransfer();
+    dt.items.add(file1);
+    dt.items.add(file2);
+    dt.items.add(file3);
+    handleImagesForPdfSelect(dt.files);
+  };
+
+  // ==========================================
   // IMAGE CONVERTER HANDLERS
   // ==========================================
   const handleImageFilesSelect = (files: FileList | null) => {
@@ -386,6 +476,16 @@ export const FormatConverter: React.FC = () => {
                 + ADD IMAGES
               </button>
 
+              <button
+                onClick={loadDemoImages}
+                className="tako-btn bg-white"
+                style={{ padding: '6px 12px', fontSize: '11px' }}
+                title="Load 3 sample invoice vouchers"
+              >
+                <FileImage className="w-3.5 h-3.5 text-[#ff5500]" />
+                DEMO IMAGES
+              </button>
+
               {imageFiles.some((f) => f.status === 'done') && (
                 <button
                   onClick={handleDownloadAllImagesZip}
@@ -549,6 +649,16 @@ export const FormatConverter: React.FC = () => {
               </div>
 
               <div className="p-5 space-y-4 bg-white text-center">
+                <button
+                  type="button"
+                  onClick={() => loadDemoPdf('docx')}
+                  className="tako-btn w-full bg-white mb-2"
+                  style={{ padding: '8px 12px', fontSize: '11px' }}
+                >
+                  <FileType className="w-3.5 h-3.5 text-[#ff5500]" />
+                  LOAD DEMO AGREEMENT PDF
+                </button>
+
                 <div
                   onClick={() => pdfDocxInputRef.current?.click()}
                   className="tako-dropzone p-6 space-y-2"
@@ -654,6 +764,16 @@ export const FormatConverter: React.FC = () => {
                 <Upload className="w-3.5 h-3.5 text-[#ff5500]" />
                 {pdfForImages ? 'CHANGE PDF' : 'SELECT PDF FILE'}
               </button>
+
+              <button
+                onClick={() => loadDemoPdf('images')}
+                className="tako-btn bg-white"
+                style={{ padding: '6px 12px', fontSize: '11px' }}
+                title="Load 2-page sample PDF"
+              >
+                <FileType className="w-3.5 h-3.5 text-[#ff5500]" />
+                DEMO PDF
+              </button>
               {pdfForImages && (
                 <span className="font-bold text-black">
                   {pdfForImages.name} ({formatFileSize(pdfForImages.size)})
@@ -751,14 +871,26 @@ export const FormatConverter: React.FC = () => {
           />
 
           <div className="tako-panel p-4 flex flex-wrap items-center justify-between gap-4 font-mono text-xs bg-white">
-            <button
-              onClick={() => imagesToPdfInputRef.current?.click()}
-              className="tako-btn"
-              style={{ padding: '6px 12px', fontSize: '11px' }}
-            >
-              <Upload className="w-3.5 h-3.5 text-[#ff5500]" />
-              + ADD IMAGES / SCANS
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => imagesToPdfInputRef.current?.click()}
+                className="tako-btn"
+                style={{ padding: '6px 12px', fontSize: '11px' }}
+              >
+                <Upload className="w-3.5 h-3.5 text-[#ff5500]" />
+                + ADD IMAGES / SCANS
+              </button>
+
+              <button
+                onClick={loadDemoPagesForPdf}
+                className="tako-btn bg-white"
+                style={{ padding: '6px 12px', fontSize: '11px' }}
+                title="Load 3 sample document pages to test reordering and merging"
+              >
+                <FileDown className="w-3.5 h-3.5 text-[#ff5500]" />
+                LOAD 3 DEMO PAGES
+              </button>
+            </div>
 
             <div className="flex items-center gap-3">
               {imagesForPdf.length > 0 && (
