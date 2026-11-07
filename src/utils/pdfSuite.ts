@@ -271,7 +271,7 @@ export async function stampSignatureOnPdf(
   const page = pages[pageIdx];
 
   const sigWidth = position.width || 150;
-  const sigHeight = position.height || 60;
+  const sigHeight = position.height || (sigWidth * (sigImage.height / sigImage.width));
 
   page.drawImage(sigImage, {
     x: position.x,

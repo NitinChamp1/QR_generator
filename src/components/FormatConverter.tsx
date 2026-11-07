@@ -151,22 +151,31 @@ export const FormatConverter: React.FC = () => {
   const [signTargetPage, setSignTargetPage] = useState<number>(1);
   const [signPositionX, setSignPositionX] = useState<number>(60);
   const [signPositionY, setSignPositionY] = useState<number>(60);
+  const [signWidth, setSignWidth] = useState<number>(150);
   const [signResult, setSignResult] = useState<{ blob: Blob; url: string } | null>(null);
   const [isSigningPdf, setIsSigningPdf] = useState<boolean>(false);
-  const [isDrawing, setIsDrawing] = useState<boolean>(false);
+  const [hasSignature, setHasSignature] = useState<boolean>(false);
+  const [sigColor, setSigColor] = useState<string>('#1e3d59');
+  const [sigWeight, setSigWeight] = useState<number>(3.5);
+
   const signatureCanvasRef = useRef<HTMLCanvasElement>(null);
   const signInputRef = useRef<HTMLInputElement>(null);
+  const isDrawingRef = useRef<boolean>(false);
+  const lastPointRef = useRef<{ x: number; y: number } | null>(null);
+  const hasDrawnRef = useRef<boolean>(false);
 
   // Setup signature canvas context
   useEffect(() => {
+    if (mode !== 'sign-pdf') return;
     const canvas = signatureCanvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = sigWeight;
     ctx.lineCap = 'round';
-    ctx.strokeStyle = '#1e3d59';
-  }, [mode]);
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = sigColor;
+  }, [mode, sigColor, sigWeight]);
 
   // ==========================================
   // IMAGE CONVERTER HANDLERS
@@ -546,36 +555,86 @@ export const FormatConverter: React.FC = () => {
   };
 
   // ==========================================
-  // GROUP 1: SIGN PDF HANDLERS
+  // GROUP 1: SIGN PDF HANDLERS (HIGH-PERFORMANCE ZERO-LATENCY POINTER API)
   // ==========================================
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+  const getCanvasCoordinates = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const canvas = signatureCanvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY,
+    };
+  };
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
     const canvas = signatureCanvasRef.current;
     if (!canvas) return;
+
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch (_) {}
+
+    const pt = getCanvasCoordinates(e);
+    isDrawingRef.current = true;
+    lastPointRef.current = pt;
+    hasDrawnRef.current = true;
+    if (!hasSignature) setHasSignature(true);
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    const rect = canvas.getBoundingClientRect();
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    ctx.lineWidth = sigWeight;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = sigColor;
+
+    // Draw an anti-aliased dot at the initial click/touch point
     ctx.beginPath();
-    ctx.moveTo(clientX - rect.left, clientY - rect.top);
-    setIsDrawing(true);
+    ctx.arc(pt.x, pt.y, sigWeight / 2, 0, Math.PI * 2);
+    ctx.fillStyle = sigColor;
+    ctx.fill();
   };
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    if (!isDrawing) return;
+  const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!isDrawingRef.current || !lastPointRef.current) return;
     const canvas = signatureCanvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    const rect = canvas.getBoundingClientRect();
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    ctx.lineTo(clientX - rect.left, clientY - rect.top);
+
+    const currentPt = getCanvasCoordinates(e);
+    const prevPt = lastPointRef.current;
+
+    // Smooth quadratic bezier curve through midpoint
+    const midPoint = {
+      x: (prevPt.x + currentPt.x) / 2,
+      y: (prevPt.y + currentPt.y) / 2,
+    };
+
+    ctx.lineWidth = sigWeight;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = sigColor;
+
+    ctx.beginPath();
+    ctx.moveTo(prevPt.x, prevPt.y);
+    ctx.quadraticCurveTo(prevPt.x, prevPt.y, midPoint.x, midPoint.y);
     ctx.stroke();
+
+    lastPointRef.current = currentPt;
   };
 
-  const stopDrawing = () => {
-    setIsDrawing(false);
+  const handlePointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (isDrawingRef.current) {
+      isDrawingRef.current = false;
+      lastPointRef.current = null;
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      } catch (_) {}
+    }
   };
 
   const clearSignatureCanvas = () => {
@@ -583,34 +642,94 @@ export const FormatConverter: React.FC = () => {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     ctx?.clearRect(0, 0, canvas.width, canvas.height);
+    hasDrawnRef.current = false;
+    setHasSignature(false);
+  };
+
+  const getTrimmedSignatureBlob = async (canvas: HTMLCanvasElement): Promise<Blob | null> => {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+    const w = canvas.width;
+    const h = canvas.height;
+    const imgData = ctx.getImageData(0, 0, w, h);
+    const data = imgData.data;
+
+    let minX = w,
+      minY = h,
+      maxX = 0,
+      maxY = 0;
+    let found = false;
+
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const alpha = data[(y * w + x) * 4 + 3];
+        if (alpha > 10) {
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
+          found = true;
+        }
+      }
+    }
+
+    if (!found) return null;
+
+    // Add 12px margin around trimmed bounds
+    const padding = 12;
+    minX = Math.max(0, minX - padding);
+    minY = Math.max(0, minY - padding);
+    maxX = Math.min(w, maxX + padding);
+    maxY = Math.min(h, maxY + padding);
+
+    const cropW = Math.max(1, maxX - minX);
+    const cropH = Math.max(1, maxY - minY);
+
+    const trimmedCanvas = document.createElement('canvas');
+    trimmedCanvas.width = cropW;
+    trimmedCanvas.height = cropH;
+    const trimmedCtx = trimmedCanvas.getContext('2d');
+    if (!trimmedCtx) return null;
+
+    trimmedCtx.drawImage(canvas, minX, minY, cropW, cropH, 0, 0, cropW, cropH);
+
+    return new Promise((resolve) => {
+      trimmedCanvas.toBlob((blob) => resolve(blob), 'image/png');
+    });
   };
 
   const handleRunSign = async () => {
-    if (!pdfForSign) return;
+    if (!pdfForSign) {
+      alert('Please upload a PDF document first.');
+      return;
+    }
     const canvas = signatureCanvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !hasDrawnRef.current) {
+      alert('Please draw your signature in the box before embedding.');
+      return;
+    }
 
-    canvas.toBlob(async (sigBlob) => {
+    setIsSigningPdf(true);
+    try {
+      const sigBlob = await getTrimmedSignatureBlob(canvas);
       if (!sigBlob) {
-        alert('Please draw a signature first.');
+        alert('Please draw a valid signature on the pad.');
+        setIsSigningPdf(false);
         return;
       }
-      setIsSigningPdf(true);
-      try {
-        const res = await stampSignatureOnPdf(pdfForSign, sigBlob, signTargetPage, {
-          x: signPositionX,
-          y: signPositionY,
-          width: 150,
-          height: 60,
-        });
-        setSignResult(res);
-      } catch (err: any) {
-        console.error(err);
-        alert('Failed to stamp signature: ' + (err.message || 'Unknown error'));
-      } finally {
-        setIsSigningPdf(false);
-      }
-    }, 'image/png');
+
+      const res = await stampSignatureOnPdf(pdfForSign, sigBlob, signTargetPage, {
+        x: signPositionX,
+        y: signPositionY,
+        width: signWidth,
+      });
+      setSignResult(res);
+    } catch (err: any) {
+      console.error(err);
+      alert('Failed to stamp signature: ' + (err.message || 'Unknown error'));
+    } finally {
+      setIsSigningPdf(false);
+    }
   };
 
   // ==========================================
@@ -2072,7 +2191,7 @@ export const FormatConverter: React.FC = () => {
       {/* ========================================================= */}
       {mode === 'sign-pdf' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-6 space-y-4">
+          <div className="lg:col-span-7 space-y-4">
             <input
               ref={signInputRef}
               type="file"
@@ -2089,7 +2208,12 @@ export const FormatConverter: React.FC = () => {
 
             <div className="tako-panel overflow-hidden">
               <div className="tako-titlebar">
-                <span className="font-bold">// SIGNATURE_CANVAS</span>
+                <div className="flex items-center gap-2">
+                  <span className="font-bold">// SIGNATURE_CANVAS</span>
+                  <span className={hasSignature ? 'tako-badge-orange' : 'tako-badge'}>
+                    {hasSignature ? 'SIGNATURE CAPTURED' : 'PAD EMPTY'}
+                  </span>
+                </div>
                 <button
                   onClick={clearSignatureCanvas}
                   className="tako-btn"
@@ -2108,31 +2232,93 @@ export const FormatConverter: React.FC = () => {
                   <p className="text-xs font-mono font-bold uppercase text-[#1e3d59]">
                     {pdfForSign ? pdfForSign.name : 'CLICK TO SELECT PDF TO SIGN'}
                   </p>
+                  <p className="text-[10px] font-mono text-[#1e3d59]/60">
+                    {pdfForSign ? `${formatFileSize(pdfForSign.size)} · Click to change file` : 'PDF Document (100% In-Browser Private)'}
+                  </p>
                 </div>
 
+                {/* Pen Customization: Color and Stroke Weight */}
+                <div className="flex flex-wrap items-center justify-between gap-3 p-2.5 bg-[#f5f0e1]/50 border border-[#1e3d59]/20 font-mono text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="tako-label text-[10px]">INK COLOR:</span>
+                    <div className="flex gap-1.5">
+                      {[
+                        { label: 'Navy Slate', hex: '#1e3d59' },
+                        { label: 'Executive Blue', hex: '#1d4ed8' },
+                        { label: 'True Black', hex: '#111111' },
+                        { label: 'Coral Tangerine', hex: '#ff6e40' },
+                      ].map((c) => (
+                        <button
+                          key={c.hex}
+                          type="button"
+                          onClick={() => setSigColor(c.hex)}
+                          className={`w-5 h-5 border border-[#1e3d59] transition-transform ${
+                            sigColor === c.hex ? 'ring-2 ring-[#ff6e40] ring-offset-1 scale-110' : 'hover:scale-105'
+                          }`}
+                          style={{ backgroundColor: c.hex }}
+                          title={c.label}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="tako-label text-[10px]">STROKE:</span>
+                    <div className="flex gap-1">
+                      {[
+                        { label: 'Fine', val: 2 },
+                        { label: 'Normal', val: 3.5 },
+                        { label: 'Bold', val: 5.5 },
+                      ].map((w) => (
+                        <button
+                          key={w.val}
+                          type="button"
+                          onClick={() => setSigWeight(w.val)}
+                          className={`tako-btn ${sigWeight === w.val ? 'tako-btn-orange' : 'bg-white'}`}
+                          style={{ padding: '2px 8px', fontSize: '10px' }}
+                        >
+                          {w.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Canvas Container with Guidance Watermark */}
                 <div>
-                  <span className="tako-label block mb-1">DRAW YOUR SIGNATURE:</span>
-                  <div className="border-2 border-[#1e3d59] bg-stone-50 p-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="tako-label block">DRAW YOUR SIGNATURE:</span>
+                    <span className="text-[10px] font-mono text-[#1e3d59]/60">
+                      Fluid Bezier Curve · Zero Latency
+                    </span>
+                  </div>
+
+                  <div className="relative border-2 border-[#1e3d59] bg-[#ffffff] shadow-[2px_2px_0px_#1e3d59] overflow-hidden select-none">
+                    {/* Guidance baseline watermark */}
+                    <div className="absolute inset-x-5 bottom-8 pointer-events-none flex items-center justify-between border-b border-dashed border-[#1e3d59]/20 pb-0.5 font-mono text-[10px] text-[#1e3d59]/30">
+                      <span>✕ Sign on the line</span>
+                      <span>[CLIENT-SIDE VECTOR PAD]</span>
+                    </div>
+
                     <canvas
                       ref={signatureCanvasRef}
-                      width={450}
-                      height={140}
-                      onMouseDown={startDrawing}
-                      onMouseMove={draw}
-                      onMouseUp={stopDrawing}
-                      onMouseLeave={stopDrawing}
-                      onTouchStart={startDrawing}
-                      onTouchMove={draw}
-                      onTouchEnd={stopDrawing}
-                      className="w-full h-32 bg-white cursor-crosshair border border-stone-200"
+                      width={900}
+                      height={280}
+                      onPointerDown={handlePointerDown}
+                      onPointerMove={handlePointerMove}
+                      onPointerUp={handlePointerUp}
+                      onPointerCancel={handlePointerUp}
+                      style={{ touchAction: 'none' }}
+                      className="w-full h-40 bg-transparent cursor-crosshair block"
                     />
                   </div>
-                  <span className="text-[10px] font-mono text-stone-500 mt-1 block">
-                    Use mouse or touch screen to draw your signature in the box above.
+                  <span className="text-[10px] font-mono text-[#1e3d59]/60 mt-1 block">
+                    Draw freely with your mouse, stylus, or finger. Cursor coordinates are scaled with mathematical precision.
                   </span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 font-mono text-xs">
+                {/* Position and Scale Settings */}
+                <div className="grid grid-cols-4 gap-2 font-mono text-xs pt-1">
                   <div>
                     <label className="tako-label-muted block mb-1">PAGE #:</label>
                     <input
@@ -2144,7 +2330,7 @@ export const FormatConverter: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="tako-label-muted block mb-1">X OFFSET:</label>
+                    <label className="tako-label-muted block mb-1">X POS (PX):</label>
                     <input
                       type="number"
                       value={signPositionX}
@@ -2153,11 +2339,22 @@ export const FormatConverter: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="tako-label-muted block mb-1">Y OFFSET:</label>
+                    <label className="tako-label-muted block mb-1">Y POS (PX):</label>
                     <input
                       type="number"
                       value={signPositionY}
                       onChange={(e) => setSignPositionY(parseInt(e.target.value, 10) || 60)}
+                      className="tako-input"
+                    />
+                  </div>
+                  <div>
+                    <label className="tako-label-muted block mb-1">WIDTH (PX):</label>
+                    <input
+                      type="number"
+                      min="40"
+                      max="500"
+                      value={signWidth}
+                      onChange={(e) => setSignWidth(parseInt(e.target.value, 10) || 150)}
                       className="tako-input"
                     />
                   </div>
@@ -2171,16 +2368,16 @@ export const FormatConverter: React.FC = () => {
                     style={{ padding: '10px', fontSize: '11px' }}
                   >
                     <RefreshCw className={`w-3.5 h-3.5 ${isSigningPdf ? 'animate-spin' : ''}`} />
-                    {isSigningPdf ? 'STAMPING...' : 'EMBED SIGNATURE & SAVE PDF'}
+                    {isSigningPdf ? 'STAMPING SIGNATURE...' : 'EMBED SIGNATURE & SAVE PDF'}
                   </button>
                 )}
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-5">
             {signResult ? (
-              <div className="tako-panel p-8 text-center space-y-4 bg-white">
+              <div className="tako-panel p-8 text-center space-y-4 bg-white sticky top-20">
                 <div className="w-14 h-14 mx-auto border-2 border-[#1e3d59] bg-[#ff6e40] text-white flex items-center justify-center shadow-[2px_2px_0px_#1e3d59]">
                   <FileSignature className="w-7 h-7 stroke-[2.5]" />
                 </div>
@@ -2188,13 +2385,13 @@ export const FormatConverter: React.FC = () => {
                   <h3 className="text-sm font-mono font-bold uppercase text-[#1e3d59]">
                     SIGNATURE STAMPED
                   </h3>
-                  <p className="text-xs font-mono text-stone-500 mt-1">
-                    Signature graphic stamped onto Page #{signTargetPage}
+                  <p className="text-xs font-mono text-[#1e3d59]/70 mt-1">
+                    Trimmed signature stamped onto Page #{signTargetPage} (X: {signPositionX}, Y: {signPositionY}, Width: {signWidth}px)
                   </p>
                 </div>
                 <a
                   href={signResult.url}
-                  download={`signed_${Date.now()}.pdf`}
+                  download={`signed_${pdfForSign?.name || 'document.pdf'}`}
                   className="tako-btn tako-btn-black inline-flex"
                   style={{ padding: '10px 20px', fontSize: '12px' }}
                 >
@@ -2203,8 +2400,13 @@ export const FormatConverter: React.FC = () => {
                 </a>
               </div>
             ) : (
-              <div className="tako-panel p-16 text-center font-mono text-xs text-stone-500">
-                Upload your document on the left, draw your signature on the pad, and click &quot;EMBED SIGNATURE &amp; SAVE PDF&quot;.
+              <div className="tako-panel p-16 text-center font-mono text-xs text-[#1e3d59]/70 space-y-3">
+                <div className="w-12 h-12 mx-auto border-2 border-[#1e3d59] bg-[#ece6d5] flex items-center justify-center shadow-[2px_2px_0px_#1e3d59]">
+                  <FileSignature className="w-6 h-6 text-[#1e3d59]" />
+                </div>
+                <p className="max-w-xs mx-auto">
+                  Upload your document on the left, draw your signature on the pad, and click &quot;EMBED SIGNATURE &amp; SAVE PDF&quot;.
+                </p>
               </div>
             )}
           </div>
