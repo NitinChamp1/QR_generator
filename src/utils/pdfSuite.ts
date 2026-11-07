@@ -170,7 +170,7 @@ export async function addWatermarkToPdf(
   file: File,
   watermarkText: string,
   opacity = 0.25,
-  colorHex = '#ff5500'
+  colorHex = '#ff6e40'
 ): Promise<{ blob: Blob; url: string }> {
   const bytes = await file.arrayBuffer();
   const pdfDoc = await PDFDocument.load(bytes, { ignoreEncryption: true });

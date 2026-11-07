@@ -64,7 +64,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
     '{\n  "status": "success",\n  "app": "Omni.Sys"\n}'
   );
 
-  const [fgColor, setFgColor] = useState<string>('#111111');
+  const [fgColor, setFgColor] = useState<string>('#1e3d59');
   const [bgColor, setBgColor] = useState<string>('#ffffff');
   const [qrSize, setQrSize] = useState<number>(260);
   const [ecLevel, setEcLevel] = useState<'L' | 'M' | 'Q' | 'H'>('H');
@@ -166,12 +166,12 @@ export const QRStudio: React.FC<QRStudioProps> = ({
   };
 
   const colorPresets = [
-    { label: 'Black', hex: '#111111' },
-    { label: 'Orange', hex: '#ff5500' },
-    { label: 'Navy', hex: '#1e3a8a' },
-    { label: 'Green', hex: '#15803d' },
-    { label: 'Red', hex: '#b91c1c' },
-    { label: 'Slate', hex: '#475569' },
+    { label: 'Navy Slate', hex: '#1e3d59' },
+    { label: 'Coral Tangerine', hex: '#ff6e40' },
+    { label: 'Marigold Gold', hex: '#ffc13b' },
+    { label: 'True Black', hex: '#111111' },
+    { label: 'Forest Green', hex: '#15803d' },
+    { label: 'Crimson Red', hex: '#b91c1c' },
   ];
 
   const dataTabs = [
@@ -190,13 +190,13 @@ export const QRStudio: React.FC<QRStudioProps> = ({
       <div className="tako-panel p-5 space-y-2">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <span className="font-mono text-[11px] font-bold text-[#ff5500] uppercase tracking-wider block">
+            <span className="font-mono text-[11px] font-bold text-[#ff6e40] uppercase tracking-wider block">
               [ PIPELINE // 02 · MATRIX_STUDIO ]
             </span>
-            <h1 className="text-3xl sm:text-4xl font-black font-sans tracking-tight uppercase text-black">
-              QR<span className="text-[#ff5500]">STUDIO</span>
+            <h1 className="text-3xl sm:text-4xl font-black font-sans tracking-tight uppercase text-[#1e3d59]">
+              QR<span className="text-[#ff6e40]">STUDIO</span>
             </h1>
-            <p className="text-[11px] font-mono text-stone-500 max-w-2xl">
+            <p className="text-[11px] font-mono text-[#1e3d59]/70 max-w-2xl">
               CUSTOMIZE · BRAND · EXPORT — HIGH-DPI VECTOR AND BITMAP QR GENERATION.
             </p>
           </div>
@@ -215,10 +215,10 @@ export const QRStudio: React.FC<QRStudioProps> = ({
           <div className="tako-panel overflow-hidden">
             <div className="tako-titlebar">
               <span className="font-bold">// ENCODING_MODE</span>
-              <span className="text-[10px] text-stone-500 font-bold">SELECT SPEC</span>
+              <span className="text-[10px] text-[#1e3d59]/70 font-bold">SELECT SPEC</span>
             </div>
 
-            <div className="p-3 bg-stone-50 border-b-2 border-black flex flex-wrap gap-2">
+            <div className="p-3 bg-[#f5f0e1]/60 border-b-2 border-[#1e3d59] flex flex-wrap gap-2">
               {dataTabs.map((tab) => {
                 const Icon = tab.icon;
                 return (
@@ -376,7 +376,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
           <div className="tako-panel overflow-hidden">
             <div className="tako-titlebar">
               <span className="font-bold">// VISUAL_ATTRIBUTES</span>
-              <span className="text-[10px] text-stone-500 font-bold">PALETTE &amp; LOGO</span>
+              <span className="text-[10px] text-[#1e3d59]/70 font-bold">PALETTE &amp; LOGO</span>
             </div>
 
             <div className="p-5 bg-white space-y-4 font-mono">
@@ -388,7 +388,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                     type="color"
                     value={fgColor}
                     onChange={(e) => setFgColor(e.target.value)}
-                    className="w-7 h-7 border-2 border-black cursor-pointer"
+                    className="w-7 h-7 border-2 border-[#1e3d59] cursor-pointer"
                     style={{ borderRadius: 0, padding: 0 }}
                   />
                   <div className="flex gap-1.5">
@@ -396,7 +396,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                       <button
                         key={p.hex}
                         onClick={() => setFgColor(p.hex)}
-                        className={`w-5 h-5 border border-black ${fgColor === p.hex ? 'ring-2 ring-[#ff5500] ring-offset-1' : ''}`}
+                        className={`w-5 h-5 border border-[#1e3d59] ${fgColor === p.hex ? 'ring-2 ring-[#ff6e40] ring-offset-1' : ''}`}
                         style={{ backgroundColor: p.hex }}
                         title={p.label}
                       />
@@ -406,25 +406,25 @@ export const QRStudio: React.FC<QRStudioProps> = ({
               </div>
 
               {/* Background Color */}
-              <div className="flex items-center justify-between gap-2 pt-2 border-t border-stone-200">
+              <div className="flex items-center justify-between gap-2 pt-2 border-t border-[#1e3d59]/20">
                 <span className="tako-label">BACKGROUND_COLOR:</span>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
                     value={bgColor}
                     onChange={(e) => setBgColor(e.target.value)}
-                    className="w-7 h-7 border-2 border-black cursor-pointer"
+                    className="w-7 h-7 border-2 border-[#1e3d59] cursor-pointer"
                     style={{ borderRadius: 0, padding: 0 }}
                   />
-                  <span className="text-xs font-mono font-bold text-black">{bgColor}</span>
+                  <span className="text-xs font-mono font-bold text-[#1e3d59]">{bgColor}</span>
                 </div>
               </div>
 
               {/* Logo Upload */}
-              <div className="pt-2 border-t border-stone-200 space-y-2">
+              <div className="pt-2 border-t border-[#1e3d59]/20 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="tako-label flex items-center gap-1.5">
-                    <ImageIcon className="w-3.5 h-3.5 text-[#ff5500]" />
+                    <ImageIcon className="w-3.5 h-3.5 text-[#ff6e40]" />
                     CENTER_BRAND_LOGO:
                   </span>
                   {logoUrl && (
@@ -435,7 +435,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
                   <label className="tako-btn" style={{ padding: '5px 10px', fontSize: '11px', cursor: 'pointer' }}>
-                    <ImageIcon className="w-3.5 h-3.5 text-[#ff5500]" />
+                    <ImageIcon className="w-3.5 h-3.5 text-[#ff6e40]" />
                     CHOOSE_IMAGE_FILE
                     <input
                       type="file"
@@ -449,15 +449,15 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                   </label>
                   {logoUrl && (
                     <div className="flex items-center gap-2 font-mono text-xs">
-                      <span className="font-bold text-black">SIZE:</span>
-                      <input type="range" min="24" max="72" value={logoSize} onChange={(e) => setLogoSize(Number(e.target.value))} className="accent-[#ff5500] w-24" />
+                      <span className="font-bold text-[#1e3d59]">SIZE:</span>
+                      <input type="range" min="24" max="72" value={logoSize} onChange={(e) => setLogoSize(Number(e.target.value))} className="accent-[#ff6e40] w-24" />
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Error Correction & Margins */}
-              <div className="pt-2 border-t border-stone-200 grid grid-cols-2 gap-4">
+              <div className="pt-2 border-t border-[#1e3d59]/20 grid grid-cols-2 gap-4">
                 <div>
                   <label className="tako-label block mb-1">ERROR_CORRECTION:</label>
                   <select value={ecLevel} onChange={(e) => setEcLevel(e.target.value as any)} className="tako-input" style={{ fontSize: '11px' }}>
@@ -488,8 +488,8 @@ export const QRStudio: React.FC<QRStudioProps> = ({
           <div className="tako-panel overflow-hidden sticky top-20">
             <div className="tako-titlebar">
               <span className="font-bold">// RENDER_TARGET</span>
-              <div className="w-5 h-5 border border-black flex items-center justify-center bg-white">
-                <ArrowUpRight className="w-3 h-3" />
+              <div className="w-5 h-5 border border-[#1e3d59] flex items-center justify-center bg-white">
+                <ArrowUpRight className="w-3 h-3 text-[#1e3d59]" />
               </div>
             </div>
 
@@ -497,7 +497,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
               {/* QR Canvas Bezel */}
               <div
                 ref={canvasRef}
-                className="p-4 border-2 border-black mx-auto inline-flex items-center justify-center shadow-[3px_3px_0px_#111]"
+                className="p-4 border-2 border-[#1e3d59] mx-auto inline-flex items-center justify-center shadow-[3px_3px_0px_#1e3d59]"
                 style={{ backgroundColor: bgColor }}
               >
                 <QRCodeCanvas
@@ -539,7 +539,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <button onClick={handleCopyImage} className="tako-btn" style={{ padding: '8px', fontSize: '11px' }}>
-                    {copied ? <Check className="w-3.5 h-3.5 text-[#ff5500]" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copied ? <Check className="w-3.5 h-3.5 text-[#ff6e40]" /> : <Copy className="w-3.5 h-3.5" />}
                     {copied ? 'COPIED!' : 'COPY IMAGE'}
                   </button>
                   <button onClick={() => window.print()} className="tako-btn" style={{ padding: '8px', fontSize: '11px' }}>
@@ -550,11 +550,11 @@ export const QRStudio: React.FC<QRStudioProps> = ({
               </div>
 
               {/* Payload Readout */}
-              <div className="text-left bg-stone-50 border-2 border-black p-3">
-                <span className="text-[10px] font-mono font-bold uppercase block mb-1 text-stone-500">
+              <div className="text-left bg-[#f5f0e1]/50 border-2 border-[#1e3d59] p-3">
+                <span className="text-[10px] font-mono font-bold uppercase block mb-1 text-[#1e3d59]/70">
                   ENCODED_PAYLOAD_STRING:
                 </span>
-                <p className="text-xs font-mono truncate text-black font-bold">{qrString}</p>
+                <p className="text-xs font-mono truncate text-[#1e3d59] font-bold">{qrString}</p>
               </div>
             </div>
           </div>

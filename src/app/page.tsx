@@ -20,7 +20,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col text-black selection:bg-[#ff5500] selection:text-white">
+    <div className="min-h-screen flex flex-col text-[#1e3d59] selection:bg-[#ff6e40] selection:text-white">
       {/* Top Navbar */}
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -38,28 +38,28 @@ export default function Home() {
       </main>
 
       {/* Industrial Swiss Utility Footer */}
-      <footer className="mt-auto border-t border-black bg-white py-4">
+      <footer className="mt-auto border-t-2 border-[#1e3d59] bg-[#fdfcf9] py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 font-mono text-xs text-stone-700">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 font-mono text-xs text-[#1e3d59]/80">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="flex items-center gap-1.5 font-bold text-black">
-                <ShieldCheck className="w-4 h-4 text-[#ff5500]" />
+              <span className="flex items-center gap-1.5 font-bold text-[#1e3d59]">
+                <ShieldCheck className="w-4 h-4 text-[#ff6e40]" />
                 [ PRIVACY: 100% IN-BROWSER ]
               </span>
-              <span className="text-stone-300">|</span>
-              <span className="flex items-center gap-1.5 font-bold text-black">
-                <Cpu className="w-4 h-4 text-black" />
+              <span className="text-[#1e3d59]/30">|</span>
+              <span className="flex items-center gap-1.5 font-bold text-[#1e3d59]">
+                <Cpu className="w-4 h-4 text-[#ffc13b]" />
                 [ LATENCY: ZERO_SERVER ]
               </span>
-              <span className="text-stone-300">|</span>
-              <span className="flex items-center gap-1.5 font-bold text-black">
-                <Terminal className="w-4 h-4 text-[#ff5500]" />
+              <span className="text-[#1e3d59]/30">|</span>
+              <span className="flex items-center gap-1.5 font-bold text-[#1e3d59]">
+                <Terminal className="w-4 h-4 text-[#ff6e40]" />
                 [ SPEC: ISO/IEC 18004 ]
               </span>
             </div>
 
-            <div className="text-[11px] text-black font-bold uppercase tracking-wider">
-              OMNI<span className="text-[#ff5500]">.SYS</span> // WORKBENCH UTILITY
+            <div className="text-[11px] text-[#1e3d59] font-bold uppercase tracking-wider">
+              OMNI<span className="text-[#ff6e40]">.SYS</span> // WORKBENCH UTILITY
             </div>
           </div>
         </div>

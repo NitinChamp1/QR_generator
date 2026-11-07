@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
+:root {
+  --navy: #1e3d59;
+  --cream: #f5f0e1;
+  --coral: #ff6e40;
+  --gold: #ffc13b;
+  --panel-bg: #fdfcf9;
+  --titlebar-bg: #ece6d5;
+}
+
 body {
-  background-color: #f5f4f0;
-  color: #111111;
+  background-color: #f5f0e1;
+  color: #1e3d59;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -10,22 +19,28 @@ body {
   box-sizing: border-box;
 }
 
+/* Selection */
+::selection {
+  background-color: #ff6e40;
+  color: #ffffff;
+}
+
 /* ──────────────────────────────────────────────────────────── */
-/* TAKO INDUSTRIAL SWISS DESIGN SYSTEM - PURE CSS RULES         */
-/* (Written without @layer so Tailwind v4 never strips them)    */
+/* TAKO INDUSTRIAL SWISS DESIGN SYSTEM - 4-COLOR PALETTE        */
+/* Navy: #1e3d59 | Cream: #f5f0e1 | Coral: #ff6e40 | Gold: #ffc13b */
 /* ──────────────────────────────────────────────────────────── */
 
 /* Panels / Cards */
 .tako-panel {
-  border: 2px solid #111111 !important;
-  box-shadow: 4px 4px 0px #111111 !important;
-  background-color: #eae8e2 !important;
+  border: 2px solid #1e3d59 !important;
+  box-shadow: 4px 4px 0px #1e3d59 !important;
+  background-color: #fdfcf9 !important;
 }
 
 .tako-panel-sm {
-  border: 1.5px solid #111111 !important;
-  box-shadow: 2px 2px 0px #111111 !important;
-  background-color: #eae8e2 !important;
+  border: 1.5px solid #1e3d59 !important;
+  box-shadow: 2px 2px 0px #1e3d59 !important;
+  background-color: #f6f1e3 !important;
 }
 
 /* Panel Header / Title Bar */
@@ -34,14 +49,14 @@ body {
   align-items: center !important;
   justify-content: space-between !important;
   padding: 0.5rem 0.875rem !important;
-  border-bottom: 2px solid #111111 !important;
-  background-color: #dfded8 !important;
+  border-bottom: 2px solid #1e3d59 !important;
+  background-color: #ece6d5 !important;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
   font-size: 0.75rem !important;
   font-weight: 800 !important;
   letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
-  color: #111111 !important;
+  color: #1e3d59 !important;
 }
 
 /* Base Industrial Button */
@@ -51,10 +66,10 @@ body {
   justify-content: center !important;
   gap: 0.4rem !important;
   padding: 0.45rem 0.85rem !important;
-  border: 2px solid #111111 !important;
-  box-shadow: 2.5px 2.5px 0px #111111 !important;
+  border: 2px solid #1e3d59 !important;
+  box-shadow: 2.5px 2.5px 0px #1e3d59 !important;
   background-color: #ffffff !important;
-  color: #111111 !important;
+  color: #1e3d59 !important;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
   font-size: 0.75rem !important;
   font-weight: 800 !important;
@@ -67,38 +82,51 @@ body {
 }
 
 .tako-btn:hover {
-  background-color: #f0eee6 !important;
+  background-color: #f5f0e1 !important;
 }
 
 .tako-btn:active {
   transform: translate(2px, 2px) !important;
-  box-shadow: 0.5px 0.5px 0px #111111 !important;
+  box-shadow: 0.5px 0.5px 0px #1e3d59 !important;
 }
 
-/* Orange Active / CTA Button */
+/* Coral Tangerine Active / CTA Button */
 .tako-btn-orange {
-  background-color: #ff5500 !important;
+  background-color: #ff6e40 !important;
   color: #ffffff !important;
-  border-color: #111111 !important;
-  box-shadow: 2.5px 2.5px 0px #111111 !important;
+  border-color: #1e3d59 !important;
+  box-shadow: 2.5px 2.5px 0px #1e3d59 !important;
 }
 
 .tako-btn-orange:hover {
-  background-color: #e04b00 !important;
+  background-color: #f25b2c !important;
   color: #ffffff !important;
 }
 
-/* Black Solid Button */
+/* Deep Navy Solid Button */
 .tako-btn-black {
-  background-color: #111111 !important;
+  background-color: #1e3d59 !important;
   color: #ffffff !important;
-  border-color: #111111 !important;
-  box-shadow: 2.5px 2.5px 0px #444444 !important;
+  border-color: #1e3d59 !important;
+  box-shadow: 2.5px 2.5px 0px #0f1f2d !important;
 }
 
 .tako-btn-black:hover {
-  background-color: #242424 !important;
+  background-color: #152b3f !important;
   color: #ffffff !important;
+}
+
+/* Marigold Gold Button */
+.tako-btn-gold {
+  background-color: #ffc13b !important;
+  color: #1e3d59 !important;
+  border-color: #1e3d59 !important;
+  box-shadow: 2.5px 2.5px 0px #1e3d59 !important;
+}
+
+.tako-btn-gold:hover {
+  background-color: #f0b329 !important;
+  color: #1e3d59 !important;
 }
 
 /* Badges / Status Pills */
@@ -106,22 +134,50 @@ body {
   display: inline-flex !important;
   align-items: center !important;
   padding: 0.2rem 0.5rem !important;
-  border: 1.5px solid #111111 !important;
+  border: 1.5px solid #1e3d59 !important;
   background-color: #ffffff !important;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
   font-size: 0.65rem !important;
   font-weight: 800 !important;
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
-  color: #111111 !important;
+  color: #1e3d59 !important;
 }
 
 .tako-badge-orange {
   display: inline-flex !important;
   align-items: center !important;
   padding: 0.2rem 0.5rem !important;
-  border: 1.5px solid #111111 !important;
-  background-color: #ff5500 !important;
+  border: 1.5px solid #1e3d59 !important;
+  background-color: #ff6e40 !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 0.65rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: #ffffff !important;
+}
+
+.tako-badge-gold {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 0.2rem 0.5rem !important;
+  border: 1.5px solid #1e3d59 !important;
+  background-color: #ffc13b !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 0.65rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: #1e3d59 !important;
+}
+
+.tako-badge-navy {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 0.2rem 0.5rem !important;
+  border: 1.5px solid #1e3d59 !important;
+  background-color: #1e3d59 !important;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
   font-size: 0.65rem !important;
   font-weight: 800 !important;
@@ -132,51 +188,52 @@ body {
 
 /* Form Inputs */
 .tako-input {
-  border: 2px solid #111111 !important;
+  border: 2px solid #1e3d59 !important;
   background-color: #ffffff !important;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
   font-size: 0.75rem !important;
   padding: 0.35rem 0.6rem !important;
-  color: #111111 !important;
+  color: #1e3d59 !important;
   outline: none !important;
   width: 100% !important;
-  box-shadow: 1.5px 1.5px 0px #111111 !important;
+  box-shadow: 1.5px 1.5px 0px #1e3d59 !important;
 }
 
 .tako-input:focus {
-  border-color: #ff5500 !important;
-  box-shadow: 2px 2px 0px #ff5500 !important;
+  border-color: #ff6e40 !important;
+  box-shadow: 2px 2px 0px #ff6e40 !important;
 }
 
 /* Select element */
 select.tako-input, .tako-select {
-  border: 2px solid #111111 !important;
+  border: 2px solid #1e3d59 !important;
   background-color: #ffffff !important;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
   font-size: 0.75rem !important;
   padding: 0.35rem 0.6rem !important;
-  color: #111111 !important;
+  color: #1e3d59 !important;
   outline: none !important;
   cursor: pointer !important;
-  box-shadow: 1.5px 1.5px 0px #111111 !important;
+  box-shadow: 1.5px 1.5px 0px #1e3d59 !important;
 }
 
 select.tako-input:focus, .tako-select:focus {
-  border-color: #ff5500 !important;
+  border-color: #ff6e40 !important;
+  box-shadow: 2px 2px 0px #ff6e40 !important;
 }
 
 /* Upload Dropzone */
 .tako-dropzone {
-  border: 2px dashed #111111 !important;
-  background-color: #ffffff !important;
+  border: 2px dashed #1e3d59 !important;
+  background-color: #fbf9f4 !important;
   text-align: center !important;
   cursor: pointer !important;
   transition: background-color 0.15s ease, border-color 0.15s ease !important;
 }
 
 .tako-dropzone:hover {
-  background-color: #f7f6f2 !important;
-  border-color: #ff5500 !important;
+  background-color: #fff6f2 !important;
+  border-color: #ff6e40 !important;
 }
 
 /* Labels */
@@ -186,7 +243,7 @@ select.tako-input:focus, .tako-select:focus {
   font-weight: 800 !important;
   letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
-  color: #111111 !important;
+  color: #1e3d59 !important;
 }
 
 .tako-label-muted {
@@ -195,7 +252,7 @@ select.tako-input:focus, .tako-select:focus {
   font-weight: 700 !important;
   letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
-  color: #666666 !important;
+  color: #4a637d !important;
 }
 
 /* Custom Scrollbar */
@@ -205,22 +262,26 @@ select.tako-input:focus, .tako-select:focus {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f5f4f0;
+  background: #f5f0e1;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #111111;
+  background: #1e3d59;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff5500;
+  background: #ff6e40;
 }
 
-/* Industrial checkbox */
+/* Industrial checkbox & range */
 input[type="checkbox"] {
-  accent-color: #ff5500 !important;
+  accent-color: #ff6e40 !important;
   width: 1rem !important;
   height: 1rem !important;
-  border: 2px solid #111111 !important;
+  border: 2px solid #1e3d59 !important;
   cursor: pointer !important;
+}
+
+input[type="range"] {
+  accent-color: #ff6e40 !important;
 }

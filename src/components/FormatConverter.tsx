@@ -133,7 +133,7 @@ export const FormatConverter: React.FC = () => {
   const [pdfForWatermark, setPdfForWatermark] = useState<File | null>(null);
   const [watermarkText, setWatermarkText] = useState<string>('CONFIDENTIAL');
   const [watermarkOpacity, setWatermarkOpacity] = useState<number>(0.25);
-  const [watermarkColor, setWatermarkColor] = useState<string>('#ff5500');
+  const [watermarkColor, setWatermarkColor] = useState<string>('#ff6e40');
   const [watermarkResult, setWatermarkResult] = useState<{ blob: Blob; url: string } | null>(null);
   const [isWatermarkingPdf, setIsWatermarkingPdf] = useState<boolean>(false);
   const watermarkInputRef = useRef<HTMLInputElement>(null);
@@ -165,7 +165,7 @@ export const FormatConverter: React.FC = () => {
     if (!ctx) return;
     ctx.lineWidth = 2.5;
     ctx.lineCap = 'round';
-    ctx.strokeStyle = '#111111';
+    ctx.strokeStyle = '#1e3d59';
   }, [mode]);
 
   // ==========================================
@@ -658,11 +658,11 @@ export const FormatConverter: React.FC = () => {
       <div className="tako-panel p-5 space-y-2">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <span className="font-mono text-[11px] font-bold text-[#ff5500] uppercase tracking-wider block">
+            <span className="font-mono text-[11px] font-bold text-[#ff6e40] uppercase tracking-wider block">
               [ WORKBENCH // 03 · CONVERT &amp; PDF WORKSTATION ]
             </span>
-            <h1 className="text-3xl sm:text-4xl font-black font-sans tracking-tight uppercase text-black">
-              FORMAT &amp; PDF <span className="text-[#ff5500]">STUDIO</span>
+            <h1 className="text-3xl sm:text-4xl font-black font-sans tracking-tight uppercase text-[#1e3d59]">
+              FORMAT &amp; PDF <span className="text-[#ff6e40]">STUDIO</span>
             </h1>
             <p className="text-[11px] font-mono text-stone-500 max-w-2xl">
               100% IN-BROWSER EXECUTION · DOCUMENT CONVERSIONS, PAGE OPERATIONS &amp; VECTOR SIGNATURES.
@@ -694,7 +694,7 @@ export const FormatConverter: React.FC = () => {
               <span>{cat.label}</span>
               <span
                 className={`ml-1 text-[10px] px-1.5 py-0.2 ${
-                  activeCategory === cat.id ? 'bg-[#ff5500] text-white' : 'bg-stone-100 text-black'
+                  activeCategory === cat.id ? 'bg-[#ffc13b] text-[#1e3d59] font-black' : 'bg-[#ece6d5] text-[#1e3d59]'
                 }`}
               >
                 {cat.count}
@@ -764,7 +764,7 @@ export const FormatConverter: React.FC = () => {
                     step="0.05"
                     value={imageQuality}
                     onChange={(e) => setImageQuality(parseFloat(e.target.value))}
-                    className="accent-[#ff5500] w-24"
+                    className="accent-[#ff6e40] w-24"
                   />
                 </div>
               )}
@@ -776,7 +776,7 @@ export const FormatConverter: React.FC = () => {
                 className="tako-btn"
                 style={{ padding: '6px 14px', fontSize: '11px' }}
               >
-                <Upload className="w-3.5 h-3.5 text-[#ff5500]" />
+                <Upload className="w-3.5 h-3.5 text-[#ff6e40]" />
                 + ADD IMAGES
               </button>
 
@@ -821,11 +821,11 @@ export const FormatConverter: React.FC = () => {
               onClick={() => imageInputRef.current?.click()}
               className="tako-dropzone p-12 text-center space-y-3"
             >
-              <div className="w-12 h-12 mx-auto border-2 border-black bg-[#ff5500] text-white flex items-center justify-center shadow-[2px_2px_0px_#111]">
+              <div className="w-12 h-12 mx-auto border-2 border-[#1e3d59] bg-[#ff6e40] text-white flex items-center justify-center shadow-[2px_2px_0px_#1e3d59]">
                 <FileImage className="w-6 h-6 stroke-[2.5]" />
               </div>
               <div>
-                <p className="text-xs font-mono font-bold uppercase text-black">
+                <p className="text-xs font-mono font-bold uppercase text-[#1e3d59]">
                   DROP IMAGES HERE OR CLICK TO BROWSE
                 </p>
                 <p className="text-[10px] font-mono text-stone-500 mt-0.5">
@@ -847,7 +847,7 @@ export const FormatConverter: React.FC = () => {
                     className="p-3 flex flex-wrap items-center justify-between gap-4 font-mono text-xs"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 border border-black bg-stone-50 overflow-hidden flex-shrink-0">
+                      <div className="w-10 h-10 border border-[#1e3d59] bg-stone-50 overflow-hidden flex-shrink-0">
                         <img
                           src={file.previewUrl}
                           alt="preview"
@@ -855,13 +855,13 @@ export const FormatConverter: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <p className="font-bold text-black truncate max-w-xs">{file.originalName}</p>
+                        <p className="font-bold text-[#1e3d59] truncate max-w-xs">{file.originalName}</p>
                         <p className="text-[10px] text-stone-500 flex items-center gap-1.5 mt-0.5">
                           <span>{formatFileSize(file.originalSize)}</span>
                           {file.convertedSize && (
                             <>
-                              <ArrowRight className="w-3 h-3 text-black" />
-                              <span className="font-bold text-[#ff5500] bg-orange-50 border border-orange-200 px-1">
+                              <ArrowRight className="w-3 h-3 text-[#1e3d59]" />
+                              <span className="font-bold text-[#ff6e40] bg-orange-50 border border-orange-200 px-1">
                                 {formatFileSize(file.convertedSize)}
                               </span>
                             </>
@@ -939,10 +939,10 @@ export const FormatConverter: React.FC = () => {
                   onClick={() => pdfDocxInputRef.current?.click()}
                   className="tako-dropzone p-8 space-y-2"
                 >
-                  <div className="w-12 h-12 mx-auto border-2 border-black bg-[#ff5500] text-white flex items-center justify-center shadow-[2px_2px_0px_#111]">
+                  <div className="w-12 h-12 mx-auto border-2 border-[#1e3d59] bg-[#ff6e40] text-white flex items-center justify-center shadow-[2px_2px_0px_#1e3d59]">
                     <FileType className="w-6 h-6 stroke-[2.5]" />
                   </div>
-                  <p className="text-xs font-mono font-bold uppercase mt-2 text-black">
+                  <p className="text-xs font-mono font-bold uppercase mt-2 text-[#1e3d59]">
                     {pdfForDocx ? pdfForDocx.name : 'CLICK TO SELECT PDF FILE'}
                   </p>
                   <p className="text-[10px] font-mono text-stone-500">
@@ -980,8 +980,8 @@ export const FormatConverter: React.FC = () => {
                 </div>
 
                 <div className="p-5 bg-white space-y-3">
-                  <div className="flex items-center justify-between pb-3 border-b-2 border-black">
-                    <span className="font-mono text-xs font-bold text-black">
+                  <div className="flex items-center justify-between pb-3 border-b-2 border-[#1e3d59]">
+                    <span className="font-mono text-xs font-bold text-[#1e3d59]">
                       OUTPUT: {docxResult.fileName}
                     </span>
                     <a
@@ -999,7 +999,7 @@ export const FormatConverter: React.FC = () => {
                     <span className="tako-label-muted block mb-1">
                       EXTRACTED_CONTENT_PREVIEW:
                     </span>
-                    <pre className="p-3 bg-stone-50 border-2 border-black text-xs font-mono max-h-72 overflow-y-auto whitespace-pre-wrap text-black">
+                    <pre className="p-3 bg-stone-50 border-2 border-[#1e3d59] text-xs font-mono max-h-72 overflow-y-auto whitespace-pre-wrap text-[#1e3d59]">
                       {docxResult.extractedText || '// No text extracted from document.'}
                     </pre>
                   </div>
@@ -1037,11 +1037,11 @@ export const FormatConverter: React.FC = () => {
                 className="tako-btn"
                 style={{ padding: '6px 14px', fontSize: '11px' }}
               >
-                <Upload className="w-3.5 h-3.5 text-[#ff5500]" />
+                <Upload className="w-3.5 h-3.5 text-[#ff6e40]" />
                 {pdfForImages ? 'CHANGE PDF' : 'SELECT PDF FILE'}
               </button>
               {pdfForImages && (
-                <span className="font-bold text-black">
+                <span className="font-bold text-[#1e3d59]">
                   {pdfForImages.name} ({formatFileSize(pdfForImages.size)})
                 </span>
               )}
@@ -1094,7 +1094,7 @@ export const FormatConverter: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {pdfImagesResult.map((page) => (
                 <div key={page.pageNumber} className="tako-panel overflow-hidden p-2 space-y-2 bg-white">
-                  <div className="aspect-[3/4] bg-stone-50 border-2 border-black flex items-center justify-center overflow-hidden">
+                  <div className="aspect-[3/4] bg-stone-50 border-2 border-[#1e3d59] flex items-center justify-center overflow-hidden">
                     <img
                       src={page.url}
                       alt={`Page ${page.pageNumber}`}
@@ -1102,7 +1102,7 @@ export const FormatConverter: React.FC = () => {
                     />
                   </div>
                   <div className="flex items-center justify-between font-mono text-xs">
-                    <span className="font-bold text-black">PAGE #{page.pageNumber}</span>
+                    <span className="font-bold text-[#1e3d59]">PAGE #{page.pageNumber}</span>
                     <a
                       href={page.url}
                       download={`page_${page.pageNumber}.${
@@ -1142,7 +1142,7 @@ export const FormatConverter: React.FC = () => {
               className="tako-btn"
               style={{ padding: '6px 14px', fontSize: '11px' }}
             >
-              <Upload className="w-3.5 h-3.5 text-[#ff5500]" />
+              <Upload className="w-3.5 h-3.5 text-[#ff6e40]" />
               + ADD IMAGES / SCANS
             </button>
 
@@ -1180,11 +1180,11 @@ export const FormatConverter: React.FC = () => {
               onClick={() => imagesToPdfInputRef.current?.click()}
               className="tako-dropzone p-12 text-center space-y-2"
             >
-              <div className="w-12 h-12 mx-auto border-2 border-black bg-[#ff5500] text-white flex items-center justify-center shadow-[2px_2px_0px_#111]">
+              <div className="w-12 h-12 mx-auto border-2 border-[#1e3d59] bg-[#ff6e40] text-white flex items-center justify-center shadow-[2px_2px_0px_#1e3d59]">
                 <FileDown className="w-6 h-6 stroke-[2.5]" />
               </div>
               <div>
-                <p className="text-xs font-mono font-bold uppercase text-black">
+                <p className="text-xs font-mono font-bold uppercase text-[#1e3d59]">
                   ADD IMAGES TO COMPILE INTO A PAGINATED PDF
                 </p>
                 <p className="text-[10px] font-mono text-stone-500 mt-1">
@@ -1196,7 +1196,7 @@ export const FormatConverter: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {imagesForPdf.map((item, index) => (
                 <div key={item.id} className="tako-panel p-2 space-y-2 font-mono text-xs bg-white">
-                  <div className="aspect-[4/3] bg-stone-50 border-2 border-black overflow-hidden">
+                  <div className="aspect-[4/3] bg-stone-50 border-2 border-[#1e3d59] overflow-hidden">
                     <img
                       src={item.preview}
                       alt="preview"
@@ -1204,12 +1204,12 @@ export const FormatConverter: React.FC = () => {
                     />
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-black">PAGE #{index + 1}</span>
+                    <span className="font-bold text-[#1e3d59]">PAGE #{index + 1}</span>
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => handleMoveImage(index, 'up')}
                         disabled={index === 0}
-                        className="p-1 border border-black hover:bg-stone-100 disabled:opacity-20 text-black cursor-pointer"
+                        className="p-1 border border-[#1e3d59] hover:bg-stone-100 disabled:opacity-20 text-[#1e3d59] cursor-pointer"
                         title="Move Up"
                       >
                         <MoveUp className="w-3 h-3" />
@@ -1217,14 +1217,14 @@ export const FormatConverter: React.FC = () => {
                       <button
                         onClick={() => handleMoveImage(index, 'down')}
                         disabled={index === imagesForPdf.length - 1}
-                        className="p-1 border border-black hover:bg-stone-100 disabled:opacity-20 text-black cursor-pointer"
+                        className="p-1 border border-[#1e3d59] hover:bg-stone-100 disabled:opacity-20 text-[#1e3d59] cursor-pointer"
                         title="Move Down"
                       >
                         <MoveDown className="w-3 h-3" />
                       </button>
                       <button
                         onClick={() => handleRemoveImage(item.id)}
-                        className="p-1 border border-black hover:bg-[#ff5500] hover:text-white text-stone-600 cursor-pointer"
+                        className="p-1 border border-[#1e3d59] hover:bg-[#ff6e40] hover:text-white text-stone-600 cursor-pointer"
                         title="Remove"
                       >
                         <Trash2 className="w-3 h-3" />
@@ -1269,10 +1269,10 @@ export const FormatConverter: React.FC = () => {
                   onClick={() => pdfMarkdownInputRef.current?.click()}
                   className="tako-dropzone p-8 space-y-2"
                 >
-                  <div className="w-12 h-12 mx-auto border-2 border-black bg-[#ff5500] text-white flex items-center justify-center shadow-[2px_2px_0px_#111]">
+                  <div className="w-12 h-12 mx-auto border-2 border-[#1e3d59] bg-[#ff6e40] text-white flex items-center justify-center shadow-[2px_2px_0px_#1e3d59]">
                     <FileCode className="w-6 h-6 stroke-[2.5]" />
                   </div>
-                  <p className="text-xs font-mono font-bold uppercase mt-2 text-black">
+                  <p className="text-xs font-mono font-bold uppercase mt-2 text-[#1e3d59]">
                     {pdfForMarkdown ? pdfForMarkdown.name : 'CLICK TO SELECT PDF FILE'}
                   </p>
                   <p className="text-[10px] font-mono text-stone-500">
@@ -1310,7 +1310,7 @@ export const FormatConverter: React.FC = () => {
                       className="tako-btn"
                       style={{ padding: '2px 8px', fontSize: '10px' }}
                     >
-                      {copiedMd ? <Check className="w-3 h-3 text-[#ff5500]" /> : <Copy className="w-3 h-3" />}
+                      {copiedMd ? <Check className="w-3 h-3 text-[#ff6e40]" /> : <Copy className="w-3 h-3" />}
                       {copiedMd ? 'COPIED' : 'COPY'}
                     </button>
                     <button
@@ -1325,7 +1325,7 @@ export const FormatConverter: React.FC = () => {
                 </div>
 
                 <div className="p-4 bg-white">
-                  <pre className="p-3 bg-stone-50 border-2 border-black text-xs font-mono max-h-96 overflow-y-auto whitespace-pre-wrap text-black">
+                  <pre className="p-3 bg-stone-50 border-2 border-[#1e3d59] text-xs font-mono max-h-96 overflow-y-auto whitespace-pre-wrap text-[#1e3d59]">
                     {markdownResult}
                   </pre>
                 </div>
@@ -1365,8 +1365,8 @@ export const FormatConverter: React.FC = () => {
                   onClick={() => mergeInputRef.current?.click()}
                   className="tako-dropzone p-6 space-y-2"
                 >
-                  <Merge className="w-8 h-8 text-[#ff5500] mx-auto" />
-                  <p className="text-xs font-mono font-bold uppercase text-black">
+                  <Merge className="w-8 h-8 text-[#ff6e40] mx-auto" />
+                  <p className="text-xs font-mono font-bold uppercase text-[#1e3d59]">
                     ADD PDF FILES TO COMBINE
                   </p>
                   <p className="text-[10px] font-mono text-stone-500">
@@ -1375,7 +1375,7 @@ export const FormatConverter: React.FC = () => {
                 </div>
 
                 {mergeFiles.length > 0 && (
-                  <div className="divide-y divide-stone-200 border-2 border-black max-h-60 overflow-y-auto">
+                  <div className="divide-y divide-stone-200 border-2 border-[#1e3d59] max-h-60 overflow-y-auto">
                     {mergeFiles.map((file, idx) => (
                       <div key={idx} className="p-2.5 flex items-center justify-between text-xs font-mono bg-white">
                         <span className="font-bold truncate max-w-xs">
@@ -1413,11 +1413,11 @@ export const FormatConverter: React.FC = () => {
                   <span className="tako-badge-orange">{mergedPdfResult.pageCount} PAGES</span>
                 </div>
                 <div className="p-8 text-center space-y-4 bg-white">
-                  <div className="w-14 h-14 mx-auto border-2 border-black bg-[#ff5500] text-white flex items-center justify-center shadow-[2px_2px_0px_#111]">
+                  <div className="w-14 h-14 mx-auto border-2 border-[#1e3d59] bg-[#ff6e40] text-white flex items-center justify-center shadow-[2px_2px_0px_#1e3d59]">
                     <Check className="w-7 h-7 stroke-[3]" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-mono font-bold uppercase text-black">
+                    <h3 className="text-sm font-mono font-bold uppercase text-[#1e3d59]">
                       MERGE SUCCESSFUL
                     </h3>
                     <p className="text-xs font-mono text-stone-500 mt-1">
@@ -1475,8 +1475,8 @@ export const FormatConverter: React.FC = () => {
                   onClick={() => splitInputRef.current?.click()}
                   className="tako-dropzone p-6 space-y-2 text-center"
                 >
-                  <Split className="w-8 h-8 text-[#ff5500] mx-auto" />
-                  <p className="text-xs font-mono font-bold uppercase text-black">
+                  <Split className="w-8 h-8 text-[#ff6e40] mx-auto" />
+                  <p className="text-xs font-mono font-bold uppercase text-[#1e3d59]">
                     {pdfForSplit ? pdfForSplit.name : 'SELECT PDF TO SPLIT'}
                   </p>
                   <p className="text-[10px] font-mono text-stone-500">
@@ -1551,7 +1551,7 @@ export const FormatConverter: React.FC = () => {
                   {splitResults.map((item, idx) => (
                     <div key={idx} className="p-3 flex items-center justify-between">
                       <div>
-                        <p className="font-bold text-black">{item.fileName}</p>
+                        <p className="font-bold text-[#1e3d59]">{item.fileName}</p>
                         <p className="text-[10px] text-stone-500">
                           {item.pageCount} page(s) · {formatFileSize(item.blob.size)}
                         </p>
@@ -1609,8 +1609,8 @@ export const FormatConverter: React.FC = () => {
                   onClick={() => rotateInputRef.current?.click()}
                   className="tako-dropzone p-6 space-y-2 text-center"
                 >
-                  <RotateCw className="w-8 h-8 text-[#ff5500] mx-auto" />
-                  <p className="text-xs font-mono font-bold uppercase text-black">
+                  <RotateCw className="w-8 h-8 text-[#ff6e40] mx-auto" />
+                  <p className="text-xs font-mono font-bold uppercase text-[#1e3d59]">
                     {pdfForRotate ? pdfForRotate.name : 'SELECT PDF TO ROTATE'}
                   </p>
                   <p className="text-[10px] font-mono text-stone-500">
@@ -1683,11 +1683,11 @@ export const FormatConverter: React.FC = () => {
           <div className="lg:col-span-7">
             {rotateResult ? (
               <div className="tako-panel p-8 text-center space-y-4 bg-white">
-                <div className="w-14 h-14 mx-auto border-2 border-black bg-[#ff5500] text-white flex items-center justify-center shadow-[2px_2px_0px_#111]">
+                <div className="w-14 h-14 mx-auto border-2 border-[#1e3d59] bg-[#ff6e40] text-white flex items-center justify-center shadow-[2px_2px_0px_#1e3d59]">
                   <RotateCw className="w-7 h-7 stroke-[2.5]" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-mono font-bold uppercase text-black">
+                  <h3 className="text-sm font-mono font-bold uppercase text-[#1e3d59]">
                     ROTATION APPLIED (+{rotationAngle}°)
                   </h3>
                   <p className="text-xs font-mono text-stone-500 mt-1">
@@ -1735,7 +1735,7 @@ export const FormatConverter: React.FC = () => {
               className="tako-btn"
               style={{ padding: '6px 14px', fontSize: '11px' }}
             >
-              <Upload className="w-3.5 h-3.5 text-[#ff5500]" />
+              <Upload className="w-3.5 h-3.5 text-[#ff6e40]" />
               {pdfForOrganize ? 'CHANGE PDF' : 'SELECT PDF TO REORDER'}
             </button>
 
@@ -1771,8 +1771,8 @@ export const FormatConverter: React.FC = () => {
               onClick={() => organizeInputRef.current?.click()}
               className="tako-dropzone p-12 text-center space-y-2"
             >
-              <Sliders className="w-10 h-10 text-[#ff5500] mx-auto" />
-              <p className="text-xs font-mono font-bold uppercase text-black">
+              <Sliders className="w-10 h-10 text-[#ff6e40] mx-auto" />
+              <p className="text-xs font-mono font-bold uppercase text-[#1e3d59]">
                 SELECT PDF TO VISUALLY REORGANIZE
               </p>
               <p className="text-[10px] font-mono text-stone-500">
@@ -1783,17 +1783,17 @@ export const FormatConverter: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 font-mono text-xs">
               {pageOrderList.map((originalIdx, currentIdx) => (
                 <div key={currentIdx} className="tako-panel p-2.5 text-center space-y-2 bg-white">
-                  <div className="aspect-[3/4] border-2 border-black bg-stone-50 flex items-center justify-center">
+                  <div className="aspect-[3/4] border-2 border-[#1e3d59] bg-stone-50 flex items-center justify-center">
                     <span className="text-2xl font-black text-stone-800">P.{originalIdx + 1}</span>
                   </div>
-                  <div className="text-[10px] font-bold text-black">
+                  <div className="text-[10px] font-bold text-[#1e3d59]">
                     SLOT #{currentIdx + 1}
                   </div>
                   <div className="flex items-center justify-center gap-1">
                     <button
                       onClick={() => handleMoveOrganizePage(currentIdx, 'up')}
                       disabled={currentIdx === 0}
-                      className="p-1 border border-black hover:bg-stone-100 disabled:opacity-20"
+                      className="p-1 border border-[#1e3d59] hover:bg-stone-100 disabled:opacity-20"
                       title="Move Left"
                     >
                       <MoveUp className="w-3 h-3" />
@@ -1801,14 +1801,14 @@ export const FormatConverter: React.FC = () => {
                     <button
                       onClick={() => handleMoveOrganizePage(currentIdx, 'down')}
                       disabled={currentIdx === pageOrderList.length - 1}
-                      className="p-1 border border-black hover:bg-stone-100 disabled:opacity-20"
+                      className="p-1 border border-[#1e3d59] hover:bg-stone-100 disabled:opacity-20"
                       title="Move Right"
                     >
                       <MoveDown className="w-3 h-3" />
                     </button>
                     <button
                       onClick={() => handleDeleteOrganizePage(currentIdx)}
-                      className="p-1 border border-black hover:bg-red-600 hover:text-white text-stone-600"
+                      className="p-1 border border-[#1e3d59] hover:bg-red-600 hover:text-white text-stone-600"
                       title="Delete Page"
                     >
                       <Trash2 className="w-3 h-3" />
@@ -1852,8 +1852,8 @@ export const FormatConverter: React.FC = () => {
                   onClick={() => watermarkInputRef.current?.click()}
                   className="tako-dropzone p-6 space-y-2 text-center"
                 >
-                  <Type className="w-8 h-8 text-[#ff5500] mx-auto" />
-                  <p className="text-xs font-mono font-bold uppercase text-black">
+                  <Type className="w-8 h-8 text-[#ff6e40] mx-auto" />
+                  <p className="text-xs font-mono font-bold uppercase text-[#1e3d59]">
                     {pdfForWatermark ? pdfForWatermark.name : 'SELECT PDF TO WATERMARK'}
                   </p>
                   <p className="text-[10px] font-mono text-stone-500">
@@ -1884,7 +1884,7 @@ export const FormatConverter: React.FC = () => {
                       step="0.05"
                       value={watermarkOpacity}
                       onChange={(e) => setWatermarkOpacity(parseFloat(e.target.value))}
-                      className="accent-[#ff5500] w-full"
+                      className="accent-[#ff6e40] w-full"
                     />
                   </div>
 
@@ -1895,7 +1895,7 @@ export const FormatConverter: React.FC = () => {
                         type="color"
                         value={watermarkColor}
                         onChange={(e) => setWatermarkColor(e.target.value)}
-                        className="w-7 h-7 border-2 border-black cursor-pointer"
+                        className="w-7 h-7 border-2 border-[#1e3d59] cursor-pointer"
                         style={{ borderRadius: 0, padding: 0 }}
                       />
                       <span className="text-xs font-bold">{watermarkColor}</span>
@@ -1921,11 +1921,11 @@ export const FormatConverter: React.FC = () => {
           <div className="lg:col-span-7">
             {watermarkResult ? (
               <div className="tako-panel p-8 text-center space-y-4 bg-white">
-                <div className="w-14 h-14 mx-auto border-2 border-black bg-[#ff5500] text-white flex items-center justify-center shadow-[2px_2px_0px_#111]">
+                <div className="w-14 h-14 mx-auto border-2 border-[#1e3d59] bg-[#ff6e40] text-white flex items-center justify-center shadow-[2px_2px_0px_#1e3d59]">
                   <Type className="w-7 h-7 stroke-[2.5]" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-mono font-bold uppercase text-black">
+                  <h3 className="text-sm font-mono font-bold uppercase text-[#1e3d59]">
                     WATERMARK STAMPED SUCCESSFULLY
                   </h3>
                   <p className="text-xs font-mono text-stone-500 mt-1">
@@ -1982,8 +1982,8 @@ export const FormatConverter: React.FC = () => {
                   onClick={() => pageNumbersInputRef.current?.click()}
                   className="tako-dropzone p-6 space-y-2 text-center"
                 >
-                  <FileDown className="w-8 h-8 text-[#ff5500] mx-auto" />
-                  <p className="text-xs font-mono font-bold uppercase text-black">
+                  <FileDown className="w-8 h-8 text-[#ff6e40] mx-auto" />
+                  <p className="text-xs font-mono font-bold uppercase text-[#1e3d59]">
                     {pdfForPageNumbers ? pdfForPageNumbers.name : 'SELECT PDF TO NUMBER'}
                   </p>
                   <p className="text-[10px] font-mono text-stone-500">
@@ -2037,11 +2037,11 @@ export const FormatConverter: React.FC = () => {
           <div className="lg:col-span-7">
             {pageNumbersResult ? (
               <div className="tako-panel p-8 text-center space-y-4 bg-white">
-                <div className="w-14 h-14 mx-auto border-2 border-black bg-[#ff5500] text-white flex items-center justify-center shadow-[2px_2px_0px_#111]">
+                <div className="w-14 h-14 mx-auto border-2 border-[#1e3d59] bg-[#ff6e40] text-white flex items-center justify-center shadow-[2px_2px_0px_#1e3d59]">
                   <Check className="w-7 h-7 stroke-[3]" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-mono font-bold uppercase text-black">
+                  <h3 className="text-sm font-mono font-bold uppercase text-[#1e3d59]">
                     PAGINATION COMPLETED
                   </h3>
                   <p className="text-xs font-mono text-stone-500 mt-1">
@@ -2104,15 +2104,15 @@ export const FormatConverter: React.FC = () => {
                   onClick={() => signInputRef.current?.click()}
                   className="tako-dropzone p-4 space-y-1 text-center"
                 >
-                  <FileSignature className="w-6 h-6 text-[#ff5500] mx-auto" />
-                  <p className="text-xs font-mono font-bold uppercase text-black">
+                  <FileSignature className="w-6 h-6 text-[#ff6e40] mx-auto" />
+                  <p className="text-xs font-mono font-bold uppercase text-[#1e3d59]">
                     {pdfForSign ? pdfForSign.name : 'CLICK TO SELECT PDF TO SIGN'}
                   </p>
                 </div>
 
                 <div>
                   <span className="tako-label block mb-1">DRAW YOUR SIGNATURE:</span>
-                  <div className="border-2 border-black bg-stone-50 p-1">
+                  <div className="border-2 border-[#1e3d59] bg-stone-50 p-1">
                     <canvas
                       ref={signatureCanvasRef}
                       width={450}
@@ -2181,11 +2181,11 @@ export const FormatConverter: React.FC = () => {
           <div className="lg:col-span-6">
             {signResult ? (
               <div className="tako-panel p-8 text-center space-y-4 bg-white">
-                <div className="w-14 h-14 mx-auto border-2 border-black bg-[#ff5500] text-white flex items-center justify-center shadow-[2px_2px_0px_#111]">
+                <div className="w-14 h-14 mx-auto border-2 border-[#1e3d59] bg-[#ff6e40] text-white flex items-center justify-center shadow-[2px_2px_0px_#1e3d59]">
                   <FileSignature className="w-7 h-7 stroke-[2.5]" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-mono font-bold uppercase text-black">
+                  <h3 className="text-sm font-mono font-bold uppercase text-[#1e3d59]">
                     SIGNATURE STAMPED
                   </h3>
                   <p className="text-xs font-mono text-stone-500 mt-1">
