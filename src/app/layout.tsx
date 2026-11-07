@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'OmniConvert & QR Studio - Image Field Extractor & Universal Converter',
+  title: 'ScanDoc - OCR Field Extractor, QR Studio & PDF Document Suite',
   description:
-    'Extract structured fields from images to QR codes, create custom branded QR codes, and convert image and document formats (PDF to Word, JPG to PNG, and more) 100% in-browser.',
+    'ScanDoc is a 100% in-browser workstation: extract structured fields from images to QR, generate custom branded QR codes, and convert, merge, split, watermark, and sign PDFs with zero server latency.',
 };
 
 export default function RootLayout({

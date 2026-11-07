@@ -1,18 +1,18 @@
-# OMNI.SYS // QR Studio & Universal Format Converter
+# SCANDOC // Smart Document Workstation, QR Studio & PDF Suite
 
 <div align="center">
 
-![Next.js](https://img.shields.io/badge/Next.js-16.4.4-111111?style=for-the-badge&logo=nextdotjs&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-ff5500?style=for-the-badge&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-v4-111111?style=for-the-badge&logo=tailwindcss&logoColor=white)
-![Privacy](https://img.shields.io/badge/Privacy-100%25%20Client--Side-ff5500?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-111111?style=for-the-badge)
+![Next.js](https://img.shields.io/badge/Next.js-16.4.4-1e3d59?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-ff6e40?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-v4-1e3d59?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Privacy](https://img.shields.io/badge/Privacy-100%25%20Client--Side-ff6e40?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-ffc13b?style=for-the-badge&logoColor=1e3d59)
 
 <br />
 
-**A privacy-first, industrial Swiss-utility web workstation for extracting structured data from documents into QR codes, generating custom branded matrices, and converting files across universal formats — entirely in the browser.**
+**ScanDoc is a privacy-first, industrial Swiss-utility web workstation for extracting structured data from documents into QR codes, generating custom branded matrices, and converting, organizing, watermarking, and signing documents — entirely in the browser.**
 
-[Live Demo](https://vercel.com) • [Report Issue](https://github.com/NitinChamp1/QR_generator/issues)
+[Live Demo](https://github.com/NitinChamp1/QR_generator) • [Report Issue](https://github.com/NitinChamp1/QR_generator/issues)
 
 </div>
 
@@ -20,9 +20,9 @@
 
 ## ⚡ Key Highlights
 
-- **🔒 100% In-Browser Execution**: Zero uploads to external servers. All OCR, PDF parsing, Word document generation, and image conversions run entirely in client-side WebAssembly, Canvas, and JavaScript.
-- **⚡ Zero Latency & Infinite Scale**: Works completely client-side without API rate limits or backend infrastructure costs.
-- **📐 TAKO Swiss Utility Aesthetic**: Retro-mechanical aesthetic featuring bold `#ff5500` international orange highlights, crisp 2px solid charcoal borders, tactile drop shadows, and monospace telemetry.
+- **🔒 100% In-Browser Execution**: Zero uploads to external servers. All OCR, PDF parsing, Word document generation, image conversions, and signature stamping run entirely in client-side WebAssembly, Canvas, and JavaScript.
+- **⚡ Zero Latency & Infinite Privacy**: Works completely client-side without API rate limits, tracking, or backend infrastructure costs.
+- **📐 TAKO Swiss Utility Aesthetic**: Tactile mechanical aesthetic with an intentional 4-color palette: Deep Slate Navy (`#1e3d59`), Warm Almond Cream (`#f5f0e1`), Coral Tangerine (`#ff6e40`), and Marigold Gold (`#ffc13b`).
 
 ---
 

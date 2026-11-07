@@ -1,7 +1,7 @@
 {
-  "name": "qr-matrix-converter",
+  "name": "scandoc",
   "version": "1.0.0",
-  "description": "Smart Image Data Extractor, QR Studio & Universal Format Converter",
+  "description": "ScanDoc - Smart OCR Field Extractor, QR Studio & Universal PDF Document Suite",
   "private": true,
   "scripts": {
     "dev": "next dev",

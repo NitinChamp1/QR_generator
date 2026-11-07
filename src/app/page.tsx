@@ -59,7 +59,7 @@ export default function Home() {
             </div>
 
             <div className="text-[11px] text-[#1e3d59] font-bold uppercase tracking-wider">
-              OMNI<span className="text-[#ff6e40]">.SYS</span> // WORKBENCH UTILITY
+              SCAN<span className="text-[#ff6e40]">DOC</span> // WORKBENCH UTILITY
             </div>
           </div>
         </div>

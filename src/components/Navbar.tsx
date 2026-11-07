@@ -21,7 +21,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
                 <QrCode className="w-4 h-4 stroke-[2.5]" />
               </div>
               <span className="px-3 py-1 font-mono font-black text-xs tracking-tight text-[#1e3d59] uppercase">
-                OMNI<span className="text-[#ff6e40]">.SYS</span>
+                SCAN<span className="text-[#ff6e40]">DOC</span>
               </span>
             </div>
 

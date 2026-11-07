@@ -43,7 +43,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
     email: 'alex.morgan@novascale.io',
     website: 'https://novascale.io',
     address: 'San Francisco, CA',
-    notes: 'Generated via Omni.Sys QR',
+    notes: 'Generated via ScanDoc QR',
   });
   const [wifiInput, setWifiInput] = useState<WifiData>({
     ssid: 'Home_HighSpeed_5G',
@@ -61,7 +61,7 @@ export const QRStudio: React.FC<QRStudioProps> = ({
     message: 'Hello! Sent via QR code.',
   });
   const [jsonInput, setJsonInput] = useState<string>(
-    '{\n  "status": "success",\n  "app": "Omni.Sys"\n}'
+    '{\n  "status": "success",\n  "app": "ScanDoc"\n}'
   );
 
   const [fgColor, setFgColor] = useState<string>('#1e3d59');
