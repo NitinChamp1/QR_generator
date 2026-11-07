@@ -19,13 +19,13 @@ body {
 .tako-panel {
   border: 2px solid #111111 !important;
   box-shadow: 4px 4px 0px #111111 !important;
-  background-color: #ffffff !important;
+  background-color: #eae8e2 !important;
 }
 
 .tako-panel-sm {
   border: 1.5px solid #111111 !important;
   box-shadow: 2px 2px 0px #111111 !important;
-  background-color: #ffffff !important;
+  background-color: #eae8e2 !important;
 }
 
 /* Panel Header / Title Bar */
@@ -35,7 +35,7 @@ body {
   justify-content: space-between !important;
   padding: 0.5rem 0.875rem !important;
   border-bottom: 2px solid #111111 !important;
-  background-color: #f5f4f0 !important;
+  background-color: #dfded8 !important;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
   font-size: 0.75rem !important;
   font-weight: 800 !important;
