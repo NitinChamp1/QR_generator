@@ -80,6 +80,15 @@
 
 ---
 
+### [4] Desktop Companion // Radial Wheel HUD
+* **Windows Explorer Context Menu**: Right-click any file in Windows Explorer to trigger a transparent 6-slice circular radial menu directly under your cursor.
+* **Fitts's Law Muscle Memory**: All actions are equidistant from the cursor. Flick the mouse to convert in 1 second without opening a browser.
+* **In-Place File Processing**: Converted documents are saved immediately in the exact same folder alongside the original file.
+* **Zero-Admin Setup**: Registers in `HKEY_CURRENT_USER` with 1 click; no administrator privileges required.
+* **Standalone Executable (`ScanDoc.exe`)**: Can be built and distributed with `python desktop/build_exe.py`.
+
+---
+
 ## 🏗️ Architecture & Tech Stack
 
 ```

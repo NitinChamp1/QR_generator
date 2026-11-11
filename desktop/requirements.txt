@@ -1,0 +1,8 @@
+PyQt6>=6.6.0
+pypdf>=4.0.0
+pdf2docx>=0.5.8
+PyMuPDF>=1.24.0
+pillow>=10.0.0
+qrcode>=7.4.2
+reportlab>=4.1.0
+pyinstaller>=6.5.0
