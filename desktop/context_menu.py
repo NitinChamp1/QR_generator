@@ -14,6 +14,8 @@ from pathlib import Path
 REG_SUBKEYS = [
     r"Software\Classes\*\shell\ScanDoc",
     r"Software\Classes\SystemFileAssociations\.pdf\shell\ScanDoc",
+    r"Software\Classes\SystemFileAssociations\.docx\shell\ScanDoc",
+    r"Software\Classes\SystemFileAssociations\.doc\shell\ScanDoc",
     r"Software\Classes\SystemFileAssociations\image\shell\ScanDoc",
     r"Software\Classes\Directory\shell\ScanDoc",
 ]

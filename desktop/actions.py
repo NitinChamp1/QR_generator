@@ -331,3 +331,104 @@ def ocr_image_to_qr(img_path: str) -> Tuple[bool, str]:
         return True, str(out_path.name)
     except Exception as e:
         return False, f"OCR to QR error: {str(e)}"
+
+
+# =====================================================================
+# WORD (.DOCX) ACTIONS
+# =====================================================================
+
+def convert_word_to_pdf(docx_path: str) -> Tuple[bool, str]:
+    """Converts a Microsoft Word .docx or .doc file to PDF."""
+    try:
+        p = Path(docx_path).resolve()
+        if not p.exists():
+            return False, "File does not exist"
+
+        out_path = get_unique_output_path(p, ".pdf")
+
+        # 1. Native Word COM automation (100% exact fidelity)
+        try:
+            import win32com.client
+            import pythoncom
+            pythoncom.CoInitialize()
+            word = win32com.client.DispatchEx("Word.Application")
+            word.Visible = False
+            word.DisplayAlerts = False
+            doc = word.Documents.Open(str(p), ReadOnly=True)
+            doc.SaveAs(str(out_path), FileFormat=17)  # 17 = wdFormatPDF
+            doc.Close(SaveChanges=False)
+            word.Quit()
+            pythoncom.CoUninitialize()
+            return True, str(out_path.name)
+        except Exception as com_err:
+            print(f"Word COM notice: {com_err}, attempting fallback...")
+
+        # 2. Try docx2pdf
+        try:
+            from docx2pdf import convert
+            convert(str(p), str(out_path))
+            return True, str(out_path.name)
+        except Exception:
+            pass
+
+        # 3. Pure Python fallback via docx + reportlab
+        try:
+            from docx import Document
+            from reportlab.lib.pagesizes import letter
+            from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+            from reportlab.lib.styles import getSampleStyleSheet
+
+            doc = Document(str(p))
+            pdf_doc = SimpleDocTemplate(str(out_path), pagesize=letter)
+            styles = getSampleStyleSheet()
+            story = []
+
+            for para in doc.paragraphs:
+                if para.text.strip():
+                    story.append(Paragraph(para.text, styles["Normal"]))
+                    story.append(Spacer(1, 6))
+
+            pdf_doc.build(story)
+            return True, str(out_path.name)
+        except Exception as fb_err:
+            return False, f"Word to PDF failed: {str(fb_err)}"
+
+    except Exception as e:
+        return False, f"Word to PDF error: {str(e)}"
+
+
+def convert_docx_to_markdown(docx_path: str) -> Tuple[bool, str]:
+    """Extracts text, headings, and lists from a DOCX into clean Markdown."""
+    try:
+        from docx import Document
+
+        p = Path(docx_path).resolve()
+        if not p.exists():
+            return False, "File does not exist"
+
+        out_path = get_unique_output_path(p, ".md")
+        doc = Document(str(p))
+        lines = []
+
+        for para in doc.paragraphs:
+            text = para.text.strip()
+            if not text:
+                continue
+            style_name = para.style.name.lower()
+            if "heading 1" in style_name:
+                lines.append(f"# {text}\n")
+            elif "heading 2" in style_name:
+                lines.append(f"## {text}\n")
+            elif "heading 3" in style_name:
+                lines.append(f"### {text}\n")
+            elif "list" in style_name:
+                lines.append(f"- {text}")
+            else:
+                lines.append(f"{text}\n")
+
+        with open(out_path, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
+
+        return True, str(out_path.name)
+    except Exception as e:
+        return False, f"DOCX to Markdown error: {str(e)}"

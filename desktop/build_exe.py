@@ -37,6 +37,9 @@ def build():
         "--hidden-import=qrcode",
         "--hidden-import=reportlab",
         "--hidden-import=PIL",
+        "--hidden-import=docx2pdf",
+        "--hidden-import=win32com",
+        "--hidden-import=win32com.client",
         str(entry_point),
     ]
 

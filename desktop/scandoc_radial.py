@@ -33,6 +33,8 @@ try:
         convert_image,
         convert_image_to_pdf,
         ocr_image_to_qr,
+        convert_word_to_pdf,
+        convert_docx_to_markdown,
     )
 except ImportError:
     from actions import (
@@ -44,6 +46,8 @@ except ImportError:
         convert_image,
         convert_image_to_pdf,
         ocr_image_to_qr,
+        convert_word_to_pdf,
+        convert_docx_to_markdown,
     )
 
 
@@ -143,6 +147,7 @@ class RadialMenuWidget(QWidget):
 
     def build_slices(self) -> List[Dict[str, Any]]:
         is_pdf = self.ext == ".pdf"
+        is_docx = self.ext in [".docx", ".doc", ".rtf", ".odt"]
         is_img = self.ext in [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".ico"]
 
         if is_pdf:
@@ -153,6 +158,15 @@ class RadialMenuWidget(QWidget):
                 {"title": "WATERMARK", "icon": "💧", "action": add_watermark, "args": ("CONFIDENTIAL",)},
                 {"title": "PAGE NO", "icon": "🔢", "action": add_page_numbers, "args": ()},
                 {"title": "STUDIO", "icon": "🌐", "action": self.open_web_suite, "args": ()},
+            ]
+        elif is_docx:
+            return [
+                {"title": "TO PDF", "icon": "📑", "action": convert_word_to_pdf, "args": ()},
+                {"title": "MARKDOWN", "icon": "📝", "action": convert_docx_to_markdown, "args": ()},
+                {"title": "OCR → QR", "icon": "📱", "action": ocr_image_to_qr, "args": ()},
+                {"title": "COPY PATH", "icon": "📋", "action": self.copy_path_action, "args": ()},
+                {"title": "STUDIO", "icon": "🌐", "action": self.open_web_suite, "args": ()},
+                {"title": "CLOSE", "icon": "✕", "action": self.close_action, "args": ()},
             ]
         elif is_img:
             return [
@@ -165,11 +179,20 @@ class RadialMenuWidget(QWidget):
             ]
         else:
             return [
-                {"title": "STUDIO", "icon": "🌐", "action": self.open_web_suite, "args": ()},
+                {"title": "TO PDF", "icon": "📑", "action": self.auto_to_pdf, "args": ()},
                 {"title": "COPY PATH", "icon": "📋", "action": self.copy_path_action, "args": ()},
-                {"title": "TO PDF", "icon": "📑", "action": convert_image_to_pdf, "args": ()},
+                {"title": "STUDIO", "icon": "🌐", "action": self.open_web_suite, "args": ()},
                 {"title": "CLOSE", "icon": "✕", "action": self.close_action, "args": ()},
             ]
+
+    def auto_to_pdf(self, path_str: str) -> tuple[bool, str]:
+        p = Path(path_str)
+        if p.suffix.lower() in [".docx", ".doc", ".rtf", ".odt"]:
+            return convert_word_to_pdf(path_str)
+        elif p.suffix.lower() in [".png", ".jpg", ".jpeg", ".webp", ".bmp", ".ico"]:
+            return convert_image_to_pdf(path_str)
+        else:
+            return False, "Unsupported format for PDF conversion"
 
     def open_web_suite(self, _path: str) -> tuple[bool, str]:
         import webbrowser
