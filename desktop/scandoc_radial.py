@@ -1,6 +1,6 @@
 """
-ScanDoc Desktop Companion - Futuristic Radial Wheel HUD
-Hardware-accelerated PyQt6 transparent, circular pie menu.
+ScanDoc Desktop Companion - Compact Minimalist Radial Wheel HUD
+Refined, small, modern circular pie menu (260px diameter).
 """
 
 import sys
@@ -9,7 +9,7 @@ import math
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
-from PyQt6.QtCore import Qt, QPointF, QRectF, QTimer, QThread, pyqtSignal, QPropertyAnimation, QEasingCurve
+from PyQt6.QtCore import Qt, QPointF, QRectF, QTimer, QThread, pyqtSignal
 from PyQt6.QtGui import (
     QPainter,
     QColor,
@@ -19,9 +19,8 @@ from PyQt6.QtGui import (
     QPainterPath,
     QCursor,
     QGuiApplication,
-    QIcon,
 )
-from PyQt6.QtWidgets import QApplication, QWidget, QLabel
+from PyQt6.QtWidgets import QApplication, QWidget
 
 # Import actions
 try:
@@ -48,15 +47,16 @@ except ImportError:
     )
 
 
-# Palette Constants
+# Swiss Industrial Palette Constants
 COLOR_NAVY = QColor("#1e3d59")
 COLOR_CREAM = QColor("#f5f0e1")
-COLOR_PANEL_BG = QColor("#fbf9f4")
+COLOR_PANEL_BG = QColor("#fdfcf9")
+COLOR_PANEL_ALT = QColor("#f4f0e6")
 COLOR_CORAL = QColor("#ff6e40")
-COLOR_CORAL_HOVER = QColor("#ff5722")
 COLOR_GOLD = QColor("#ffc13b")
 COLOR_WHITE = QColor("#ffffff")
-COLOR_SHADOW = QColor(30, 61, 89, 45)
+COLOR_MUTED = QColor("#4a637d")
+COLOR_SHADOW = QColor(30, 61, 89, 40)
 
 
 class WorkerThread(QThread):
@@ -82,18 +82,18 @@ class RadialMenuWidget(QWidget):
 
         self.target_path = Path(target_file_path).resolve() if target_file_path else None
         self.ext = self.target_path.suffix.lower() if self.target_path else ""
-        self.file_name = self.target_path.name if self.target_path else "DEMO FILE"
+        self.file_name = self.target_path.name if self.target_path else "DOCUMENT"
         self.file_size_str = self.format_file_size()
 
-        # Geometry Settings
-        self.diameter = 420
-        self.radius = self.diameter / 2
+        # COMPACT MINIMAL GEOMETRY (260px total diameter)
+        self.diameter = 260
+        self.radius = self.diameter / 2.0
         self.center_x = self.radius
         self.center_y = self.radius
-        self.inner_radius = 70.0
-        self.outer_radius = 195.0
+        self.inner_radius = 42.0   # Compact Center Hub
+        self.outer_radius = 124.0  # Sleek Outer Perimeter
 
-        # Hover and Selection state
+        # State
         self.hovered_slice: int = -1
         self.hovered_center: bool = False
         self.is_processing: bool = False
@@ -103,7 +103,7 @@ class RadialMenuWidget(QWidget):
         # Build Slices based on file type
         self.slices = self.build_slices()
 
-        # Window Flags: Frameless, Translucent, Always on top, Tool (no taskbar clutter)
+        # Frameless, Translucent, Tool window (no taskbar icon)
         self.setWindowFlags(
             Qt.WindowType.FramelessWindowHint
             | Qt.WindowType.WindowStaysOnTopHint
@@ -113,7 +113,7 @@ class RadialMenuWidget(QWidget):
         self.setMouseTracking(True)
         self.resize(self.diameter, self.diameter)
 
-        # Position at current mouse cursor
+        # Center at cursor position
         self.position_at_cursor()
 
     def format_file_size(self) -> str:
@@ -123,7 +123,7 @@ class RadialMenuWidget(QWidget):
         if sz < 1024:
             return f"{sz} B"
         elif sz < 1024 * 1024:
-            return f"{sz / 1024:.1f} KB"
+            return f"{sz / 1024:.0f} KB"
         else:
             return f"{sz / (1024 * 1024):.1f} MB"
 
@@ -135,9 +135,9 @@ class RadialMenuWidget(QWidget):
         x = cursor_pos.x() - int(self.radius)
         y = cursor_pos.y() - int(self.radius)
 
-        # Clamp within screen bounds
-        x = max(screen_geo.left() + 10, min(x, screen_geo.right() - self.diameter - 10))
-        y = max(screen_geo.top() + 10, min(y, screen_geo.bottom() - self.diameter - 10))
+        # Clamp within visible screen boundaries
+        x = max(screen_geo.left() + 8, min(x, screen_geo.right() - self.diameter - 8))
+        y = max(screen_geo.top() + 8, min(y, screen_geo.bottom() - self.diameter - 8))
 
         self.move(x, y)
 
@@ -147,117 +147,45 @@ class RadialMenuWidget(QWidget):
 
         if is_pdf:
             return [
-                {
-                    "title": "TO WORD",
-                    "subtitle": ".DOCX",
-                    "icon": "📄",
-                    "action": convert_pdf_to_word,
-                    "args": (),
-                },
-                {
-                    "title": "TO IMAGES",
-                    "subtitle": "PNG RENDER",
-                    "icon": "🖼️",
-                    "action": convert_pdf_to_images,
-                    "args": ("png",),
-                },
-                {
-                    "title": "SPLIT PDF",
-                    "subtitle": "EVERY PAGE",
-                    "icon": "✂️",
-                    "action": split_pdf_pages,
-                    "args": (),
-                },
-                {
-                    "title": "WATERMARK",
-                    "subtitle": "CONFIDENTIAL",
-                    "icon": "💧",
-                    "action": add_watermark,
-                    "args": ("CONFIDENTIAL",),
-                },
-                {
-                    "title": "PAGE NOS",
-                    "subtitle": "1 OF N",
-                    "icon": "🔢",
-                    "action": add_page_numbers,
-                    "args": (),
-                },
-                {
-                    "title": "WEB STUDIO",
-                    "subtitle": "OPEN BROWSER",
-                    "icon": "🌐",
-                    "action": self.open_web_suite,
-                    "args": (),
-                },
+                {"title": "WORD", "icon": "📄", "action": convert_pdf_to_word, "args": ()},
+                {"title": "IMAGES", "icon": "🖼️", "action": convert_pdf_to_images, "args": ("png",)},
+                {"title": "SPLIT", "icon": "✂️", "action": split_pdf_pages, "args": ()},
+                {"title": "WATERMARK", "icon": "💧", "action": add_watermark, "args": ("CONFIDENTIAL",)},
+                {"title": "PAGE NO", "icon": "🔢", "action": add_page_numbers, "args": ()},
+                {"title": "STUDIO", "icon": "🌐", "action": self.open_web_suite, "args": ()},
             ]
         elif is_img:
             return [
-                {
-                    "title": "OCR → QR",
-                    "subtitle": "SCAN CONTACT",
-                    "icon": "📱",
-                    "action": ocr_image_to_qr,
-                    "args": (),
-                },
-                {
-                    "title": "TO PDF",
-                    "subtitle": "DOC EMBED",
-                    "icon": "📑",
-                    "action": convert_image_to_pdf,
-                    "args": (),
-                },
-                {
-                    "title": "TO WEBP",
-                    "subtitle": "COMPRESSED",
-                    "icon": "⚡",
-                    "action": convert_image,
-                    "args": ("WEBP",),
-                },
-                {
-                    "title": "TO JPG",
-                    "subtitle": "PHOTO STD",
-                    "icon": "🖼️",
-                    "action": convert_image,
-                    "args": ("JPEG",),
-                },
-                {
-                    "title": "TO PNG",
-                    "subtitle": "LOSSLESS",
-                    "icon": "🎨",
-                    "action": convert_image,
-                    "args": ("PNG",),
-                },
-                {
-                    "title": "TO ICO",
-                    "subtitle": "FAVICON",
-                    "icon": "⭐",
-                    "action": convert_image,
-                    "args": ("ICO",),
-                },
+                {"title": "OCR → QR", "icon": "📱", "action": ocr_image_to_qr, "args": ()},
+                {"title": "PDF", "icon": "📑", "action": convert_image_to_pdf, "args": ()},
+                {"title": "WEBP", "icon": "⚡", "action": convert_image, "args": ("WEBP",)},
+                {"title": "JPG", "icon": "🖼️", "action": convert_image, "args": ("JPEG",)},
+                {"title": "PNG", "icon": "🎨", "action": convert_image, "args": ("PNG",)},
+                {"title": "ICO", "icon": "⭐", "action": convert_image, "args": ("ICO",)},
             ]
         else:
             return [
-                {"title": "OPEN IN WEB", "subtitle": "SCANDOC", "icon": "🌐", "action": self.open_web_suite, "args": ()},
-                {"title": "COPY PATH", "subtitle": "CLIPBOARD", "icon": "📋", "action": self.copy_path_action, "args": ()},
-                {"title": "TO PDF", "subtitle": "CONVERT", "icon": "📑", "action": convert_image_to_pdf, "args": ()},
-                {"title": "DISMISS", "subtitle": "CLOSE", "icon": "✕", "action": self.close_action, "args": ()},
+                {"title": "STUDIO", "icon": "🌐", "action": self.open_web_suite, "args": ()},
+                {"title": "COPY PATH", "icon": "📋", "action": self.copy_path_action, "args": ()},
+                {"title": "TO PDF", "icon": "📑", "action": convert_image_to_pdf, "args": ()},
+                {"title": "CLOSE", "icon": "✕", "action": self.close_action, "args": ()},
             ]
 
-    def open_web_suite(self, _path: str) -> Tuple[bool, str]:
+    def open_web_suite(self, _path: str) -> tuple[bool, str]:
         import webbrowser
         webbrowser.open("http://localhost:3000")
         return True, "Opened ScanDoc Web Suite"
 
-    def copy_path_action(self, path: str) -> Tuple[bool, str]:
+    def copy_path_action(self, path: str) -> tuple[bool, str]:
         clipboard = QGuiApplication.clipboard()
         clipboard.setText(path)
-        return True, "Path copied to clipboard"
+        return True, "Path copied"
 
-    def close_action(self, _path: str) -> Tuple[bool, str]:
+    def close_action(self, _path: str) -> tuple[bool, str]:
         return True, "Closed"
 
     # =====================================================================
-    # PAINT EVENT - DRAWING THE SWISS RADIAL PIE
+    # COMPACT MINIMAL PAINT EVENT
     # =====================================================================
 
     def paintEvent(self, _event):
@@ -269,20 +197,20 @@ class RadialMenuWidget(QWidget):
         cy = self.center_y
         num_slices = len(self.slices)
         angle_step = 360.0 / num_slices
-        # Start at -90 - half step so slice 0 is centered directly at top (12 o'clock)
+        # Slice 0 centered at 12 o'clock
         start_offset = -90.0 - (angle_step / 2.0)
 
-        # 1. Outer Soft Shadow Ring
+        # 1. Subtle Outer Ambient Shadow
         shadow_path = QPainterPath()
-        shadow_path.addEllipse(QPointF(cx, cy), self.outer_radius + 6, self.outer_radius + 6)
+        shadow_path.addEllipse(QPointF(cx, cy), self.outer_radius + 4, self.outer_radius + 4)
         painter.fillPath(shadow_path, COLOR_SHADOW)
 
-        # 2. Draw Each Radial Slice
+        # 2. Draw Slices
         for i, s in enumerate(self.slices):
             is_hovered = (self.hovered_slice == i) and not self.is_processing
             start_deg = start_offset + (i * angle_step)
 
-            # Build Donut Sector Path
+            # Donut Sector Path
             slice_path = QPainterPath()
             outer_rect = QRectF(cx - self.outer_radius, cy - self.outer_radius, self.outer_radius * 2, self.outer_radius * 2)
             inner_rect = QRectF(cx - self.inner_radius, cy - self.inner_radius, self.inner_radius * 2, self.inner_radius * 2)
@@ -292,20 +220,18 @@ class RadialMenuWidget(QWidget):
             slice_path.arcTo(inner_rect, -(start_deg + angle_step), angle_step)
             slice_path.closeSubpath()
 
-            # Slice Fill and Border
+            # Fill & Stroke
             if is_hovered:
                 painter.fillPath(slice_path, QBrush(COLOR_CORAL))
-                pen = QPen(COLOR_NAVY, 2.5)
+                painter.setPen(QPen(COLOR_NAVY, 2.0))
             else:
-                # Alternating soft tone
-                bg = COLOR_PANEL_BG if i % 2 == 0 else QColor("#f4f0e6")
+                bg = COLOR_PANEL_BG if i % 2 == 0 else COLOR_PANEL_ALT
                 painter.fillPath(slice_path, QBrush(bg))
-                pen = QPen(COLOR_NAVY, 2.0)
+                painter.setPen(QPen(COLOR_NAVY, 1.5))
 
-            painter.setPen(pen)
             painter.drawPath(slice_path)
 
-            # Draw Slice Label and Icon
+            # Slice Content Positioning
             mid_angle_deg = start_deg + (angle_step / 2.0)
             mid_rad = math.radians(mid_angle_deg)
             label_radius = (self.inner_radius + self.outer_radius) / 2.0
@@ -313,70 +239,59 @@ class RadialMenuWidget(QWidget):
             text_x = cx + label_radius * math.cos(mid_rad)
             text_y = cy + label_radius * math.sin(mid_rad)
 
-            # Typography
             painter.save()
             painter.translate(text_x, text_y)
 
-            # Icon
-            painter.setFont(QFont("Segoe UI Emoji", 15))
+            # Minimal Icon
+            painter.setFont(QFont("Segoe UI Emoji", 12))
             painter.setPen(COLOR_WHITE if is_hovered else COLOR_NAVY)
-            painter.drawText(QRectF(-30, -22, 60, 24), Qt.AlignmentFlag.AlignCenter, s.get("icon", "•"))
+            painter.drawText(QRectF(-20, -18, 40, 18), Qt.AlignmentFlag.AlignCenter, s.get("icon", "•"))
 
-            # Title
-            painter.setFont(QFont("Consolas", 8, QFont.Weight.Bold))
-            painter.drawText(QRectF(-50, 2, 100, 14), Qt.AlignmentFlag.AlignCenter, s["title"])
-
-            # Subtitle
-            painter.setFont(QFont("Consolas", 7, QFont.Weight.DemiBold))
-            painter.setPen(QColor(255, 255, 255, 210) if is_hovered else QColor("#4a637d"))
-            painter.drawText(QRectF(-50, 16, 100, 12), Qt.AlignmentFlag.AlignCenter, s.get("subtitle", ""))
+            # Minimal Label
+            painter.setFont(QFont("Consolas", 7, QFont.Weight.Bold))
+            painter.setPen(COLOR_WHITE if is_hovered else COLOR_NAVY)
+            painter.drawText(QRectF(-35, 1, 70, 13), Qt.AlignmentFlag.AlignCenter, s["title"])
 
             painter.restore()
 
-        # 3. Center Hub (File Information / Status)
-        hub_rect = QRectF(cx - self.inner_radius + 4, cy - self.inner_radius + 4, (self.inner_radius - 4) * 2, (self.inner_radius - 4) * 2)
-        
-        # Center Hub Background
+        # 3. Compact Center Hub
+        hub_rect = QRectF(cx - self.inner_radius + 3, cy - self.inner_radius + 3, (self.inner_radius - 3) * 2, (self.inner_radius - 3) * 2)
+
         painter.setBrush(QBrush(COLOR_NAVY))
-        painter.setPen(QPen(COLOR_GOLD if self.hovered_center else COLOR_NAVY, 2.5))
+        painter.setPen(QPen(COLOR_GOLD if self.hovered_center else COLOR_NAVY, 2.0))
         painter.drawEllipse(hub_rect)
 
         # Center Content
         if self.is_processing:
-            painter.setFont(QFont("Consolas", 8, QFont.Weight.Bold))
+            painter.setFont(QFont("Consolas", 7, QFont.Weight.Bold))
             painter.setPen(COLOR_GOLD)
-            painter.drawText(hub_rect, Qt.AlignmentFlag.AlignCenter, "PROCESSING\nWAIT...")
+            painter.drawText(hub_rect, Qt.AlignmentFlag.AlignCenter, "WORKING...")
         elif self.status_message:
-            painter.setFont(QFont("Consolas", 8, QFont.Weight.Bold))
+            painter.setFont(QFont("Consolas", 7, QFont.Weight.Bold))
             painter.setPen(COLOR_CORAL if not self.status_is_success else COLOR_GOLD)
             painter.drawText(hub_rect, Qt.AlignmentFlag.AlignCenter, self.status_message)
         else:
-            # File Extension Pill
+            # File Extension Badge
             ext_text = self.ext.upper().replace(".", "") or "FILE"
-            painter.setFont(QFont("Consolas", 9, QFont.Weight.Black))
+            painter.setFont(QFont("Consolas", 8, QFont.Weight.Black))
             painter.setPen(COLOR_GOLD)
-            painter.drawText(QRectF(cx - 45, cy - 32, 90, 16), Qt.AlignmentFlag.AlignCenter, f"[{ext_text}]")
+            painter.drawText(QRectF(cx - 30, cy - 22, 60, 14), Qt.AlignmentFlag.AlignCenter, f"[{ext_text}]")
 
-            # File Name (Truncated)
+            # File Name
             disp_name = self.file_name
-            if len(disp_name) > 13:
-                disp_name = disp_name[:11] + ".."
-            painter.setFont(QFont("Consolas", 8, QFont.Weight.Bold))
+            if len(disp_name) > 9:
+                disp_name = disp_name[:7] + ".."
+            painter.setFont(QFont("Consolas", 7, QFont.Weight.Bold))
             painter.setPen(COLOR_WHITE)
-            painter.drawText(QRectF(cx - 55, cy - 10, 110, 16), Qt.AlignmentFlag.AlignCenter, disp_name)
+            painter.drawText(QRectF(cx - 36, cy - 7, 72, 13), Qt.AlignmentFlag.AlignCenter, disp_name)
 
-            # File Size
-            painter.setFont(QFont("Consolas", 7, QFont.Weight.Normal))
+            # Size
+            painter.setFont(QFont("Consolas", 6, QFont.Weight.Normal))
             painter.setPen(QColor("#a8c5db"))
-            painter.drawText(QRectF(cx - 50, cy + 8, 100, 14), Qt.AlignmentFlag.AlignCenter, self.file_size_str)
-
-            # Center Action Hint
-            painter.setFont(QFont("Consolas", 6, QFont.Weight.Bold))
-            painter.setPen(COLOR_CORAL)
-            painter.drawText(QRectF(cx - 50, cy + 24, 100, 12), Qt.AlignmentFlag.AlignCenter, "SCANDOC HUD")
+            painter.drawText(QRectF(cx - 30, cy + 6, 60, 11), Qt.AlignmentFlag.AlignCenter, self.file_size_str)
 
     # =====================================================================
-    # MOUSE EVENTS - HIT TESTING & CLICK HANDLING
+    # MOUSE EVENTS
     # =====================================================================
 
     def mouseMoveEvent(self, event):
@@ -398,7 +313,6 @@ class RadialMenuWidget(QWidget):
             start_offset = -90.0 - (angle_step / 2.0)
 
             deg = math.degrees(math.atan2(dy, dx))
-            # Normalize to start_offset reference
             norm_deg = (deg - start_offset) % 360.0
             idx = int(norm_deg // angle_step)
             self.hovered_slice = max(0, min(idx, num_slices - 1))
@@ -417,7 +331,7 @@ class RadialMenuWidget(QWidget):
             dist = math.hypot(dx, dy)
 
             # Click outside -> dismiss
-            if dist > self.outer_radius + 15:
+            if dist > self.outer_radius + 10:
                 self.close()
                 return
 
@@ -428,11 +342,10 @@ class RadialMenuWidget(QWidget):
                 return
 
             # Click slice
-            if self.hovered_slice >= 0 and self.hovered_slice < len(self.slices):
+            if 0 <= self.hovered_slice < len(self.slices):
                 self.trigger_slice(self.hovered_slice)
 
         elif event.button() == Qt.MouseButton.RightButton:
-            # Right click dismisses menu
             self.close()
 
     def keyPressEvent(self, event):
@@ -450,13 +363,11 @@ class RadialMenuWidget(QWidget):
         if not action_fn:
             return
 
-        # Simple actions that don't need threading
         if action_fn in (self.close_action, self.open_web_suite, self.copy_path_action):
             action_fn(str(self.target_path) if self.target_path else "")
             self.close()
             return
 
-        # File processing actions run on background worker thread
         self.is_processing = True
         self.status_message = "RUNNING..."
         self.update()
@@ -465,29 +376,19 @@ class RadialMenuWidget(QWidget):
         self.worker.finished.connect(self.on_action_finished)
         self.worker.start()
 
-    def on_action_finished(self, success: bool, message: str):
+    def on_action_finished(self, success: bool, _message: str):
         self.is_processing = False
         self.status_is_success = success
-
-        if success:
-            self.status_message = "✓ SUCCESS"
-            # Auto-close after showing success
-            QTimer.singleShot(750, self.close)
-        else:
-            self.status_message = "FAILED"
-            QTimer.singleShot(1500, self.close)
-
+        self.status_message = "✓ DONE" if success else "FAILED"
         self.update()
+        QTimer.singleShot(650, self.close)
 
 
 def main():
     app = QApplication(sys.argv)
     app.setApplicationName("ScanDoc Radial HUD")
 
-    # Target file passed as argument (e.g. from Windows Explorer context menu "%1")
     target_file = sys.argv[1] if len(sys.argv) > 1 else None
-
-    # If no file was provided in CLI, create a dummy sample in temp to showcase the HUD
     if not target_file or not os.path.exists(target_file):
         sample_path = Path.home() / "Desktop" / "sample_document.pdf"
         target_file = str(sample_path)
